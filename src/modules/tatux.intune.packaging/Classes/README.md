@@ -1,1 +1,1 @@
-# tatux.intune.packaging Classes
+# Classes

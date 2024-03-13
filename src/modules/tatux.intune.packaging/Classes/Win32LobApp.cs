@@ -2,6 +2,87 @@ using Microsoft.Graph.Models;
 
 namespace Tatux.Intune.Packaging
 {
+	public enum MobileAppPublishingState
+	{
+		NotPublished,
+		Processing,
+		Published,
+		Failed,
+		Unpublished,
+		Removed,
+	}
+
+	public enum WindowsArchitecture
+	{
+		None,
+		X86,
+		X64,
+		Arm,
+		Neutral,
+	}
+
+	public enum Win32LobAppRuleType
+	{
+		Requirement,
+		Detection,
+	}
+
+	public enum RunAsAccountType
+	{
+		User,
+		System,
+	}
+
+	public enum Win32LobAppRestartBehavior
+	{
+		Allow,
+		Forced,
+		NotAllowed,
+	}
+
+	public enum Win32LobAppReturnCodeType
+	{
+		Success,
+		Failure,
+	}
+
+	public enum Win32LobAppMsiPackageType
+	{
+		PerMachine,
+		PerUser,
+	}
+
+	public enum Win32LobAppRegistryRuleOperationType
+	{
+		Exists,
+		DoesNotExist,
+		String,
+		Integer,
+		Version,
+	}
+
+	public enum Win32LobAppRuleOperator
+	{
+		Equal,
+		NotEqual,
+		GreaterThan,
+		GreaterThanOrEqual,
+		LessThan,
+		LessThanOrEqual,
+		Contains,
+		NotContains,
+		BeginsWith,
+		EndsWith,
+		NotBeginsWith,
+		NotEndsWith,
+		NotContainsAll,
+		NotContainsAny,
+		NotContainsAllValues,
+		NotContainsAnyValues,
+		ContainsAll,
+		ContainsAny,
+		ContainsAllValues,
+	}
     public class Win32LobApp
     {
         public string OdataType { get; } = "#microsoft.graph.win32LobApp";
@@ -51,6 +132,55 @@ namespace Tatux.Intune.Packaging
         public string SetupFilePath { get; set; }
         public string MinimumSupportedWindowsRelease { get; set; }
     }
+
+	public class mimeContent {
+		public string OdataType { get; set; }
+		public string Type { get; set; }
+		public byte[] Value { get; set; }
+	}
+
+	public class Win32LobAppRule
+	{
+		public string OdataType { get; set; }
+		public Win32LobAppRuleType RuleType { get; set; }
+	}
+
+	public class Win32LobAppRegistryRule : Win32LobAppRule
+	{
+		public bool Check32BitOn64System { get; set; }
+		public string KeyPath { get; set; }
+		public string ValueName { get; set; }
+		public Win32LobAppRegistryRuleOperationType OperationType { get; set; }
+		public Win32LobAppRuleOperator Operator { get; set; }
+		public string ComparisonValue { get; set; }
+	}
+
+	public class Win32LobAppInstallExperience
+	{
+		public string OdataType { get; set; }
+		public RunAsAccountType RunAsAccount { get; set; }
+		public Win32LobAppRestartBehavior DeviceRestartBehavior { get; set; }
+	}
+
+	public class Win32LobAppReturnCode
+	{
+		public string OdataType { get; set; }
+		public int ReturnCode { get; set; }
+		public Win32LobAppReturnCodeType Type { get; set; }
+	}
+
+	public class Win32LobAppMsiInformation
+	{
+		public string OdataType { get; set; }
+		public string ProductCode { get; set; }
+		public string ProductVersion { get; set; }
+		public string UpgradeCode { get; set; }
+		public bool RequiresReboot { get; set; }
+		public Win32LobAppMsiPackageType PackageType { get; set; }
+		public string ProductName { get; set; }
+		public string Publisher { get; set; }
+	}
+		
 }
 
 var requestBody = new Win32LobApp
