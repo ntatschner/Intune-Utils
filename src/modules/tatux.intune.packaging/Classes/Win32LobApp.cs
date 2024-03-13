@@ -133,8 +133,9 @@ namespace Tatux.Intune.Packaging
         public string MinimumSupportedWindowsRelease { get; set; }
     }
 
-	public class mimeContent {
-		public string OdataType { get; set; }
+	public struct MimeContent 
+	{
+		public string OdataType { get; } = "microsoft.graph.mimeContent";
 		public string Type { get; set; }
 		public byte[] Value { get; set; }
 	}
