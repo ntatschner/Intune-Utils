@@ -1,12 +1,12 @@
 # Intune Utilities
-### Overview {#overview}
+### Overview
 A collection of Intune utilities written in PowerShell that aims to assist with varying Intune tasks.
-### Project Status - :warning: {#project_status}
+### Project Status - :warning:
 > :no_entry: **This is in DEVELOPMENT** :no_entry:
 > Till my first release i suggest you use any code in this repo with :warning:==caution==:warning:
-###### Timeline :clock1: {#timeline}
+###### Timeline :clock1:
 - 13/03/2024 - Initial Upload: Powershell Module framework, initial private and public functions created.
-### Todo List :white_check_mark: {#todo}
+### Todo List :white_check_mark:
 - [x] Upload Initial Code and Framework for Intune App Package Module
 - [ ] Write all the individual Intune App Publishing Private functions/Classes
 - [ ] Finish Publish-IntunePackage function
