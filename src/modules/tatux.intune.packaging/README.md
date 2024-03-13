@@ -1,4 +1,4 @@
-# rsy.intune.packaging Powershell Module
+# Intune Packaging Powershell Module
 
 *Module Description*
 
