@@ -1,5 +1,5 @@
 # This PowerShell Advanced Function Creates a new Intune Application Deployment,
-# t can either generate the .intunewin file and a json file descripbing the application or
+# it can either generate the .intunewin file and a json file descripbing the application or
 # create the intunewin file and publish it directly to Intune.
 
 function New-IntuneApplication {
