@@ -1,4 +1,8 @@
-using Microsoft.Graph.Models;
+using System.Collections.Generic;
+using System;
+using System.IO;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace Tatux.Intune.Packaging
 {
@@ -82,7 +86,7 @@ namespace Tatux.Intune.Packaging
         public string Publisher { get; set; }  
         private string _largeIcon;
         public string LargeIcon 
-        { 
+        {
             get 
             { 
                 return _largeIcon; 
@@ -127,16 +131,21 @@ namespace Tatux.Intune.Packaging
 		{
 			if (System.IO.File.Exists(path))
 			{
-				_largeIcon = new MimeContent
-				{
-					Value = Convert.ToBase64String(System.IO.File.ReadAllBytes(path))
-				}
-				return _largeIcon;
+				var extension = System.IO.Path.GetExtension(path).ToLower();
+				var _largeIconOutput = new MimeContent(
+					"image/" + extension,
+					Convert.ToBase64String(System.IO.File.ReadAllBytes(path))
+				);
+				return _largeIconOutput;
 			} 
 			else
 			{
 				throw new ArgumentException("File not found.");
 			}
+		}
+		public string ToJson()
+		{
+			return JsonSerializer.Serialize(this);
 		}
     }
 	public struct MimeContent 
@@ -144,6 +153,16 @@ namespace Tatux.Intune.Packaging
 		public string OdataType { get; } = "microsoft.graph.mimeContent";
 		public string Type { get; set; } = "String";
 		public string Value { get; set; }
+
+		public MimeContent(string type, string value)
+		{
+			Type = type;
+			Value = value;
+		}
+		public string ToJson()
+		{
+			return JsonSerializer.Serialize(this);
+		}
 	}
 	public class Win32LobAppRule
 	{
@@ -184,76 +203,3 @@ namespace Tatux.Intune.Packaging
 	}
 	
 }
-
-var requestBody = new Win32LobApp
-{
-	OdataType = "#microsoft.graph.win32LobApp",
-	DisplayName = "Display Name value",
-	Description = "Description value",
-	Publisher = "Publisher value",
-	LargeIcon = new MimeContent
-	{
-		OdataType = "microsoft.graph.mimeContent",
-		Type = "Type value",
-		Value = Convert.FromBase64String("dmFsdWU="),
-	},
-	IsFeatured = true,
-	PrivacyInformationUrl = "https://example.com/privacyInformationUrl/",
-	InformationUrl = "https://example.com/informationUrl/",
-	Owner = "Owner value",
-	Developer = "Developer value",
-	Notes = "Notes value",
-	PublishingState = MobileAppPublishingState.Processing,
-	CommittedContentVersion = "Committed Content Version value",
-	FileName = "File Name value",
-	Size = 4L,
-	InstallCommandLine = "Install Command Line value",
-	UninstallCommandLine = "Uninstall Command Line value",
-	ApplicableArchitectures = WindowsArchitecture.X86,
-	MinimumFreeDiskSpaceInMB = 8,
-	MinimumMemoryInMB = 1,
-	MinimumNumberOfProcessors = 9,
-	MinimumCpuSpeedInMHz = 4,
-	Rules = new List<Win32LobAppRule>
-	{
-		new Win32LobAppRegistryRule
-		{
-			OdataType = "microsoft.graph.win32LobAppRegistryRule",
-			RuleType = Win32LobAppRuleType.Requirement,
-			Check32BitOn64System = true,
-			KeyPath = "Key Path value",
-			ValueName = "Value Name value",
-			OperationType = Win32LobAppRegistryRuleOperationType.Exists,
-			Operator = Win32LobAppRuleOperator.Equal,
-			ComparisonValue = "Comparison Value value",
-		},
-	},
-	InstallExperience = new Win32LobAppInstallExperience
-	{
-		OdataType = "microsoft.graph.win32LobAppInstallExperience",
-		RunAsAccount = RunAsAccountType.User,
-		DeviceRestartBehavior = Win32LobAppRestartBehavior.Allow,
-	},
-	ReturnCodes = new List<Win32LobAppReturnCode>
-	{
-		new Win32LobAppReturnCode
-		{
-			OdataType = "microsoft.graph.win32LobAppReturnCode",
-			ReturnCode = 10,
-			Type = Win32LobAppReturnCodeType.Success,
-		},
-	},
-	MsiInformation = new Win32LobAppMsiInformation
-	{
-		OdataType = "microsoft.graph.win32LobAppMsiInformation",
-		ProductCode = "Product Code value",
-		ProductVersion = "Product Version value",
-		UpgradeCode = "Upgrade Code value",
-		RequiresReboot = true,
-		PackageType = Win32LobAppMsiPackageType.PerUser,
-		ProductName = "Product Name value",
-		Publisher = "Publisher value",
-	},
-	SetupFilePath = "Setup File Path value",
-	MinimumSupportedWindowsRelease = "Minimum Supported Windows Release value",
-};
