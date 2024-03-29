@@ -35,7 +35,11 @@ function New-Win32JSON {
     )
     
     begin {
-        # 
+        # Get the JSON content based on the parameter set
+        if ($PSCmdlet.ParameterSetName -eq 'File') {
+            $JSONContent = Get-Content -Path $Path -Raw
+        }
+        
     }
     
     process {
