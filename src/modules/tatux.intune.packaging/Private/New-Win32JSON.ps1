@@ -37,7 +37,21 @@ function New-Win32JSON {
     begin {
         # Get the JSON content based on the parameter set
         if ($PSCmdlet.ParameterSetName -eq 'File') {
-            $JSONContent = Get-Content -Path $Path -Raw
+            try {
+                $JSONContent = Get-Content -Path $Path -Raw | ConvertFrom-Json -ErrorAction Stop
+            }
+            catch {
+                Write-Error -Message "Failed to read JSON file. $_"
+                break
+            }
+        }
+        if ($PSCmdlet.ParameterSetName -eq 'Content') {
+            try {
+                $JSONContent = $JSONContent | ConvertFrom-Json
+            }
+            catch {
+                Write-Error -Message "Failed to convert JSON content. $_"
+            }
         }
         
     }
