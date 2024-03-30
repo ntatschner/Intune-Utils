@@ -30,7 +30,7 @@ CompanyName = 'Tatux Solutions'
 Copyright = '(c) 2024 Nigel Tatschner. All rights reserved.'
 
 # Description of the functionality provided by this module
-Description = 'Module Description'
+Description = 'A set of functions designed to package and deploy Application packages to Microsoft Intune.'
 
 # Minimum version of the Windows PowerShell engine required by this module
 PowerShellVersion = '5.1'
