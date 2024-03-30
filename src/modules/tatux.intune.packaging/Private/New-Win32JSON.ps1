@@ -54,11 +54,11 @@ function New-Win32JSON {
                 break
             }
         }
-        
+        # Extract common fields from imported JSON to minimise repetition when modifying JSON output based on $ReturnType method
     }
     
     process {
-        
+        # 
     }
     
     end {
