@@ -51,6 +51,7 @@ function New-Win32JSON {
             }
             catch {
                 Write-Error -Message "Failed to convert JSON content. $_"
+                break
             }
         }
         
