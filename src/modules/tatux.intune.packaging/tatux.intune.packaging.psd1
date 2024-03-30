@@ -36,7 +36,7 @@ Description = 'A set of functions designed to package and deploy Application pac
 PowerShellVersion = '5.1'
 
 # Name of the Windows PowerShell host required by this module
-# PowerShellHostName = 'ConsoleHost'
+PowerShellHostName = 'ConsoleHost'
 
 # Minimum version of the Windows PowerShell host required by this module
 # PowerShellHostVersion = ''
@@ -51,7 +51,7 @@ PowerShellVersion = '5.1'
 # ProcessorArchitecture = ''
 
 # Modules that must be imported into the global environment prior to importing this module
-# RequiredModules = @("Microsoft.Graph")
+RequiredModules = @("Microsoft.Graph")
 
 # Assemblies that must be loaded prior to importing this module
 # RequiredAssemblies = @()
