@@ -1,4 +1,4 @@
-# Takes in a JSON file and generates a Win32LOBApp JSON Object for List, Get, Create, Delete and Update operations.
+# Takes in a JSON file and generates a Win32LOBApp JSON Object for Create, Delete and Update operations.
 function New-Win32JSON {
     [CmdletBinding()]
     param (
@@ -30,7 +30,7 @@ function New-Win32JSON {
         [string]$JSONContent,
         [Parameter(ParameterSetName = 'Content')]
         [Parameter(ParameterSetName = 'File')]
-        [ValidateSet('List', 'Get', 'Create', 'Delete', 'Update')]
+        [ValidateSet('Create', 'Delete', 'Update')]
         [string]$ReturnType
     )
     
