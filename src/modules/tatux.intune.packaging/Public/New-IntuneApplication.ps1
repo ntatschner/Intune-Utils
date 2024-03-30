@@ -155,6 +155,10 @@ function New-IntuneApplication {
 
         [string]$Developer = $Env:USERNAME,
 
+        [string]$owner = "",
+
+        [string]$notes = "",
+
         [Parameter(Mandatory = $true)]
         [ValidateNotNullOrEmpty()]
         [string]$InstallCommand,

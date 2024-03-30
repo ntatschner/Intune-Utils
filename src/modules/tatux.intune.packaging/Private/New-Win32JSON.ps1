@@ -55,10 +55,54 @@ function New-Win32JSON {
             }
         }
         # Extract common fields from imported JSON to minimise repetition when modifying JSON output based on $ReturnType method
+        $hashTable = @{
+            "id"                             = ""
+            "displayName"                    = ""
+            "description"                    = ""
+            "publisher"                      = ""
+            "largeIcon"                      = ""
+            "createdDateTime"                = $([System.DateTimeOffset]::Now.ToString())
+            "lastModifiedDateTime"           = ""
+            "isFeatured"                     = ""
+            "privacyInformationUrl"          = ""
+            "informationUrl"                 = ""
+            "owner"                          = ""
+            "developer"                      = ""
+            "notes"                          = ""
+            "publishingState"                = ""
+            "committedContentVersion"        = ""
+            "fileName"                       = ""
+            "size"                           = ""
+            "installCommandLine"             = ""
+            "uninstallCommandLine"           = ""
+            "applicableArchitectures"        = ""
+            "minimumFreeDiskSpaceInMB"       = ""
+            "minimumMemoryInMB"              = ""
+            "minimumNumberOfProcessors"      = ""
+            "minimumCpuSpeedInMHz"           = ""
+            "rules"                          = ""
+            "installExperience"              = ""
+            "returnCodes"                    = ""
+            "msiInformation"                 = ""
+            "setupFilePath"                  = ""
+            "minimumSupportedWindowsRelease" = ""
+        }
+        $hashTable.GetEnumerator() | ForEach-Object {
+            if ($JSONContent.ContainsKey($_.Key)) {
+                $_.Value = $JSONContent[$_.Key]
+            }
+        }
     }
     
     process {
-        # 
+        # Modify $Hash based on $ReturnType
+        #region LargeIcon
+        $_LargeIcon = @{
+            "@odata.type" = "#microsoft.graph.mimeContent"
+            "type"        = "String"
+            "value"       = "binary"
+        }
+        #endregion
     }
     
     end {
