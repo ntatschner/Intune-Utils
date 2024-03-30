@@ -15,7 +15,7 @@
 ModuleVersion = '1.0'
 
 # Supported PSEditions
-# CompatiblePSEditions = @()
+CompatiblePSEditions = @('5.1')
 
 # ID used to uniquely identify this module
 GUID = 'd40ebaa8-0e7d-4f82-957c-f09e09a3e4d4'
@@ -34,7 +34,6 @@ Description = 'A set of functions designed to package and deploy Application pac
 
 # Minimum version of the Windows PowerShell engine required by this module
 PowerShellVersion = '5.1'
-CompatiblePSEditions = '5.1'
 
 # Name of the Windows PowerShell host required by this module
 # PowerShellHostName = 'ConsoleHost'
