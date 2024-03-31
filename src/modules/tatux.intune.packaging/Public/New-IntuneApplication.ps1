@@ -159,6 +159,14 @@ function New-IntuneApplication {
 
         [string]$notes = "",
 
+        [ValidateSet("User", "System")]
+        [string]$InstallFor = "System",
+
+        [ValidateSet("basedOnReturnCode", "allow", "suppress", "force")]
+        [string]$RestartBehavior = "basedOnReturnCode",
+
+        [bool]$isFeatured = $false,
+
         [Parameter(Mandatory = $true)]
         [ValidateNotNullOrEmpty()]
         [string]$InstallCommand,
@@ -377,6 +385,10 @@ function New-IntuneApplication {
         $ParameterSplat.Add('Publisher', $Publisher)
         $ParameterSplat.Add('Version', $Version)
         $ParameterSplat.Add('Developer', $Developer)
+        $ParameterSplat.Add('InstallFor', $InstallFor)
+        $ParameterSplat.Add('RestartBehavior', $RestartBehavior)
+        $ParameterSplat.Add('isFeatured', $isFeatured)
+        $ParameterSplat.Add('OutputFolder', $OutputFolder)
         $ParamVerbose = "$($($ParameterSplat.GetEnumerator() | ForEach-Object { "$($_.Key): $($_.Value)" }) -join "`n")"
         Write-Verbose "`n$ParamVerbose"
         #endregion ParameterSplat

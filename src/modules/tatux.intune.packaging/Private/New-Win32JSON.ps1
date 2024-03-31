@@ -56,36 +56,33 @@ function New-Win32JSON {
         }
         # Extract common fields from imported JSON to minimise repetition when modifying JSON output based on $ReturnType method
         $hashTable = @{
-            "id"                             = ""
-            "displayName"                    = ""
-            "description"                    = ""
-            "publisher"                      = ""
-            "largeIcon"                      = ""
-            "createdDateTime"                = $([System.DateTimeOffset]::Now.ToString())
-            "lastModifiedDateTime"           = ""
-            "isFeatured"                     = ""
-            "privacyInformationUrl"          = ""
-            "informationUrl"                 = ""
-            "owner"                          = ""
-            "developer"                      = ""
-            "notes"                          = ""
-            "publishingState"                = ""
-            "committedContentVersion"        = ""
-            "fileName"                       = ""
-            "size"                           = ""
-            "installCommandLine"             = ""
-            "uninstallCommandLine"           = ""
-            "applicableArchitectures"        = ""
-            "minimumFreeDiskSpaceInMB"       = ""
-            "minimumMemoryInMB"              = ""
-            "minimumNumberOfProcessors"      = ""
-            "minimumCpuSpeedInMHz"           = ""
-            "rules"                          = ""
-            "installExperience"              = ""
-            "returnCodes"                    = ""
-            "msiInformation"                 = ""
-            "setupFilePath"                  = ""
-            "minimumSupportedWindowsRelease" = ""
+            "@odata.type" = "#microsoft.graph.win32LobApp"
+            "displayName" = $null
+            "description" = $null
+            "publisher" = $null
+            "largeIcon" = $null
+            "isFeatured" = $null
+            "privacyInformationUrl" = $null
+            "informationUrl" = $null
+            "owner" = $null
+            "developer" = $null
+            "notes" = $null
+            "publishingState" = $null
+            "committedContentVersion" = $null
+            "fileName" = $null
+            "size" = $null
+            "installCommandLine" = $null
+            "uninstallCommandLine" = $null
+            "applicableArchitectures" = $null
+            "minimumFreeDiskSpaceInMB" = $null
+            "minimumMemoryInMB" = $null
+            "minimumNumberOfProcessors" = $null
+            "minimumCpuSpeedInMHz" = $null
+            "rules" = $null
+            "returnCodes" = $null
+            "msiInformation" = $null
+            "setupFilePath" = $null
+            "minimumSupportedWindowsRelease" = $null
         }
         $hashTable.GetEnumerator() | ForEach-Object {
             if ($JSONContent.ContainsKey($_.Key)) {
@@ -96,6 +93,16 @@ function New-Win32JSON {
     
     process {
         # Modify $Hash based on $ReturnType
+        #region Create
+        if ($ReturnType -eq 'Create') {
+            $hashTable.Add("installExperience")
+            $hashTable.installExperience = @{
+                "@odata.type" = "microsoft.graph.win32LobAppInstallExperience"
+                runAsAccount = $JSONContent.InstallFor
+                deviceRestartBehavior = $JSONContent.RestartBehavior
+            }
+        }
+        #endregion
         #region LargeIcon
         $_LargeIcon = @{
             "@odata.type" = "#microsoft.graph.mimeContent"
