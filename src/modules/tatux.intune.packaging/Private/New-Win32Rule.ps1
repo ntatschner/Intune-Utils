@@ -94,12 +94,12 @@ function New-Win32Rule {
         $hashTable = @{
             "@odata.type"          = "#microsoft.graph.win32LobAppFileSystemRule"
             "ruleType"             = $RuleParentType
-            "path"                 = "String"
-            "fileOrFolderName"     = "String"
-            "check32BitOn64System" = $true
-            "operationType"        = "String"
-            "operator"             = "String"
-            "comparisonValue"      = "String"
+            "path"                 = $Path
+            "fileOrFolderName"     = $FileOrFolderName
+            "check32BitOn64System" = $Check32BitOn64System
+            "operationType"        = $FileOperationType
+            "operator"             = $Operator
+            "comparisonValue"      = $ComparisonValue
         }
     }
 }
