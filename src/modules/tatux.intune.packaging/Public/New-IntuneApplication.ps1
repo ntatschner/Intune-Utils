@@ -3,7 +3,7 @@
 # create the intunewin file and publish it directly to Intune.
 
 function New-IntuneApplication {
-<#
+    <#
     .SYNOPSIS
     Creates a new Intune Application Deployment, automatically generating the .intunewin file and optionally the JSON file, and optionally publishing it
 
@@ -145,10 +145,12 @@ function New-IntuneApplication {
         [ValidateNotNullOrEmpty()]
         [string]$MainInstallerFileName,
 
-        [string]$OutputFolder = ".\",
+        [string]$OutputFolder = $($PWD.Path),
 
-        [string]$Description,
+        [ValidateNotNullOrEmpty()]
+        [string]$Description = "# $ApplicationName`nPublisher: $Publisher`nVersion: $Version`nDeveloper: $Developer`n`n$notes",
 
+        [ValidateNotNullOrEmpty()]
         [string]$Publisher = $Env:USERNAME,
 
         [string]$Version = "1.0",
@@ -159,6 +161,22 @@ function New-IntuneApplication {
 
         [string]$notes = "",
 
+        [ValidateScript({
+                if (Test-Path -Path $_) {
+                    if ($(Get-Item -Path $_).Extension -notin @('.png', '.jpg', '.jpeg')) {
+                        throw "The LogoPath must be a PNG or JPG file."
+                    }
+                    else {
+                        $true
+                    }
+                }
+                else {
+                    throw "The LogoPath path does not exist."
+                }
+                $true
+            })]
+        [string]$LogoPath,
+        
         [ValidateSet("User", "System")]
         [string]$InstallFor = "System",
 
@@ -205,7 +223,6 @@ function New-IntuneApplication {
         [ValidateNotNullOrEmpty()]
         [string]$DetectionRuleScript,
 
-        [string]$LogoPath,
 
         [Parameter(ParameterSetName = 'MSI')]
         [Parameter(ParameterSetName = 'DetectionType')]

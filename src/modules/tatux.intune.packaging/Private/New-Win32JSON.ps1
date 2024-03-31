@@ -30,7 +30,7 @@ function New-Win32JSON {
         [string]$JSONContent,
         [Parameter(ParameterSetName = 'Content')]
         [Parameter(ParameterSetName = 'File')]
-        [ValidateSet('Create', 'Delete', 'Update')]
+        [ValidateSet('Create', 'Update')]
         [string]$ReturnType
     )
     
@@ -67,7 +67,7 @@ function New-Win32JSON {
             "owner" = $null
             "developer" = $null
             "notes" = $null
-            "publishingState" = $null
+            "publishingState" = "processing"
             "committedContentVersion" = $null
             "fileName" = $null
             "size" = $null
@@ -101,15 +101,33 @@ function New-Win32JSON {
                 runAsAccount = $JSONContent.InstallFor
                 deviceRestartBehavior = $JSONContent.RestartBehavior
             }
+            $hashTable.committedContentVersion = $JSONContent.Version
         }
         #endregion
+        #region Update
+        if ($ReturnType -eq 'Update') {
+            $hashTable.Add("id")
+            $hashTable.id = $JSONContent.id
+            # Remove fields that are not required for Update
+            $hashTable.Remove("installExperience")
+            # Remove any empty fields
+        }
+        #endregion
+        #region Everything Else
         #region LargeIcon
+        $hashTable.Add("largeIcon")
+        $Type = $(Get-Item -Path $JSONContent.LogoPath | Select-Object -ExpandProperty Extension).Replace(".", "")
+        $BinaryToString = [System.Convert]::ToBase64String([System.IO.File]::ReadAllBytes($JSONContent.LogoPath)) 
         $_LargeIcon = @{
             "@odata.type" = "#microsoft.graph.mimeContent"
-            "type"        = "String"
-            "value"       = "binary"
+            "type"        = "image/$Type"
+            "value"       = "$BinaryToString"
         }
-        #endregion
+        $hashTable.largeIcon = $_LargeIcon
+        #endregion LargeIcon
+        #region Rules
+        #endregion Rules
+        #endregion Everything Else
     }
     
     end {
