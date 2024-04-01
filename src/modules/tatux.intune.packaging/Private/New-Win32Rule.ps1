@@ -90,7 +90,7 @@ function New-Win32Rule {
         $RuleODataTypeHashtable = @{
             "file" = "#microsoft.graph.win32LobAppFileSystemRule"
             "registry" = "#microsoft.graph.win32LobAppRegistryRule"
-            "script" = ""
+            "script" = "#microsoft.graph.win32LobAppPowerShellScriptRule"
         }
         $RuleHashtable = @{}
         foreach ($P in $PSBoundParameters.Keys) {
