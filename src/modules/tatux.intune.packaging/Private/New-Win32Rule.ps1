@@ -8,7 +8,7 @@ function New-Win32Rule {
         [string]$RuleParentType,
 
         [Parameter(Mandatory = $true)]
-        [ValidateSet('file', 'registry', 'script')]
+        [ValidateSet('file', 'registry', 'script', 'msi')]
         [Parameter(ParameterSetName = 'file')]
         [Parameter(ParameterSetName = 'registry')]
         [Parameter(ParameterSetName = 'script')]
