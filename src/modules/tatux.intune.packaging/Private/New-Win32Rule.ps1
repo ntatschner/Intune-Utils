@@ -13,10 +13,14 @@ function New-Win32Rule {
         [Parameter(ParameterSetName = 'registry')]
         [Parameter(ParameterSetName = 'script')]
         [Parameter(ParameterSetName = 'msi')]
+        [Parameter(ParameterSetName = 'requirement')]
+        [Parameter(ParameterSetName = 'detection')]
         [string]$RuleType,
 
         [Parameter(ParameterSetName = 'file', Mandatory, HelpMessage = 'The path to the file or folder.')]
         [Parameter(ParameterSetName = 'registry', Mandatory, HelpMessage = 'The registry key path.')]
+        [Parameter(ParameterSetName = 'requirement')]
+        [Parameter(ParameterSetName = 'detection')]
         [ValidateScript({
                 if (Test-Path -Path $_ -IsValid) {
                     $true
@@ -34,9 +38,13 @@ function New-Win32Rule {
 
         [Parameter(ParameterSetName = 'file', Mandatory, HelpMessage = 'Expand 32bit variables on a 64bit system?')]
         [Parameter(ParameterSetName = 'registry', Mandatory, HelpMessage = 'Expand 32bit variables on a 64bit system?')]
+        [Parameter(ParameterSetName = 'requirement')]
+        [Parameter(ParameterSetName = 'detection')]
         [bool]$Check32BitOn64System = $true,
 
         [Parameter(ParameterSetName = 'file', Mandatory, HelpMessage = 'The path or file operation type. If exists is selected then the operator and comparison value are not required.')]
+        [Parameter(ParameterSetName = 'requirement')]
+        [Parameter(ParameterSetName = 'detection')]
         [ValidateSet('notConfigured', 'exists', 'modifiedDate', 'createdDate', 'version', 'sizeInMB')]
         [string]$FileOperationType = 'exists',
 
@@ -44,17 +52,23 @@ function New-Win32Rule {
         [Parameter(ParameterSetName = 'file', HelpMessage = 'The operator for comparison.')]
         [Parameter(ParameterSetName = 'registry', HelpMessage = 'The operator for comparison.')]
         [Parameter(ParameterSetName = 'script', HelpMessage = 'The operator for comparison. ')]
+        [Parameter(ParameterSetName = 'requirement')]
+        [Parameter(ParameterSetName = 'detection')]
         [ValidateSet('notConfigured', 'equal', 'notEqual', 'greaterThan', 'greaterThanOrEqual', 'lessThan', 'lessThanOrEqual')]
         [string]$Operator = 'notConfigured',
 
         [Parameter(ParameterSetName = 'file', HelpMessage = 'The value to compare against.')]
         [Parameter(ParameterSetName = 'registry', HelpMessage = 'The value to compare against.')]
+        [Parameter(ParameterSetName = 'requirement')]
+        [Parameter(ParameterSetName = 'detection')]
         [string]$ComparisonValue,
 
         [Parameter(ParameterSetName = 'registry', Mandatory, HelpMessage = 'The registry value name to detect.')]
         [string]$ValueName,
 
         [Parameter(ParameterSetName = 'registry', Mandatory, HelpMessage = 'The registry operation type. If exists is selected then the operator and comparison value are not required.')]
+        [Parameter(ParameterSetName = 'requirement')]
+        [Parameter(ParameterSetName = 'detection')]
         [ValidateSet('notConfigured', 'exists', 'doesNotExist', 'string', 'integer', 'version')]
         [string]$RegistryOperationType = 'exists',
         
@@ -62,16 +76,24 @@ function New-Win32Rule {
         [string]$DisplayName,
 
         [Parameter(ParameterSetName = 'script', Mandatory, HelpMessage = 'The enforces a script signature check.')]
+        [Parameter(ParameterSetName = 'requirement')]
+        [Parameter(ParameterSetName = 'detection')]
         [bool]$EnforceSignatureCheck = $false,
 
         [Parameter(ParameterSetName = 'script', Mandatory, HelpMessage = 'Run script as 32bit on 64bit systems.')]
+        [Parameter(ParameterSetName = 'requirement')]
+        [Parameter(ParameterSetName = 'detection')]
         [bool]$RunAs32Bit = $false,
 
         [Parameter(ParameterSetName = 'script', Mandatory, HelpMessage = 'The account type to run the requirements script as.')]
+        [Parameter(ParameterSetName = 'requirement')]
+        [Parameter(ParameterSetName = 'detection')]
         [ValidateSet('system', 'user')]
         [string]$runAsAccount = 'system',
 
         [Parameter(ParameterSetName = 'script', Mandatory, HelpMessage = 'The script path.')]
+        [Parameter(ParameterSetName = 'requirement')]
+        [Parameter(ParameterSetName = 'detection')]
         [ValidateScript({
                 if (Test-Path -Path $_) {
                     if ($(Get-Item -Path $_).Extension -ne '.ps1' ) {
