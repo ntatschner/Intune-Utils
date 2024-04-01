@@ -3,11 +3,15 @@ function New-Win32Rule {
     [CmdletBinding()]
     param (
         [Parameter(HelpMessage = 'The type of rule to create.')]
-        [Parameter(Mandatory = $true)]
+        [Parameter(ParameterSetName = 'file')]
+        [Parameter(ParameterSetName = 'registry')]
+        [Parameter(ParameterSetName = 'script')]
+        [Parameter(ParameterSetName = 'msi')]
+        [Parameter(ParameterSetName = 'requirement')]
+        [Parameter(ParameterSetName = 'detection')]
         [ValidateSet('requirement', 'detection')]
         [string]$RuleParentType,
 
-        [Parameter(Mandatory = $true)]
         [ValidateSet('file', 'registry', 'script', 'msi')]
         [Parameter(ParameterSetName = 'file')]
         [Parameter(ParameterSetName = 'registry')]
@@ -123,24 +127,19 @@ function New-Win32Rule {
     )
     process {
         $RuleODataTypeHashtable = @{
-            "file" = "#microsoft.graph.win32LobAppFileSystemRule"
+            "file"     = "#microsoft.graph.win32LobAppFileSystemRule"
             "registry" = "#microsoft.graph.win32LobAppRegistryRule"
-            "script" = "#microsoft.graph.win32LobAppPowerShellScriptRule"
+            "script"   = "#microsoft.graph.win32LobAppPowerShellScriptRule"
         }
         $RuleHashtable = @{}
+        $RuleHashtable.Add("@odata.type", $RuleODataTypeHashtable[$RuleType])
         foreach ($P in $PSBoundParameters.Keys) {
             $RuleHashtable.Add($P, $PSBoundParameters[$P])
         }
-        
-        $hashTable = @{
-            "@odata.type"          = "#microsoft.graph.win32LobAppFileSystemRule"
-            "ruleType"             = $RuleParentType
-            "path"                 = $Path
-            "fileOrFolderName"     = $FileOrFolderName
-            "check32BitOn64System" = $Check32BitOn64System
-            "operationType"        = $FileOperationType
-            "operator"             = $Operator
-            "comparisonValue"      = $ComparisonValue
+        if (($RuleType -eq 'file' -or $RuleType -eq 'registry') -and ($FileOperationType -eq 'exists' -or $RegistryOperationType -eq 'exists')) {
+            $RuleHashtable.Remove('Operator')
+            $RuleHashtable.Remove('ComparisonValue')
         }
+
     }
 }
