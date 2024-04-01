@@ -89,7 +89,7 @@ function New-Win32Rule {
     process {
         $RuleODataTypeHashtable = @{
             "file" = "#microsoft.graph.win32LobAppFileSystemRule"
-            "registry" = ""
+            "registry" = "#microsoft.graph.win32LobAppRegistryRule"
             "script" = ""
         }
         $RuleHashtable = @{}
