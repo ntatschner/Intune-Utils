@@ -87,9 +87,9 @@ function New-Win32Rule {
         [string]$ScriptPath
     )
     process {
-        $ParameterSplat = @{}
+        $RuleHashtable = @{}
         foreach ($P in $PSBoundParameters.Keys) {
-            $ParameterSplat.Add($P, $PSBoundParameters[$P])
+            $RuleHashtable.Add($P, $PSBoundParameters[$P])
         }
         
         $hashTable = @{
