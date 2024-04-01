@@ -3,22 +3,10 @@ function New-Win32Rule {
     [CmdletBinding()]
     param (
         [Parameter(HelpMessage = 'The type of rule to create.')]
-        [Parameter(ParameterSetName = 'file')]
-        [Parameter(ParameterSetName = 'registry')]
-        [Parameter(ParameterSetName = 'script')]
-        [Parameter(ParameterSetName = 'msi')]
-        [Parameter(ParameterSetName = 'requirement')]
-        [Parameter(ParameterSetName = 'detection')]
         [ValidateSet('requirement', 'detection')]
         [string]$RuleParentType,
 
         [ValidateSet('file', 'registry', 'script', 'msi')]
-        [Parameter(ParameterSetName = 'file')]
-        [Parameter(ParameterSetName = 'registry')]
-        [Parameter(ParameterSetName = 'script')]
-        [Parameter(ParameterSetName = 'msi')]
-        [Parameter(ParameterSetName = 'requirement')]
-        [Parameter(ParameterSetName = 'detection')]
         [string]$RuleType,
 
         [Parameter(ParameterSetName = 'file', Mandatory, HelpMessage = 'The path to the file or folder.')]
@@ -52,13 +40,13 @@ function New-Win32Rule {
         [Parameter(ParameterSetName = 'requirement')]
         [string]$FileOrFolderName,
 
-        [Parameter(ParameterSetName = 'file', Mandatory, HelpMessage = 'Expand 32bit variables on a 64bit system?')]
+        [Parameter(ParameterSetName = 'file', HelpMessage = 'Expand 32bit variables on a 64bit system?')]
         [Parameter(ParameterSetName = 'registry', Mandatory, HelpMessage = 'Expand 32bit variables on a 64bit system?')]
         [Parameter(ParameterSetName = 'requirement')]
         [Parameter(ParameterSetName = 'detection')]
         [bool]$Check32BitOn64System = $true,
 
-        [Parameter(ParameterSetName = 'file', Mandatory, HelpMessage = 'The path or file operation type. If exists is selected then the operator and comparison value are not required.')]
+        [Parameter(ParameterSetName = 'file', HelpMessage = 'The path or file operation type. If exists is selected then the operator and comparison value are not required.')]
         [Parameter(ParameterSetName = 'requirement')]
         [Parameter(ParameterSetName = 'detection')]
         [ValidateSet('notConfigured', 'exists', 'modifiedDate', 'createdDate', 'version', 'sizeInMB')]
@@ -91,17 +79,17 @@ function New-Win32Rule {
         [Parameter(ParameterSetName = 'script', Mandatory, HelpMessage = 'The script display name. Default will be file name.')]
         [string]$DisplayName,
 
-        [Parameter(ParameterSetName = 'script', Mandatory, HelpMessage = 'The enforces a script signature check.')]
+        [Parameter(ParameterSetName = 'script', HelpMessage = 'The enforces a script signature check.')]
         [Parameter(ParameterSetName = 'requirement')]
         [Parameter(ParameterSetName = 'detection')]
         [bool]$EnforceSignatureCheck = $false,
 
-        [Parameter(ParameterSetName = 'script', Mandatory, HelpMessage = 'Run script as 32bit on 64bit systems.')]
+        [Parameter(ParameterSetName = 'script', HelpMessage = 'Run script as 32bit on 64bit systems.')]
         [Parameter(ParameterSetName = 'requirement')]
         [Parameter(ParameterSetName = 'detection')]
         [bool]$RunAs32Bit = $false,
 
-        [Parameter(ParameterSetName = 'script', Mandatory, HelpMessage = 'The account type to run the requirements script as.')]
+        [Parameter(ParameterSetName = 'script', HelpMessage = 'The account type to run the requirements script as.')]
         [Parameter(ParameterSetName = 'requirement')]
         [Parameter(ParameterSetName = 'detection')]
         [ValidateSet('system', 'user')]
