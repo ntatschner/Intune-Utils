@@ -3,8 +3,6 @@ function New-Win32Rule {
     [CmdletBinding()]
     param (
         [Parameter(HelpMessage = 'The type of rule to create.')]
-        [Parameter(ParameterSetName = 'detection', HelpMessage = 'A detection rule type.')]
-        [Parameter(ParameterSetName = 'requirement', HelpMessage = 'A requirements rule type.')]
         [Parameter(Mandatory = $true)]
         [ValidateSet('requirement', 'detection')]
         [string]$RuleParentType,
@@ -89,6 +87,8 @@ function New-Win32Rule {
         [string]$ScriptPath
     )
     process {
+
+        
         $hashTable = @{
             "@odata.type"          = "#microsoft.graph.win32LobAppFileSystemRule"
             "ruleType"             = $RuleParentType
