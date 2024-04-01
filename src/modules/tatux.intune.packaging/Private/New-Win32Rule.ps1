@@ -30,6 +30,18 @@ function New-Win32Rule {
                 }
             })]
         [string]$Path,
+        
+        [Parameter(ParameterSetName = 'msi', Mandatory, HelpMessage = 'The path to the MSI file.')]
+        [Parameter(ParameterSetName = 'detection')]
+        [ValidateScript({
+                if (Test-Path -Path $_ -IsValid) {
+                    $true
+                }
+                else {
+                    throw "MSI path dosn't seem to be valid."
+                }
+            })]
+        [string]$MSIPath,
 
         [Parameter(ParameterSetName = 'file', Mandatory, HelpMessage = 'The file or folder name.')]
         [Parameter(ParameterSetName = 'detection')]
