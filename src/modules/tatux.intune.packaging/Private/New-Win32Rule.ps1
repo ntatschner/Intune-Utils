@@ -12,6 +12,7 @@ function New-Win32Rule {
         [Parameter(ParameterSetName = 'file')]
         [Parameter(ParameterSetName = 'registry')]
         [Parameter(ParameterSetName = 'script')]
+        [Parameter(ParameterSetName = 'msi')]
         [string]$RuleType,
 
         [Parameter(ParameterSetName = 'file', Mandatory, HelpMessage = 'The path to the file or folder.')]
