@@ -87,7 +87,10 @@ function New-Win32Rule {
         [string]$ScriptPath
     )
     process {
-
+        $ParameterSplat = @{}
+        foreach ($P in $PSBoundParameters.Keys) {
+            $ParameterSplat.Add($P, $PSBoundParameters[$P])
+        }
         
         $hashTable = @{
             "@odata.type"          = "#microsoft.graph.win32LobAppFileSystemRule"
