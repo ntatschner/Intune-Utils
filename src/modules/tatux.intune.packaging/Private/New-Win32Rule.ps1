@@ -87,6 +87,11 @@ function New-Win32Rule {
         [string]$ScriptPath
     )
     process {
+        $RuleODataTypeHashtable = @{
+            "file" = "#microsoft.graph.win32LobAppFileSystemRule"
+            "registry" = ""
+            "script" = ""
+        }
         $RuleHashtable = @{}
         foreach ($P in $PSBoundParameters.Keys) {
             $RuleHashtable.Add($P, $PSBoundParameters[$P])
@@ -104,4 +109,3 @@ function New-Win32Rule {
         }
     }
 }
-```
