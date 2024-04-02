@@ -106,6 +106,6 @@ function New-Win32Rule {
             $RuleHashtable.Remove('Operator')
             $RuleHashtable.Remove('ComparisonValue')
         }
-
+        return $RuleHashtable 
     }
 }
