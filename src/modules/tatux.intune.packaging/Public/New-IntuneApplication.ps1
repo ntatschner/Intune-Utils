@@ -193,36 +193,10 @@ function New-IntuneApplication {
         [ValidateNotNullOrEmpty()]
         [string]$UninstallCommand,
 
-        [Parameter(Mandatory = $true, ParameterSetName = 'RequirementScript')]
-        [Parameter(ParameterSetName = 'RequirementType')]
-        [Parameter(ParameterSetName = 'RequirementConfig')]
-        [Parameter(ParameterSetName = 'DetectionType')]
-        [ValidateSet('Config', 'Script')]
-        [string]$RequirementRuleType,
-
-        [Parameter(ParameterSetName = 'RequirementScript')]
-        [Parameter(ParameterSetName = 'RequirementType')]
-        [string]$RequirementRuleScript,
-
-        [Parameter(ParameterSetName = 'RequirementConfig')]
-        [Parameter(ParameterSetName = 'RequirementType')]
-        [string]$RequirementRuleConfig,
-
-        [Parameter(Mandatory = $true, ParameterSetName = 'MSI')]
-        [Parameter(ParameterSetName = 'FileorFolder')]
-        [Parameter(ParameterSetName = 'Registry')]
-        [Parameter(ParameterSetName = 'DetectionScript')]
-        [Parameter(ParameterSetName = 'DetectionType')]
-        [Parameter(ParameterSetName = 'RequirementType')]
-        [ValidateSet('MSI', 'File', 'Registry', 'Script')]
-        [string]$DetectionRuleType,
-
-        [Parameter(ParameterSetName = 'DetectionScript')]
-        [Parameter(ParameterSetName = 'DetectionType')]
-        [Parameter(ParameterSetName = 'RequirementType')]
-        [ValidateNotNullOrEmpty()]
-        [string]$DetectionRuleScript,
-
+        [hashtable]$RequirementRuleConfig,
+        
+        [Parameter(Mandatory = $true)]
+        [hashtable]$DetectionRuleConfig,
 
         [Parameter(ParameterSetName = 'MSI')]
         [Parameter(ParameterSetName = 'DetectionType')]

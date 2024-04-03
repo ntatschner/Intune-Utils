@@ -69,6 +69,7 @@ function New-Win32Rule {
         [bool]$EnforceSignatureCheck = $false,
 
         [Parameter(ParameterSetName = 'script', HelpMessage = 'Run script as 32bit on 64bit systems.')]
+        [ValidateSet('$true', 'false')]
         [bool]$RunAs32Bit = $false,
 
         [Parameter(ParameterSetName = 'script', HelpMessage = 'The account type to run the requirements script as.')]
