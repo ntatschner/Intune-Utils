@@ -198,9 +198,7 @@ function New-IntuneApplication {
         [Parameter(Mandatory = $true)]
         [hashtable]$DetectionRuleConfig,
 
-        [Parameter(ParameterSetName = 'MSI')]
-        [Parameter(ParameterSetName = 'DetectionType')]
-        [Parameter(ParameterSetName = 'RequirementType')]
+        [Parameter(ParameterSetName = 'MSI', Mandatory)]
         [string]$MSIProductCode,
 
         [Parameter(ParameterSetName = 'MSI')]
