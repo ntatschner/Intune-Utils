@@ -198,55 +198,6 @@ function New-IntuneApplication {
         [Parameter(Mandatory = $true)]
         [hashtable]$DetectionRuleConfig,
 
-        [Parameter(ParameterSetName = 'MSI', Mandatory)]
-        [string]$MSIProductCode,
-
-        [Parameter(ParameterSetName = 'MSI')]
-        [Parameter(ParameterSetName = 'DetectionType')]
-        [Parameter(ParameterSetName = 'RequirementType')]
-        [string]$MSIVersion,
-
-        [Parameter(ParameterSetName = 'FileorFolder')]
-        [Parameter(ParameterSetName = 'DetectionType')]
-        [Parameter(ParameterSetName = 'RequirementType')]
-        [string]$FileorPathRulePath,
-
-        [Parameter(ParameterSetName = 'FileorFolder')]
-        [Parameter(ParameterSetName = 'DetectionType')]
-        [Parameter(ParameterSetName = 'RequirementType')]
-        [ValidateSet('Exists', 'Date_Modified', 'Date_Created', 'String_Version', 'Size')]
-        [string]$FileorPathDetectionMethod,
-
-        [Parameter(ParameterSetName = 'FileorFolder')]
-        [Parameter(ParameterSetName = 'DetectionType')]
-        [Parameter(ParameterSetName = 'RequirementType')]
-        [string]$FileorPathDetectionValue,
-
-        [Parameter(ParameterSetName = 'Registry')]
-        [Parameter(ParameterSetName = 'DetectionType')]
-        [Parameter(ParameterSetName = 'RequirementType')]
-        [string]$RegistryRuleKeyPath,
-
-        [Parameter(ParameterSetName = 'Registry')]
-        [Parameter(ParameterSetName = 'DetectionType')]
-        [Parameter(ParameterSetName = 'RequirementType')]
-        [string]$RegistryRuleValueName,
-
-        [Parameter(ParameterSetName = 'Registry')]
-        [Parameter(ParameterSetName = 'DetectionType')]
-        [Parameter(ParameterSetName = 'RequirementType')]
-        [string]$RegistryRuleDetectionMethod,
-
-        [Parameter(ParameterSetName = 'Registry')]
-        [Parameter(ParameterSetName = 'DetectionType')]
-        [Parameter(ParameterSetName = 'RequirementType')]
-        [string]$RegistryRuleDetectionValue,
-
-        [Parameter(ParameterSetName = 'Registry')]
-        [Parameter(ParameterSetName = 'DetectionType')]
-        [Parameter(ParameterSetName = 'RequirementType')]
-        [string]$RegistryRuleDetectionComparisonOperator,
-
         [Parameter(Mandatory = $true)]
         [ValidateSet('User-Group', 'Device-Group', 'All-Users', 'All-Devices')]
         [string]$AssignmentType,
