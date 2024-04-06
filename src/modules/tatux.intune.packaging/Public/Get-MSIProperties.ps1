@@ -1,15 +1,17 @@
 function Get-MSIProperties {
-    PARAM (
+    param (
         [Parameter(Mandatory = $true, ValueFromPipelineByPropertyName = $true, HelpMessage = "MSI Database Filename", ValueFromPipeline = $true)]
+        [ValidateScript({
+ if (!(Test-Path $_)) {
+        throw "Could not find " + $_
+    } else {
+       $true
+    }
+        })]
         [Alias("Filename", "Path", "Database", "Msi")]
         $msiDbName
     )
- 
-    # A quick check to see if the file exist
-    if (!(Test-Path $msiDbName)) {
-        throw "Could not find " + $msiDbName
-    }
- 
+   
     # Create an empty hashtable to store properties in
      
     # Creating WI object and load MSI database
