@@ -1,6 +1,6 @@
 function Get-MSIProperties {
     param (
-        [Parameter(Mandatory = $true, ValueFromPipelineByPropertyName = $true, HelpMessage = "MSI Database Filename", ValueFromPipeline = $true)]
+        [Parameter(Mandatory, ValueFromPipelineByPropertyName, HelpMessage = "MSI Database Filename", ValueFromPipeline)]
         [ValidateScript({
         if (!(Test-Path $_)) {
             throw "Could not find " + $_
