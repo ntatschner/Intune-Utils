@@ -11,7 +11,7 @@ function Get-MSIProperties {
         [Alias("Filename", "Path", "Database", "Msi")]
         $msiDbName
     )
-   
+   process {
     # Create an empty hashtable to store properties in
      
     # Creating WI object and load MSI database
@@ -40,4 +40,5 @@ function Get-MSIProperties {
      
     # Return the hash table
     [PSCustomObject]$Results
+    }
 }
