@@ -22,7 +22,6 @@ function New-Win32Rule {
         [string]$Path,
         
         [Parameter(ParameterSetName = 'msi', Mandatory, HelpMessage = 'The path to the MSI file.')]
-        [Parameter(ParameterSetName = 'detection')]
         [ValidateScript({
                 if (Test-Path -Path $_ -IsValid) {
                     $true
@@ -34,20 +33,16 @@ function New-Win32Rule {
         [string]$MSIPath,
 
         [Parameter(ParameterSetName = 'msi', HelpMessage = 'The product code to detect.')]
-        [Parameter(ParameterSetName = 'detection')]
         [string]$ProductCode,
 
         [Parameter(ParameterSetName = 'msi', HelpMessage = 'The MSI operation type. If exists is selected then the operator and comparison value are not required.')]
-        [Parameter(ParameterSetName = 'detection')]
         [ValidateSet('notConfigured', 'equal', 'notEqual', 'greaterThan', 'greaterThanOrEqual', 'lessThan', 'lessThanOrEqual')]
         [string]$ProductVersionOperator = 'notConfigured',
 
         [Parameter(ParameterSetName = 'msi', HelpMessage = 'The value to compare against.')]
-        [Parameter(ParameterSetName = 'detection')]
         [string]$ProductVersion,
 
         [Parameter(ParameterSetName = 'msi', HelpMessage = 'Detect the MSI properties automatically.')]
-        [Parameter(ParameterSetName = 'detection')]
         [bool]$AutoDetect = $true,
 
         [Parameter(ParameterSetName = 'file', Mandatory, HelpMessage = 'The file or folder name.')]
