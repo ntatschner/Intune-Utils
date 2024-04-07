@@ -30,7 +30,7 @@ jobs:
             $ModuleName = $_.Name
             Write-Output "Running Pester Tests for $ModuleName"
             Write-Output "Running Pester Tests for Public Functions"
-            Invoke-Pester -Path ".\src\modules\$ModuleName\Public"
+            Invoke-Pester -Path ".\src\modules\$ModuleName\Public\Tests"
             Write-Output "Running Pester Tests for Private Functions"
-            Invoke-Pester -Path ".\src\modules\$ModuleName\Private"
+            Invoke-Pester -Path ".\src\modules\$ModuleName\Private\Tests"
           }
