@@ -116,6 +116,37 @@ function New-Win32Rule {
         foreach ($P in $PSBoundParameters.Keys) {
             $RuleHashtable.Add($P, $PSBoundParameters[$P])
         }
+        # Add parameters that have have default assigned and have not been overridden for each RuleType
+        switch ($RuleType) {
+            'file' {
+                if (-not $RuleHashtable.ContainsKey('path')) { $RuleHashtable.Add('path', $Path) }
+                if (-not $RuleHashtable.ContainsKey('fileOrFolderName')) { $RuleHashtable.Add('fileOrFolderName', $FileOrFolderName) }
+                if (-not $RuleHashtable.ContainsKey('fileOperationType')) { $RuleHashtable.Add('fileOperationType', $FileOperationType) }
+                if (-not $RuleHashtable.ContainsKey('check32BitOn64System')) { $RuleHashtable.Add('check32BitOn64System', $Check32BitOn64System) }
+            }
+            'registry' {
+                if (-not $RuleHashtable.ContainsKey('path')) { $RuleHashtable.Add('path', $Path) }
+                if (-not $RuleHashtable.ContainsKey('valueName')) { $RuleHashtable.Add('valueName', $ValueName) }
+                if (-not $RuleHashtable.ContainsKey('registryOperationType')) { $RuleHashtable.Add('registryOperationType', $RegistryOperationType) }
+            }
+            'script' {
+                if (-not $RuleHashtable.ContainsKey('displayName')) { $RuleHashtable.Add('displayName', $DisplayName) }
+                if (-not $RuleHashtable.ContainsKey('enforceSignatureCheck')) { $RuleHashtable.Add('enforceSignatureCheck', $EnforceSignatureCheck) }
+                if (-not $RuleHashtable.ContainsKey('runAs32Bit')) { $RuleHashtable.Add('runAs32Bit', $RunAs32Bit) }
+                if (-not $RuleHashtable.ContainsKey('runAsAccount')) { $RuleHashtable.Add('runAsAccount', $runAsAccount) }
+                if (-not $RuleHashtable.ContainsKey('scriptContent')) { $RuleHashtable.Add('scriptContent', (Get-Content -Path $ScriptPath)) }
+            }
+            'msi' {
+                if (-not $RuleHashtable.ContainsKey('msiPath')) { $RuleHashtable.Add('msiPath', $MSIPath) }
+                if (-not $RuleHashtable.ContainsKey('productCode')) { $RuleHashtable.Add('productCode', $ProductCode) }
+                if (-not $RuleHashtable.ContainsKey('productVersionOperator')) { $RuleHashtable.Add('productVersionOperator', $ProductVersionOperator) }
+                if (-not $RuleHashtable.ContainsKey('productVersion')) { $RuleHashtable.Add('productVersion', $ProductVersion) }
+            }
+        }
+        # Remove Fields not needed for output
+        $RuleHashtable.RuleType = $RuleParentType
+        $RuleHashtable.Remove('RuleParentType')
+        $RuleHashtable.Remove('MSIPath')
         if (($RuleType -eq 'file' -or $RuleType -eq 'registry') -and ($FileOperationType -eq 'exists' -or $RegistryOperationType -eq 'exists')) {
             $RuleHashtable.Remove('Operator')
             $RuleHashtable.Remove('ComparisonValue')
