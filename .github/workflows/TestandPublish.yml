@@ -29,6 +29,8 @@ jobs:
           Get-ChildItem -Path .\src\modules\ -Directory | ForEach-Object {
             $ModuleName = $_.Name
             Write-Output "Running Pester Tests for $ModuleName"
+            Write-Output "Running Pester Tests for Public Functions"
             Invoke-Pester -Path ".\src\modules\$ModuleName\Public"
+            Write-Output "Running Pester Tests for Private Functions"
             Invoke-Pester -Path ".\src\modules\$ModuleName\Private"
           }
