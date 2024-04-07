@@ -33,6 +33,23 @@ function New-Win32Rule {
             })]
         [string]$MSIPath,
 
+        [Parameter(ParameterSetName = 'msi', HelpMessage = 'The product code to detect.')]
+        [Parameter(ParameterSetName = 'detection')]
+        [string]$ProductCode,
+
+        [Parameter(ParameterSetName = 'msi', HelpMessage = 'The MSI operation type. If exists is selected then the operator and comparison value are not required.')]
+        [Parameter(ParameterSetName = 'detection')]
+        [ValidateSet('notConfigured', 'equal', 'notEqual', 'greaterThan', 'greaterThanOrEqual', 'lessThan', 'lessThanOrEqual')]
+        [string]$ProductVersionOperator = 'notConfigured',
+
+        [Parameter(ParameterSetName = 'msi', HelpMessage = 'The value to compare against.')]
+        [Parameter(ParameterSetName = 'detection')]
+        [string]$ProductVersion,
+
+        [Parameter(ParameterSetName = 'msi', HelpMessage = 'Detect the MSI properties automatically.')]
+        [Parameter(ParameterSetName = 'detection')]
+        [bool]$AutoDetect = $true,
+
         [Parameter(ParameterSetName = 'file', Mandatory, HelpMessage = 'The file or folder name.')]
         [string]$FileOrFolderName,
 
@@ -97,6 +114,7 @@ function New-Win32Rule {
             "file"     = "#microsoft.graph.win32LobAppFileSystemRule"
             "registry" = "#microsoft.graph.win32LobAppRegistryRule"
             "script"   = "#microsoft.graph.win32LobAppPowerShellScriptRule"
+            "msi"      = "#microsoft.graph.win32LobAppProductCodeRule"
         }
         $RuleHashtable = @{}
         $RuleHashtable.Add("@odata.type", $RuleODataTypeHashtable[$RuleType])
@@ -106,6 +124,12 @@ function New-Win32Rule {
         if (($RuleType -eq 'file' -or $RuleType -eq 'registry') -and ($FileOperationType -eq 'exists' -or $RegistryOperationType -eq 'exists')) {
             $RuleHashtable.Remove('Operator')
             $RuleHashtable.Remove('ComparisonValue')
+        }
+        if (($RuleType -eq 'msi' -and $AutoDetect -eq $true)) {
+            $MSIInfo = Get-MSIProperties -Path $MSIPath
+            $RuleHashtable.ProductCode = $MSIInfo.ProductCode
+            $RuleHashtable.ProductVersion = $MSIInfo.ProductVersion
+            $RuleHashtable.ProductVersionOperator = 'equal'
         }
         return $RuleHashtable 
     }
