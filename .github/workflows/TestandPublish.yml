@@ -14,7 +14,7 @@ on:
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   # This workflow contains a single job called "build"
-  test:
+  RunPesterTests:
     # The type of runner that the job will run on
     runs-on: windows-latest
 
@@ -23,9 +23,12 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v3
       
-      - name: Setup Pester and PSScriptAnalyzer
+      - name: Run Pester Tests
         if: github.event_name == 'pull_request' || 'workflow_dispatch'
-        uses: zyborg/pester-tests-report@v1.5.0
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          include_paths: "src/modules"
+        run: |
+          Get-ChildItem -Path .\src\modules\ -Directory | ForEach-Object {
+            $ModuleName = $_.Name
+            Write-Output "Running Pester Tests for $ModuleName"
+            Invoke-Pester -Path ".\src\modules\$ModuleName\Public"
+            Invoke-Pester -Path ".\src\modules\$ModuleName\Private"
+          }
