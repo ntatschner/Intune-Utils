@@ -53,11 +53,11 @@ jobs:
             $ModuleName = $_.Name
             Write-Output "Running PSScriptAnalyzer Tests for $ModuleName"
             Write-Output "Running Tests for Public Functions"
-            Invoke-ScriptAnalyzer -Path ".\src\modules\$ModuleName\Public\*.ps1 -Outvariable issues
+            Invoke-ScriptAnalyzer -Path ".\src\modules\$ModuleName\Public\*.ps1" -Outvariable issues
             $errors   += $issues.Where({$_.Severity -eq 'Error'})
             $warnings += $issues.Where({$_.Severity -eq 'Warning'})
             Write-Output "Running Pester Tests for Private Functions"
-            Invoke-ScriptAnalyzer -Path ".\src\modules\$ModuleName\Private\*.ps1 -Outvariable issues
+            Invoke-ScriptAnalyzer -Path ".\src\modules\$ModuleName\Private\*.ps1" -Outvariable issues
             $errors   += $issues.Where({$_.Severity -eq 'Error'})
             $warnings += $issues.Where({$_.Severity -eq 'Warning'})
             if ($errors) {
