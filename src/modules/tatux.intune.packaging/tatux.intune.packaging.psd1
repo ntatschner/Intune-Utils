@@ -87,14 +87,9 @@
             # Tags applied to this module. These help with module discovery in online galleries.
             Tags = @('Intune', 'Packaging', 'Deployment', 'Applications')
 
-            # A URL to the license for this module.
-            # LicenseUri = ''
-
-            # A URL to the main website for this project.
-            # ProjectUri = ''
-
-            # A URL to an icon representing this module.
-            # IconUri = ''
+            ExternalModuleDependencies = @(
+                'Microsoft.Graph.Intune'
+            )
 
             # ReleaseNotes of this module
             ReleaseNotes = 'Initial release of the module.'

@@ -72,7 +72,7 @@ function New-APFDeployment {
     if (-not (Test-Path $AppFolder)) {
         New-Item -Path $AppFolder -ItemType Directory | Out-Null
     } else {
-        if ($PSCmdlet.ShouldProcess($AppFolder, "Overwrite existing subfolder for the application? (Y/N)`nWarning: This will recursively delete all files in the folder.")) {
+        if ($PSCmdlet.ShouldContinue("Overwrite existing subfolder for the application? Warning: This will recursively delete all files in the folder.", "Confirm Overwrite")) {
             Remove-Item -Path $AppFolder -Recurse -Force | Out-Null
             New-Item -Path $AppFolder -ItemType Directory | Out-Null
         }
@@ -85,7 +85,7 @@ function New-APFDeployment {
         }
     }
     # Copy the template files to the application folder
-    Copy-Item -Path "$PSScriptRoot\Templates\Application" -Destination $AppFolder -Recurse
+    Copy-Item -Path "$PSScriptRoot\Templates\Application\*" -Destination $AppFolder -Recurse
 
     # Update the template files with the application name and version
     $MainConfig = Get-Content -Path "$AppFolder\config.installer.json" | ConvertFrom-Json
@@ -107,12 +107,21 @@ function New-APFDeployment {
             $ModulePath = Split-Path -Path $MyInvocation.MyCommand.Module.Path
             # Test if the IntuneWinAppUtil application exists in module directory
             if (-not (Test-Path "$ModulePath\IntuneWinAppUtil.exe")) {
-                if ($PSCmdlet.ShouldContinue("The IntuneWinAppUtil.exe application was not found in the module directory. Would you like to download it now?")) {
+                if ($PSCmdlet.ShouldContinue("The IntuneWinAppUtil.exe application was not found in the module directory. Would you like to download it now?", "Download Now?")) {
                     Get-IntunePackagingTool -Path $ModulePath
                 } else {
                     Write-Warning "The IntuneWinAppUtil.exe application is required to create IntuneWin packages. Please download it manually."
                 }
+            } 
+            # Create IntuneWin package
+            $IntunewinFullPath = Join-Path -Path $DestinationFolder -ChildPath "$Name.intunewin"
+            $MainInstallerFilePath = Join-Path -Path $AppFolder -ChildPath (Get-Item -Path $Path).Name
+            if (Test-Path $IntunewinFullPath) {
+                if ($PSCmdlet.ShouldContinue("Overwrite existing IntuneWin package? Warning: This will delete the existing package.", "Confirm Overwrite")) {
+                    Remove-Item -Path $IntunewinFullPath -Force
+                }
             }
+            Start-Process -FilePath "cmd.exe" -ArgumentList "/c $ModulePath\IntuneWinAppUtil.exe -c $AppFolder -o $DestinationFolder -s $MainInstallerFilePath -q" -Wait -WindowStyle Hidden -ErrorAction Stop
         } catch {
             Write-Error "Failed to create IntuneWin package: $_"
         }
