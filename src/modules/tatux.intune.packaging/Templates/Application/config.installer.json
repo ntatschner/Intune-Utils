@@ -1,10 +1,10 @@
 {
-    "name": "",
-    "filename": "",
+    "name": "##NAME_TEMPLATE",
+    "filename": "##FILENAME_TEMPLATE",
     "installswitches": "",
     "uninstallswitches": "",
     "uninstallpath": "",
-    "version": "",
+    "version": "##VERSION_TEMPLATE",
     "precommandfile": "Intune-Pre-Install.ps1",
     "postcommandfile": "Intune-Post-Install.ps1",
 	"target": "",

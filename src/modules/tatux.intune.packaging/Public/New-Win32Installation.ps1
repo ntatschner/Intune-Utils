@@ -10,5 +10,11 @@ function New-Win32Installation {
         [bool]$allowAvailableUninstall = $false
     )
 
+    $InstallationHashTable = @{
+        installCommandLine = $installCommandLine
+        uninstallCommandLine = $uninstallCommandLine
+        allowAvailableUninstall = $allowAvailableUninstall
+    }
 
+    return $InstallationHashTable
 }
