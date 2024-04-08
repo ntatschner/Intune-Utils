@@ -36,7 +36,7 @@ Description = 'A set of functions designed to package and deploy Application pac
 PowerShellVersion = '5.1'
 
 # Name of the Windows PowerShell host required by this module
-PowerShellHostName = 'ConsoleHost'
+#PowerShellHostName = ''
 
 # Minimum version of the Windows PowerShell host required by this module
 # PowerShellHostVersion = ''
