@@ -13,35 +13,36 @@ function New-APFDeployment {
         [Parameter(Mandatory = $true)]
         [Alias("InstallerFile", "SourceFile")]
         [ValidateScript({
-            if ($_ -notmatch "\.(msi|exe)$") {
-                throw "Please supply a valid installer file path. Only .msi and .exe files are supported."
-            } else {
-                if (-not (Test-Path $_)) {
-                    throw "The file $_ does not exist."
+                if ($_ -notmatch "\.(msi|exe)$") {
+                    throw "Please supply a valid installer file path. Only .msi and .exe files are supported."
                 }
-                return $true
-            }
-        })]
+                else {
+                    if (-not (Test-Path $_)) {
+                        throw "The file $_ does not exist."
+                    }
+                    return $true
+                }
+            })]
         $Path,
 
         [Parameter(HelpMessage = "Paths to any additional files that need to be included in the installation.")]
         [ValidateScript({
-            foreach ($file in $_) {
-                if (-not (Test-Path $file)) {
-                    throw "The file $file does not exist."
+                foreach ($file in $_) {
+                    if (-not (Test-Path $file)) {
+                        throw "The file $file does not exist."
+                    }
                 }
-            }
-            return $true
-        })]
+                return $true
+            })]
         [string[]]$IncludedFiles,
 
         [Parameter(HelpMessage = "The folder where the files will be copied to. Default is the current directory.")]
         [ValidateScript({
-            if (-not (Test-Path $_)) {
-                throw "The folder $_ does not exist."
-            }
-            return $true
-        })]
+                if (-not (Test-Path $_)) {
+                    throw "The folder $_ does not exist."
+                }
+                return $true
+            })]
         [string]$DestinationFolder = $PWD.Path,
 
         [Parameter(HelpMessage = "Create a Intune package for the application. Default is false.")]
@@ -57,7 +58,8 @@ function New-APFDeployment {
         if (-not $Version) {
             $Version = $MSIProperties.ProductVersion
         }
-    } else {
+    }
+    else {
         $EXEProperties = Get-ItemProperty -Path $Path
         if (-not $Name) {
             $Name = $EXEProperties.BaseName
@@ -71,7 +73,8 @@ function New-APFDeployment {
     $AppFolder = Join-Path -Path $DestinationFolder -ChildPath $Name
     if (-not (Test-Path $AppFolder)) {
         New-Item -Path $AppFolder -ItemType Directory | Out-Null
-    } else {
+    }
+    else {
         if ($PSCmdlet.ShouldContinue("Overwrite existing subfolder for the application? Warning: This will recursively delete all files in the folder.", "Confirm Overwrite")) {
             Remove-Item -Path $AppFolder -Recurse -Force | Out-Null
             New-Item -Path $AppFolder -ItemType Directory | Out-Null
@@ -109,8 +112,10 @@ function New-APFDeployment {
             if (-not (Test-Path "$ModulePath\IntuneWinAppUtil.exe")) {
                 if ($PSCmdlet.ShouldContinue("The IntuneWinAppUtil.exe application was not found in the module directory. Would you like to download it now?", "Download Now?")) {
                     Get-IntunePackagingTool -Path $ModulePath
-                } else {
+                }
+                else {
                     Write-Warning "The IntuneWinAppUtil.exe application is required to create IntuneWin packages. Please download it manually."
+                    return
                 }
             } 
             # Create IntuneWin package
@@ -119,13 +124,25 @@ function New-APFDeployment {
             if (Test-Path $IntunewinFullPath) {
                 if ($PSCmdlet.ShouldContinue("Overwrite existing IntuneWin package? Warning: This will delete the existing package.", "Confirm Overwrite")) {
                     Remove-Item -Path $IntunewinFullPath -Force
+                }
+                else {
+                    Write-Warning "The IntuneWin package already exists. Please delete it manually or choose a different destination folder."
                     return
                 }
             }
-            Start-Process -FilePath "cmd.exe" -ArgumentList "/c $ModulePath\IntuneWinAppUtil.exe -c $AppFolder -o $DestinationFolder -s $MainInstallerFilePath -q" -Wait -WindowStyle Hidden -ErrorAction Stop
-        } catch {
+            Start-Process -FilePath "$ModulePath\IntuneWinAppUtil.exe" -ArgumentList "-c `"$AppFolder`"", "-s `"$MainInstallerFilePath`"", "-o `"$DestinationFolder`"" -Wait -NoNewWindow -ErrorAction Stop
+            if (-not (Test-Path $IntunewinFullPath)) {
+                throw "$IntuneWinFullPath was not created"
+            } else {
+                Write-Output "The application '$Name' has been successfully packaged.`nThis can be found in the folder '$AppFolder'."
+                Write-Output "The application '$Name' was also packaged to an intunewin file.`nThis can be found in the folder '$DestinationFolder'."
+            }
+        }
+        catch {
             Write-Error "Failed to create IntuneWin package: $_"
         }
     }
-    Write-Output "The application '$Name' has been successfully packaged.`nThis can be found in the folder '$AppFolder'."
+    else {
+        Write-Output "The application '$Name' has been successfully packaged.`nThis can be found in the folder '$AppFolder'."
+    }
 }
