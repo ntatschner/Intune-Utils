@@ -1,3 +1,35 @@
+<#
+.SYNOPSIS
+Creates a new APF deployment.
+
+.DESCRIPTION
+The New-APFDeployment function creates a new APF deployment based on the provided parameters.
+
+.PARAMETER Name
+The name of the application. This is written into the exported configuration files. 
+If you do not provide a name, the script will attempt to extract it from the installer file.
+
+.PARAMETER Version
+The version of the application. This is written into the exported configuration files. 
+This should be in the format of x.x.x.x. If you do not provide a version, the script will attempt to extract it from the installer file.
+
+.PARAMETER Path
+The path to the installer file. This should be a .msi or .exe file. This parameter is mandatory.
+
+.PARAMETER IncludedFiles
+Paths to any additional files that need to be included in the installation.
+
+.PARAMETER DestinationFolder
+The folder where the files will be copied to. Default is the current directory.
+
+.PARAMETER CreateIntuneWinPackage
+Create a Intune package for the application. Default is false.
+
+.EXAMPLE
+New-APFDeployment -Name "MyApp" -Version 1.0.0.0 -Path "C:\Installers\MyApp.msi" -DestinationFolder "C:\Deployments\MyApp"
+
+This example creates a new APF deployment for an application named "MyApp" with version 1.0.0.0. The installer file is located at "C:\Installers\MyApp.msi", and the deployment files will be copied to "C:\Deployments\MyApp".
+#>
 function New-APFDeployment {
     param(
         [CmdletBinding(SupportsShouldProcess)]
@@ -133,7 +165,8 @@ function New-APFDeployment {
             Start-Process -FilePath "$ModulePath\IntuneWinAppUtil.exe" -ArgumentList "-c `"$AppFolder`"", "-s `"$MainInstallerFilePath`"", "-o `"$DestinationFolder`"" -Wait -NoNewWindow -ErrorAction Stop
             if (-not (Test-Path $IntunewinFullPath)) {
                 throw "$IntuneWinFullPath was not created"
-            } else {
+            }
+            else {
                 Write-Output "The application '$Name' has been successfully packaged.`nThis can be found in the folder '$AppFolder'."
                 Write-Output "The application '$Name' was also packaged to an intunewin file.`nThis can be found in the folder '$DestinationFolder'."
             }
