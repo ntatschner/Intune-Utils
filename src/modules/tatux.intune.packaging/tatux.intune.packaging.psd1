@@ -51,10 +51,7 @@
     # ProcessorArchitecture = ''
 
     # Modules that must be imported into the global environment prior to importing this module
-    RequiredModules      = @(@{
-        ModuleName = "Microsoft.Graph"
-        MaximumVersion = "2.17.0"
-    })
+    RequiredModules      = @("Microsoft.Graph.Intune")
 
     # Assemblies that must be loaded prior to importing this module
     # RequiredAssemblies = @()
@@ -83,27 +80,12 @@
     # Aliases to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no aliases to export.
     AliasesToExport      = '*'
 
-    # DSC resources to export from this module
-    # DscResourcesToExport = @()
-
-    # List of all modules packaged with this module
-    # ModuleList = @()
-
-    # List of all files packaged with this module
-    # FileList = @()
-
     # Private data to pass to the module specified in RootModule/ModuleToProcess. This may also contain a PSData hashtable with additional module metadata used by PowerShell.
     PrivateData          = @{
 
         PSData = @{
-            ExternalModuleDependencies = @(
-                @{
-                    ModuleName = 'Microsoft.Graph'
-                    RequiredVersion = '2.17.0'
-                }
-            )
             # Tags applied to this module. These help with module discovery in online galleries.
-            # Tags = @()
+            Tags = @('Intune', 'Packaging', 'Deployment', 'Applications')
 
             # A URL to the license for this module.
             # LicenseUri = ''
@@ -115,7 +97,7 @@
             # IconUri = ''
 
             # ReleaseNotes of this module
-            # ReleaseNotes = ''
+            ReleaseNotes = 'Initial release of the module.'
 
         } # End of PSData hashtable
 
