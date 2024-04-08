@@ -1,5 +1,6 @@
 function New-Win32ReturnCode {
     [CmdletBinding()]
+    [OutputType([Hashtable])]
     param (
         [Parameter(Mandatory = $true)]
         [string]$ReturnCode,
