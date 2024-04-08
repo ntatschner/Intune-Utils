@@ -119,6 +119,7 @@ function New-APFDeployment {
             if (Test-Path $IntunewinFullPath) {
                 if ($PSCmdlet.ShouldContinue("Overwrite existing IntuneWin package? Warning: This will delete the existing package.", "Confirm Overwrite")) {
                     Remove-Item -Path $IntunewinFullPath -Force
+                    return
                 }
             }
             Start-Process -FilePath "cmd.exe" -ArgumentList "/c $ModulePath\IntuneWinAppUtil.exe -c $AppFolder -o $DestinationFolder -s $MainInstallerFilePath -q" -Wait -WindowStyle Hidden -ErrorAction Stop
