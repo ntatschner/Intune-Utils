@@ -1,4 +1,3 @@
-# A function to create a new Win32Rule object for requirement or detection rules
 function New-Win32Rule {
     [CmdletBinding()]
     [OutputType([Hashtable])]

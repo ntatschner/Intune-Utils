@@ -1,30 +1,6 @@
 #requires -Version 7.0 -Modules 'Microsoft.Graph.Intune', 'Microsoft.Graph.Authentication'
 # Takes the .intunewin and configuration .json and publishes the application to Intune
 function Publish-IntuneAppPackage {
-    <#
-    .SYNOPSIS
-    This function takes the .intunewin and configuration .json and publishes the application to Intune
-
-    .DESCRIPTION
-    This function takes the .intunewin and configuration .json and publishes the application to Intune. If the application already exists in Intune, the function will update the application if the -Force switch is used.
-
-    .PARAMETER IntuneAppJSONPath
-    The path to the JSON file that contains the Intune Application configuration
-
-    .PARAMETER IntuneWinPath
-    The path to the .intunewin file.
-
-    .PARAMETER Force
-    If the application already exists in Intune, this switch will force the application to be updated.
-
-    .EXAMPLE
-    Publish-IntuneAppPackage -IntuneAppJSONPath "C:\Temp\IntuneApp.json" -IntuneWinPath "C:\Temp\IntuneApp.intunewin"
-
-    This example will publish the application to Intune using the configuration in the JSON file and the .intunewin file.
-
-    .OUTPUTS
-    The function will output the Intune Application details that was created.
-    #>
     [CmdletBinding()]
     [OutputType([PSCustomObject])]
     param (
