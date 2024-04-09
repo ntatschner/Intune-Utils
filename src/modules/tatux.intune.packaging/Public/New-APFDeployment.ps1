@@ -13,6 +13,18 @@ If you do not provide a name, the script will attempt to extract it from the ins
 The version of the application. This is written into the exported configuration files. 
 This should be in the format of x.x.x.x. If you do not provide a version, the script will attempt to extract it from the installer file.
 
+.PARAMETER Target
+The target for the deployment, User context or System context. Default is 'system'.
+
+.PARAMETER InstallSwitches
+The switches to use when installing the application. Default is empty. You'll have to manually edit the configuration file.
+
+.PARAMETER UninstallSwitches
+The switches to use when uninstalling the application. Default is empty. You'll have to manually edit the configuration file.
+
+.PARAMETER UninstallPath
+The path to the uninstall file. Default is empty. You'll have to manually edit the configuration file.
+
 .PARAMETER Path
 The path to the installer file. This should be a .msi or .exe file. This parameter is mandatory.
 
@@ -33,14 +45,34 @@ This example creates a new APF deployment for an application named "MyApp" with 
 function New-APFDeployment {
     param(
         [CmdletBinding(SupportsShouldProcess)]
+        [OutputType([string])]
 
+        [Parameter(ParameterSetName = "config")]
         [Alias("ApplicationName", "AppName")]
         [Parameter(HelpMessage = "The name of the application. `nThis is written in to the exported configuration files. `nIf you do not provide a name, the script will attempt to extract it from the installer file.")]
         [string]$Name,
 
+        [Parameter(ParameterSetName = "config")]
         [Alias("ApplicationVersion", "AppVersion")]
         [Parameter(HelpMessage = "The version of the application. `nThis is written in to the exported configuration files. `nThis should be in the format of x.x.x.x. `nIf you do not provide a version, the script will attempt to extract it from the installer file.")]
         [version]$Version,
+
+        [Parameter(ParameterSetName = "config")]
+        [Parameter(HelpMessage = "The target for the deployment, User context or System context. Default is 'system'.")]
+        [ValidateSet("system", "user")]
+        [string]$Target = "system",
+
+        [Parameter(ParameterSetName = "config")]
+        [Parameter(HelpMessage = "The switches to use when installing the application. Default is empty. You'll have to manually edit the configuration file.")]
+        [string]$InstallSwitches,
+
+        [Parameter(ParameterSetName = "config")]
+        [Parameter(HelpMessage = "The switches to use when uninstalling the application. Default is empty. You'll have to manually edit the configuration file.")]
+        [string]$UninstallSwitches,
+
+        [Parameter(ParameterSetName = "config")]
+        [Parameter(HelpMessage = "The path to the uninstall file. Default is empty. You'll have to manually edit the configuration file.")]
+        [string]$UninstallPath,
 
         [Parameter(Mandatory = $true)]
         [Alias("InstallerFile", "SourceFile")]

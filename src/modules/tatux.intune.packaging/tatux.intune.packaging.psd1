@@ -12,13 +12,13 @@
     # RootModule = ''
 
     # Version number of this module.
-    ModuleVersion        = '1.0'
+    ModuleVersion        = '0.1'
 
     # Supported PSEditions
-    CompatiblePSEditions = @('5.1')
+    #CompatiblePSEditions = @()
 
     # ID used to uniquely identify this module
-    GUID                 = 'd40ebaa8-0e7d-4f82-957c-f09e09a3e4d4'
+    GUID                 = 'bfe12388-5f86-4da1-b08b-a439ff6f690c'
 
     # Author of this module
     Author               = 'Nigel Tatschner'
@@ -99,7 +99,7 @@
     } # End of PrivateData hashtable
 
     # HelpInfo URI of this module
-    # HelpInfoURI = ''
+    HelpInfoURI = "https://pwsh.dev.tatux.co.uk/tatux.intune.packaging/"
 
     # Default prefix for commands exported from this module. Override the default prefix using Import-Module -Prefix.
     # DefaultCommandPrefix = ''
