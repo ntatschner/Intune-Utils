@@ -22,7 +22,7 @@ title: Intune Utilities Gist
 email: nigel@tatux.co.uk
 description: >- # this means to ignore newlines until "baseurl:"
   A collection of Intune tools, designed to help package applications, deploy them and remove complexity.  This also includes OS configuration modules/functions and frameworks to help.
-baseurl: "/gist/" # the subpath of your site, e.g. /blog
+baseurl: "/gist" # the subpath of your site, e.g. /blog
 domain: "pwsh.dev.tatux.co.uk"
 url: "https://pwsh.dev.tatux.co.uk" # the base hostname & protocol for your site, e.g. http://example.com
 twitter_username: nerdasaurus_
