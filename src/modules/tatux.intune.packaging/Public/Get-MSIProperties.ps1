@@ -9,8 +9,8 @@ function Get-MSIProperties {
                     $true
                 }
             })]
-        [Alias("Filename", "Path", "Database", "Msi")]
-        $msiDbName
+        [Alias("Filename", "MSIDbName", "Database", "Msi")]
+        $Path
     )
     process {
         # Create an empty hashtable to store properties in
