@@ -93,7 +93,7 @@ jobs:
             $folderName = $_.Name
             $docsFolderPath = "./src/onlinehelp/$folderName/docs/"
             $filesFolderPath = "./src/onlinehelp/$folderName/files/"
-            $gistFolderPath = "./_site/$folderName/"
+            $gistFolderPath = "./_site/$folderName"
             $gistFilesFolderPath = "$gistFolderPath/files/"
             $mdfiles = Get-ChildItem -Path $docsFolderPath -Filter *.md
               foreach ($mdfile in $mdfiles) {
