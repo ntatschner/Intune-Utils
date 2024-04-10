@@ -41,7 +41,7 @@ jobs:
 
       - name: Build with Jekyll
         # Outputs to the './_site' directory by default
-        run: bundle exec jekyll build ./src/onlinehelp/gist --baseurl "/gist/"
+        run: bundle exec jekyll build --source ./src/onlinehelp/gist --baseurl "/gist/"
         env:
           JEKYLL_ENV: production
 
