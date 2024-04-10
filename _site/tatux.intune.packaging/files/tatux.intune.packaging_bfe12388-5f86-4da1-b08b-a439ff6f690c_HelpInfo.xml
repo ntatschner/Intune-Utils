@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<HelpInfo xmlns="http://schemas.microsoft.com/powershell/help/2010/05">
+  <HelpContentURI>https://github.com/ntatschner/Intune-Utils/tree/main/src/modules/tatux.intune.packaging/files/</HelpContentURI>
+  <SupportedUICultures>
+    <UICulture>
+      <UICultureName>en-GB</UICultureName>
+      <UICultureVersion>0.1</UICultureVersion>
+    </UICulture>
+  </SupportedUICultures>
+</HelpInfo>
