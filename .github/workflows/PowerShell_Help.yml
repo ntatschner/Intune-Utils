@@ -28,7 +28,7 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       commit_id: ${{ steps.commit.outputs.commit_id }}
-      env: # $BUNDLE_GEMFILE must be set at the job level, so it is set for all steps
+    env: 
       BUNDLE_GEMFILE: ${{ github.workspace }}/src/gh_pages/Gemfile
     steps:
       - name: Checkout
