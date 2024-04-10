@@ -67,7 +67,12 @@ jobs:
                 Write-Output "Skipping renaming $mainmdfile as it is a directory"
               } else {
                 Write-Output "Renaming $mainmdfile to $indexmdfile"
-                Rename-Item -Path $mainmdfile -NewName $indexmdfile -Force
+                try {
+                  Rename-Item -Path $mainmdfile -NewName $indexmdfile -Force
+                } catch {
+                  Write-Output "Failed to rename $mainmdfile to $indexmdfile"
+                  Write-Output $_.Exception.Message
+                }
               }
             } else {
               Write-Output "$mainmdfile does not exist"
