@@ -57,6 +57,7 @@ jobs:
             $mainmdfile = "$gistFolderPath/$($folder.Name).md"
             $indexmdfile = "$gistFolderPath/index.md"
             Rename-Item -Path $mainmdfile -NewName $indexmdfile -Force
+          }
 
       - name: Commit changes
         run: |
