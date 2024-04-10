@@ -113,14 +113,17 @@ jobs:
           }
 
       - name: Commit changes
+        id: commit
         run: |
           git config --global user.email "ntatschner@gmail.com"
           git config --global user.name "Nigel Tatschner"
           git add .
           git commit -m "Updated Github Pages content in commit $GITHUB_SHA"
           git push
+          echo "::set-output name=commit_id::$(git rev-parse HEAD)"
               
   deploy:
+    needs: [Build, SiteStructure]
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
@@ -128,12 +131,15 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          ref: ${{ needs.SiteStructure.outputs.commit_id }}
 
+        
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
           # Upload specific folder path in the repo
-          path: 'src/onlinehelp'
+          path: 'src/onlinehelp/_site/'
 
       - name: Deploy to GitHub Pages
         id: deployment
