@@ -48,7 +48,7 @@ jobs:
         run: bundle install
       
       - name: Build with Jekyll
-        # Outputs to the './_site' directory by default
+
         working-directory: ./src/gh_pages
         run: bundle exec jekyll build --source . --destination ../../_site/
         env:
@@ -71,6 +71,10 @@ jobs:
     outputs:
       commit_id: ${{ steps.commit.outputs.commit_id }}
     steps:
+      - name: Print commit_id
+        run: |
+          echo "Commit ID: ${{ needs.Build.outputs.commit_id }}"
+
       - name: Checkout
         uses: actions/checkout@v4
         with:
@@ -130,7 +134,7 @@ jobs:
           git add .
           git commit -m "Updated Github Pages content in commit $GITHUB_SHA"
           git push
-          ID=$(git rev-parse HEAD)
+          $ID=$(git rev-parse HEAD)
           echo "{commit_id}=$ID" >> $GITHUB_OUTPUT
               
   deploy:
@@ -140,6 +144,9 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     steps:
+      - name: Print commit_id
+        run: |
+          echo "Commit ID: ${{ needs.SiteStructure.outputs.commit_id }}"
       - name: Checkout
         uses: actions/checkout@v4
         with:
