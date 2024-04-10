@@ -91,8 +91,8 @@ jobs:
         run: |
             Get-ChildItem -Path ./src/onlinehelp | ForEach-Object {
             $folderName = $_.Name
-            $docsFolderPath = $(Get-Item -Path"./src/onlinehelp/$folderName/docs/")
-            $filesFolderPath = $(Get-item -path "./src/onlinehelp/$folderName/files/")
+            $docsFolderPath = $(Get-Item -Path "./src/onlinehelp/$folderName/docs/")
+            $filesFolderPath = $(Get-item -Path "./src/onlinehelp/$folderName/files/")
             $gistFolderPath = $(Get-Item -Path "./_site/$folderName")
             $gistFilesFolderPath = $(Get-Item -Path "$gistFolderPath/files/")
             $mdfiles = Get-ChildItem -Path $docsFolderPath -Filter *.md
