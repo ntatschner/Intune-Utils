@@ -96,7 +96,7 @@ jobs:
 
       - name: Change the name of the .md file to index.md
         run: |
-          $Folders = Get-ChildItem -Directory -Path ./src/onlinehelp |
+          $Folders = Get-ChildItem -Directory -Path ./src/onlinehelp
           foreach ($folder in $Folders) {
             $gistFolderPath = "./_site/$($folder.Name)"
             $mainmdfile = "$gistFolderPath/$($folder.Name).md"
