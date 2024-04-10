@@ -91,10 +91,10 @@ jobs:
         run: |
             Get-ChildItem -Path ./src/onlinehelp | ForEach-Object {
             $folderName = $_.Name
-            $docsFolderPath = "./src/onlinehelp/$folderName/docs/"
-            $filesFolderPath = "./src/onlinehelp/$folderName/files/"
-            $gistFolderPath = "./_site/$folderName"
-            $gistFilesFolderPath = "$gistFolderPath/files/"
+            $docsFolderPath = $(Get-Item -Path"./src/onlinehelp/$folderName/docs/")
+            $filesFolderPath = $(Get-item -path "./src/onlinehelp/$folderName/files/")
+            $gistFolderPath = $(Get-Item -Path "./_site/$folderName")
+            $gistFilesFolderPath = $(Get-Item -Path "$gistFolderPath/files/")
             $mdfiles = Get-ChildItem -Path $docsFolderPath -Filter *.md
               foreach ($mdfile in $mdfiles) {
                 Write-output "Copying $mdfile to $gistFolderPath"
