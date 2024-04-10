@@ -92,11 +92,33 @@ jobs:
             Get-ChildItem -Path ./src/onlinehelp | ForEach-Object {
             $folderName = $_.Name
             $docsFolderPath = "./src/onlinehelp/$folderName/docs/"
+            $filesFolderPath = "./src/onlinehelp/$folderName/files/"
             $gistFolderPath = "./_site/$folderName/"
+            $gistFilesFolderPath = "$gistFolderPath/files/"
             $mdfiles = Get-ChildItem -Path $docsFolderPath -Filter *.md
               foreach ($mdfile in $mdfiles) {
                 Write-output "Copying $mdfile to $gistFolderPath"
                 Copy-Item -Path $mdfile.FullName -Destination $gistFolderPath -Force
+              }
+              if (-not (Test-Path $gistFilesFolderPath)) {
+                Write-output "Creating $gistFilesFolderPath"
+                New-Item -ItemType Directory -Path $gistFilesFolderPath -Force
+              }
+              $files = Get-ChildItem -Path $filesFolderPath -Recurse
+              foreach ($file in $files) {
+                $relativePath = $file.FullName.Replace($filesFolderPath, '')
+                $destinationPath = Join-Path -Path $gistFilesFolderPath -ChildPath $relativePath
+              
+                if (Test-Path $destinationPath) {
+                  Write-output "Skipping $file as it already exists"
+                } else {
+                  $destinationDirectory = Split-Path -Path $destinationPath -Parent
+                  if (!(Test-Path $destinationDirectory)) {
+                    New-Item -ItemType Directory -Path $destinationDirectory | Out-Null
+                  }
+                  Write-output "Copying $file to $destinationPath"
+                  Copy-Item -Path $file.FullName -Destination $destinationPath -Force
+                }
               }
             }
 
