@@ -26,8 +26,6 @@ concurrency:
 jobs:
   Build:
     runs-on: ubuntu-latest
-    outputs:
-      commit_id: ${{ steps.commit.outputs.commit_id }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -67,17 +65,15 @@ jobs:
   SiteStructure:
     needs: Build
     runs-on: windows-latest
-    outputs:
-      commit_id: ${{ steps.commit.outputs.commit_id }}
     steps:
       - name: Print commit_id
         run: |
-          echo "Commit ID: ${{ needs.Build.outputs.commit_id }}"
+          echo "Commit ID: $commit_id"
 
       - name: Checkout
         uses: actions/checkout@v4
         with:
-          ref: ${{ needs.Build.outputs.commit_id }}
+          ref: $commit_id
 
       - name: Create Folders in main site structure
         run: |
@@ -144,11 +140,11 @@ jobs:
     steps:
       - name: Print commit_id
         run: |
-          echo "Commit ID: ${{ needs.SiteStructure.outputs.commit_id }}"
+          echo "Commit ID: $commit_id"
       - name: Checkout
         uses: actions/checkout@v4
         with:
-          ref: ${{ needs.SiteStructure.outputs.commit_id }}
+          ref: $commit_id
 
         
       - name: Upload artifact
