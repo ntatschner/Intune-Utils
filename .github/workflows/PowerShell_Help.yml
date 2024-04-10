@@ -72,6 +72,7 @@ jobs:
                 } catch {
                   Write-Output "Failed to rename $mainmdfile to $indexmdfile"
                   Write-Output $_.Exception.Message
+                  throw $_.Exception
                 }
               }
             } else {
