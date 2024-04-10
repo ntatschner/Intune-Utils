@@ -38,7 +38,11 @@ jobs:
       - name: Setup Pages
         id: pages
         uses: actions/configure-pages@v5
-
+      
+      - name: Update Gems with bundler
+        working-directory: ./src/gh_pages
+        run: bundle install
+      
       - name: Build with Jekyll
         # Outputs to the './_site' directory by default
         working-directory: ./src/gh_pages
