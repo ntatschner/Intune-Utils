@@ -62,8 +62,7 @@ jobs:
           git add .
           git commit -m "Updated Github Pages content in commit $GITHUB_SHA"
           git push
-          ID=$(git rev-parse HEAD)
-          echo "{commit_id}=$ID" >> $GITHUB_OUTPUT
+          echo "commit_id=$(git rev-parse HEAD)" >> "$GITHUB_ENV"
 
   SiteStructure:
     needs: Build
@@ -134,8 +133,7 @@ jobs:
           git add .
           git commit -m "Updated Github Pages content in commit $GITHUB_SHA"
           git push
-          $ID=$(git rev-parse HEAD)
-          echo "{commit_id}=$ID" >> $GITHUB_OUTPUT
+          echo "commit_id=$(git rev-parse HEAD)" >> "$GITHUB_ENV"
               
   deploy:
     needs: [Build, SiteStructure]
