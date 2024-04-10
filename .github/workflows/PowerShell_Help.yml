@@ -58,8 +58,20 @@ jobs:
             $gistFolderPath = "./src/onlinehelp/gist/$($folder.Name)"
             $mainmdfile = "$gistFolderPath/$($folder.Name).md"
             $indexmdfile = "$gistFolderPath/index.md"
-            Write-output "Renaming $mainmdfile to $indexmdfile"
-            Rename-Item -Path $mainmdfile -NewName $indexmdfile -Force
+            if (Test-Path $mainmdfile) {
+              if (Test-Path $indexmdfile) {
+                Write-Output "Deleting existing $indexmdfile"
+                Remove-Item -Path $indexmdfile -Force
+              }
+              if ((Get-Item $mainmdfile).PSIsContainer) {
+                Write-Output "Skipping renaming $mainmdfile as it is a directory"
+              } else {
+                Write-Output "Renaming $mainmdfile to $indexmdfile"
+                Rename-Item -Path $mainmdfile -NewName $indexmdfile -Force
+              }
+            } else {
+              Write-Output "$mainmdfile does not exist"
+            }
           }
 
       - name: Commit changes
