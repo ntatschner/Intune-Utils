@@ -53,12 +53,14 @@ jobs:
           JEKYLL_ENV: production
 
       - name: Commit changes
+        id: commit
         run: |
           git config --global user.email "ntatschner@gmail.com"
           git config --global user.name "Nigel Tatschner"
           git add .
           git commit -m "Updated Github Pages content in commit $GITHUB_SHA"
           git push
+          echo "::set-output name=commit_id::$(git rev-parse HEAD)"
 
   SiteStructure:
     needs: Build
@@ -66,6 +68,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          ref: ${{ needs.Build.outputs.commit_id }}
 
       - name: Create Folders in main site structure
         run: |
