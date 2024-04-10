@@ -28,6 +28,8 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       commit_id: ${{ steps.commit.outputs.commit_id }}
+      env: # $BUNDLE_GEMFILE must be set at the job level, so it is set for all steps
+      BUNDLE_GEMFILE: ${{ github.workspace }}/src/gh_pages/Gemfile
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -42,10 +44,6 @@ jobs:
       - name: Setup Pages
         id: pages
         uses: actions/configure-pages@v5
-      
-      - name: Update Gems with bundler
-        working-directory: ./src/gh_pages
-        run: bundle install
       
       - name: Build with Jekyll
 
