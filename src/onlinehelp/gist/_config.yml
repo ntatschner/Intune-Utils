@@ -29,7 +29,7 @@ twitter_username: nerdasaurus_
 github_username: ntatschner
 
 # Build settings
-theme: minima
+theme: minimal-mistakes-jekyll
 plugins:
 - jekyll-feed
 

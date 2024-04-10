@@ -11,7 +11,7 @@ on:
 
 # Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
 permissions:
-  contents: read
+  contents: write
   pages: write
   id-token: write
 
@@ -22,7 +22,50 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  # Single deploy job since we're just deploying
+  SiteStructure:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Create Folders in main site structure
+        run: |
+            Get-ChildItem -Directory -Path ./src/onlinehelp | Where-Object { $_.Name -ne "gist" } | ForEach-Object {
+            $folderName = $_.Name
+            $gistFolderPath = "./src/onlinehelp/gist/$folderName"
+              if (-not (Test-Path $gistFolderPath)) {
+                New-Item -ItemType Directory -Path $gistFolderPath -Force
+              }
+            }
+      - name: Copy .md files to each gist folder
+        run: |
+            Get-ChildItem -Path ./src/onlinehelp | Where-Object { $_.Name -ne "gist" } | ForEach-Object {
+            $folderName = $_.Name
+            $docsFolderPath = "./src/onlinehelp/$folderName/docs/"
+            $gistFolderPath = "./src/onlinehelp/gist/$folderName/"
+            $mdfiles = Get-ChildItem -Path $docsFolderPath -Filter *.md
+              foreach ($mdfile in $mdfiles) {
+                Copy-Item -Path $mdfile.FullName -Destination $gistFolderPath -Force
+              }
+            }
+
+      - name: Change the name of the .md file to index.md
+        run: |
+          $Folders = Get-ChildItem -Directory -Path ./src/onlinehelp | Where-Object { $_.Name -ne "gist" }
+          foreach ($folder in $Folders) {
+            $gistFolderPath = "./src/onlinehelp/gist/$($folder.Name)"
+            $mainmdfile = "$gistFolderPath/$($folder.Name).md"
+            $indexmdfile = "$gistFolderPath/index.md"
+            Rename-Item -Path $mainmdfile -NewName $indexmdfile -Force
+
+      - name: Commit changes
+        run: |
+          git config --global user.email "ntatschner@gmail.com"
+          git config --global user.name "Nigel Tatschner"
+          git add .
+          git commit -m "Updated Github Pages content in commit $GITHUB_SHA"
+          git push
+              
   deploy:
     environment:
       name: github-pages
