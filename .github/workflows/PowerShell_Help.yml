@@ -5,6 +5,8 @@ on:
   # Runs on pushes targeting the default branch
   push:
     branches: ["main"]
+    paths:
+      - 'src/gh_pages/**'
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -49,6 +51,14 @@ jobs:
         run: bundle exec jekyll build --source . --destination ../onlinehelp/_site/
         env:
           JEKYLL_ENV: production
+
+      - name: Commit changes
+        run: |
+          git config --global user.email "ntatschner@gmail.com"
+          git config --global user.name "Nigel Tatschner"
+          git add .
+          git commit -m "Updated Github Pages content in commit $GITHUB_SHA"
+          git push
 
   SiteStructure:
     runs-on: windows-latest
