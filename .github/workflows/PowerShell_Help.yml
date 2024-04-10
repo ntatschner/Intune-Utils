@@ -26,6 +26,8 @@ concurrency:
 jobs:
   Build:
     runs-on: ubuntu-latest
+    outputs:
+      commit_id: ${{ steps.commit.outputs.commit_id }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -60,20 +62,22 @@ jobs:
           git add .
           git commit -m "Updated Github Pages content in commit $GITHUB_SHA"
           git push
-          echo "commit_id=$(git rev-parse HEAD)" >> "$GITHUB_ENV"
+          echo "commit_id=$(git rev-parse HEAD)" >> $GITHUB_OUTPUT
 
   SiteStructure:
     needs: Build
     runs-on: windows-latest
+    outputs:
+      commit_id: ${{ steps.commit.outputs.commit_id }}
     steps:
       - name: Print commit_id
         run: |
-          echo "Commit ID: $commit_id"
+          echo "Commit ID: ${{ needs.Build.outputs.commit_id }}"
 
       - name: Checkout
         uses: actions/checkout@v4
         with:
-          ref: $commit_id
+          ref: ${{ needs.Build.outputs.commit_id }}
 
       - name: Create Folders in main site structure
         run: |
@@ -129,7 +133,7 @@ jobs:
           git add .
           git commit -m "Updated Github Pages content in commit $GITHUB_SHA"
           git push
-          echo "commit_id=$(git rev-parse HEAD)" >> "$GITHUB_ENV"
+          echo "commit_id=$(git rev-parse HEAD)" >> $GITHUB_OUTPUT
               
   deploy:
     needs: [Build, SiteStructure]
@@ -140,11 +144,11 @@ jobs:
     steps:
       - name: Print commit_id
         run: |
-          echo "Commit ID: $commit_id"
+          echo "Commit ID: ${{ needs.SiteStructure.outputs.commit_id }}"
       - name: Checkout
         uses: actions/checkout@v4
         with:
-          ref: $commit_id
+          ref: ${{ needs.SiteStructure.outputs.commit_id }}
 
         
       - name: Upload artifact
