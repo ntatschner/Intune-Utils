@@ -81,7 +81,7 @@ jobs:
         run: |
             Get-ChildItem -Directory -Path ./src/onlinehelp | ForEach-Object {
             $folderName = $_.Name
-            $gistFolderPath = "./_site/$folderName"
+            $gistFolderPath = $(Join-Path -Path ${{ github.workspace }} -ChildPath "/_site/$folderName")
               if (-not (Test-Path $gistFolderPath)) {
                 Write-output "Creating $gistFolderPath"
                 New-Item -ItemType Directory -Path $gistFolderPath -Force
@@ -93,8 +93,8 @@ jobs:
             $folderName = $_.Name
             $docsFolderPath = $(Get-Item -Path "./src/onlinehelp/$folderName/docs/")
             $filesFolderPath = $(Get-item -Path "./src/onlinehelp/$folderName/files/")
-            $gistFolderPath = $(Get-Item -Path "./_site/$folderName")
-            $gistFilesFolderPath = $(Get-Item -Path "$gistFolderPath/files/")
+            $gistFolderPath = $(Join-Path -Path ${{ github.workspace }} -ChildPath "/_site/$folderName")
+            $gistFilesFolderPath = $(Join-Path -Path $gistFolderPath -ChildPath "files/")
             $mdfiles = Get-ChildItem -Path $docsFolderPath -Filter *.md
               foreach ($mdfile in $mdfiles) {
                 Write-output "Copying $mdfile to $gistFolderPath"
