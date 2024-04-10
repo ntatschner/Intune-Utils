@@ -61,6 +61,7 @@ jobs:
           git push
 
   SiteStructure:
+    needs: Build
     runs-on: windows-latest
     steps:
       - name: Checkout
