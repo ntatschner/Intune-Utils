@@ -312,6 +312,7 @@ $('#toc').on('click', 'a', function() {
    <h1 id="new-apfdeployment">New-APFDeployment</h1>
 
 <h2 id="synopsis">SYNOPSIS</h2>
+<p>Creates a new APF deployment.</p>
 
 <h2 id="syntax">SYNTAX</h2>
 
@@ -322,78 +323,22 @@ $('#toc').on('click', 'a', function() {
 </code></pre></div></div>
 
 <h2 id="description">DESCRIPTION</h2>
+<p>The New-APFDeployment function creates a new APF deployment based on the provided parameters.</p>
 
 <h2 id="examples">EXAMPLES</h2>
 
-<h3 id="example-1">Example 1</h3>
-<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">PS</span><span class="w"> </span><span class="nx">C:\</span><span class="err">&gt;</span><span class="w"> 
-</span></code></pre></div></div>
+<h3 id="example-1">EXAMPLE 1</h3>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>New-APFDeployment -Name "MyApp" -Version 1.0.0.0 -Path "C:\Installers\MyApp.msi" -DestinationFolder "C:\Deployments\MyApp"
+</code></pre></div></div>
+
+<p>This example creates a new APF deployment for an application named “MyApp” with version 1.0.0.0.
+The installer file is located at “C:\Installers\MyApp.msi”, and the deployment files will be copied to “C:\Deployments\MyApp”.</p>
 
 <h2 id="parameters">PARAMETERS</h2>
 
-<h3 id="-createintunewinpackage">-CreateIntuneWinPackage</h3>
-<p>Create a Intune package for the application.
-Default is false.</p>
-
-<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">Type</span><span class="pi">:</span> <span class="s">SwitchParameter</span>
-<span class="na">Parameter Sets</span><span class="pi">:</span> <span class="s">(All)</span>
-<span class="na">Aliases</span><span class="pi">:</span>
-
-<span class="na">Required</span><span class="pi">:</span> <span class="s">False</span>
-<span class="na">Position</span><span class="pi">:</span> <span class="s">Named</span>
-<span class="na">Default value</span><span class="pi">:</span> <span class="s">None</span>
-<span class="na">Accept pipeline input</span><span class="pi">:</span> <span class="s">False</span>
-<span class="na">Accept wildcard characters</span><span class="pi">:</span> <span class="s">False</span>
-</code></pre></div></div>
-
-<h3 id="-destinationfolder">-DestinationFolder</h3>
-<p>The folder where the files will be copied to.
-Default is the current directory.</p>
-
-<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">Type</span><span class="pi">:</span> <span class="s">String</span>
-<span class="na">Parameter Sets</span><span class="pi">:</span> <span class="s">(All)</span>
-<span class="na">Aliases</span><span class="pi">:</span>
-
-<span class="na">Required</span><span class="pi">:</span> <span class="s">False</span>
-<span class="na">Position</span><span class="pi">:</span> <span class="s">Named</span>
-<span class="na">Default value</span><span class="pi">:</span> <span class="s">None</span>
-<span class="na">Accept pipeline input</span><span class="pi">:</span> <span class="s">False</span>
-<span class="na">Accept wildcard characters</span><span class="pi">:</span> <span class="s">False</span>
-</code></pre></div></div>
-
-<h3 id="-includedfiles">-IncludedFiles</h3>
-<p>Paths to any additional files that need to be included in the installation.</p>
-
-<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">Type</span><span class="pi">:</span> <span class="s">String[]</span>
-<span class="na">Parameter Sets</span><span class="pi">:</span> <span class="s">(All)</span>
-<span class="na">Aliases</span><span class="pi">:</span>
-
-<span class="na">Required</span><span class="pi">:</span> <span class="s">False</span>
-<span class="na">Position</span><span class="pi">:</span> <span class="s">Named</span>
-<span class="na">Default value</span><span class="pi">:</span> <span class="s">None</span>
-<span class="na">Accept pipeline input</span><span class="pi">:</span> <span class="s">False</span>
-<span class="na">Accept wildcard characters</span><span class="pi">:</span> <span class="s">False</span>
-</code></pre></div></div>
-
-<h3 id="-installswitches">-InstallSwitches</h3>
-<p>The switches to use when installing the application.
-Default is empty.
-You’ll have to manually edit the configuration file.</p>
-
-<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">Type</span><span class="pi">:</span> <span class="s">String</span>
-<span class="na">Parameter Sets</span><span class="pi">:</span> <span class="s">(All)</span>
-<span class="na">Aliases</span><span class="pi">:</span>
-
-<span class="na">Required</span><span class="pi">:</span> <span class="s">False</span>
-<span class="na">Position</span><span class="pi">:</span> <span class="s">Named</span>
-<span class="na">Default value</span><span class="pi">:</span> <span class="s">None</span>
-<span class="na">Accept pipeline input</span><span class="pi">:</span> <span class="s">False</span>
-<span class="na">Accept wildcard characters</span><span class="pi">:</span> <span class="s">False</span>
-</code></pre></div></div>
-
 <h3 id="-name">-Name</h3>
-<p>The name of the application. 
-This is written in to the exported configuration files. 
+<p>The name of the application.
+This is written into the exported configuration files. 
 If you do not provide a name, the script will attempt to extract it from the installer file.</p>
 
 <div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">Type</span><span class="pi">:</span> <span class="s">String</span>
@@ -407,13 +352,17 @@ If you do not provide a name, the script will attempt to extract it from the ins
 <span class="na">Accept wildcard characters</span><span class="pi">:</span> <span class="s">False</span>
 </code></pre></div></div>
 
-<h3 id="-path">-Path</h3>
+<h3 id="-version">-Version</h3>
+<p>The version of the application.
+This is written into the exported configuration files. 
+This should be in the format of x.x.x.x.
+If you do not provide a version, the script will attempt to extract it from the installer file.</p>
 
-<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">Type</span><span class="pi">:</span> <span class="s">Object</span>
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">Type</span><span class="pi">:</span> <span class="s">Version</span>
 <span class="na">Parameter Sets</span><span class="pi">:</span> <span class="s">(All)</span>
-<span class="na">Aliases</span><span class="pi">:</span> <span class="s">InstallerFile, SourceFile</span>
+<span class="na">Aliases</span><span class="pi">:</span> <span class="s">ApplicationVersion, AppVersion</span>
 
-<span class="na">Required</span><span class="pi">:</span> <span class="s">True</span>
+<span class="na">Required</span><span class="pi">:</span> <span class="s">False</span>
 <span class="na">Position</span><span class="pi">:</span> <span class="s">Named</span>
 <span class="na">Default value</span><span class="pi">:</span> <span class="s">None</span>
 <span class="na">Accept pipeline input</span><span class="pi">:</span> <span class="s">False</span>
@@ -427,17 +376,16 @@ Default is ‘system’.</p>
 <div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">Type</span><span class="pi">:</span> <span class="s">String</span>
 <span class="na">Parameter Sets</span><span class="pi">:</span> <span class="s">(All)</span>
 <span class="na">Aliases</span><span class="pi">:</span>
-<span class="na">Accepted values</span><span class="pi">:</span> <span class="s">system, user</span>
 
 <span class="na">Required</span><span class="pi">:</span> <span class="s">False</span>
 <span class="na">Position</span><span class="pi">:</span> <span class="s">Named</span>
-<span class="na">Default value</span><span class="pi">:</span> <span class="s">None</span>
+<span class="na">Default value</span><span class="pi">:</span> <span class="s">System</span>
 <span class="na">Accept pipeline input</span><span class="pi">:</span> <span class="s">False</span>
 <span class="na">Accept wildcard characters</span><span class="pi">:</span> <span class="s">False</span>
 </code></pre></div></div>
 
-<h3 id="-uninstallpath">-UninstallPath</h3>
-<p>The path to the uninstall file.
+<h3 id="-installswitches">-InstallSwitches</h3>
+<p>The switches to use when installing the application.
 Default is empty.
 You’ll have to manually edit the configuration file.</p>
 
@@ -468,19 +416,78 @@ You’ll have to manually edit the configuration file.</p>
 <span class="na">Accept wildcard characters</span><span class="pi">:</span> <span class="s">False</span>
 </code></pre></div></div>
 
-<h3 id="-version">-Version</h3>
-<p>The version of the application. 
-This is written in to the exported configuration files. 
-This should be in the format of x.x.x.x. 
-If you do not provide a version, the script will attempt to extract it from the installer file.</p>
+<h3 id="-uninstallpath">-UninstallPath</h3>
+<p>The path to the uninstall file.
+Default is empty.
+You’ll have to manually edit the configuration file.</p>
 
-<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">Type</span><span class="pi">:</span> <span class="s">Version</span>
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">Type</span><span class="pi">:</span> <span class="s">String</span>
 <span class="na">Parameter Sets</span><span class="pi">:</span> <span class="s">(All)</span>
-<span class="na">Aliases</span><span class="pi">:</span> <span class="s">ApplicationVersion, AppVersion</span>
+<span class="na">Aliases</span><span class="pi">:</span>
 
 <span class="na">Required</span><span class="pi">:</span> <span class="s">False</span>
 <span class="na">Position</span><span class="pi">:</span> <span class="s">Named</span>
 <span class="na">Default value</span><span class="pi">:</span> <span class="s">None</span>
+<span class="na">Accept pipeline input</span><span class="pi">:</span> <span class="s">False</span>
+<span class="na">Accept wildcard characters</span><span class="pi">:</span> <span class="s">False</span>
+</code></pre></div></div>
+
+<h3 id="-path">-Path</h3>
+<p>The path to the installer file.
+This should be a .msi or .exe file.
+This parameter is mandatory.</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">Type</span><span class="pi">:</span> <span class="s">Object</span>
+<span class="na">Parameter Sets</span><span class="pi">:</span> <span class="s">(All)</span>
+<span class="na">Aliases</span><span class="pi">:</span> <span class="s">InstallerFile, SourceFile</span>
+
+<span class="na">Required</span><span class="pi">:</span> <span class="s">True</span>
+<span class="na">Position</span><span class="pi">:</span> <span class="s">Named</span>
+<span class="na">Default value</span><span class="pi">:</span> <span class="s">None</span>
+<span class="na">Accept pipeline input</span><span class="pi">:</span> <span class="s">False</span>
+<span class="na">Accept wildcard characters</span><span class="pi">:</span> <span class="s">False</span>
+</code></pre></div></div>
+
+<h3 id="-includedfiles">-IncludedFiles</h3>
+<p>Paths to any additional files that need to be included in the installation.</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">Type</span><span class="pi">:</span> <span class="s">String[]</span>
+<span class="na">Parameter Sets</span><span class="pi">:</span> <span class="s">(All)</span>
+<span class="na">Aliases</span><span class="pi">:</span>
+
+<span class="na">Required</span><span class="pi">:</span> <span class="s">False</span>
+<span class="na">Position</span><span class="pi">:</span> <span class="s">Named</span>
+<span class="na">Default value</span><span class="pi">:</span> <span class="s">None</span>
+<span class="na">Accept pipeline input</span><span class="pi">:</span> <span class="s">False</span>
+<span class="na">Accept wildcard characters</span><span class="pi">:</span> <span class="s">False</span>
+</code></pre></div></div>
+
+<h3 id="-destinationfolder">-DestinationFolder</h3>
+<p>The folder where the files will be copied to.
+Default is the current directory.</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">Type</span><span class="pi">:</span> <span class="s">String</span>
+<span class="na">Parameter Sets</span><span class="pi">:</span> <span class="s">(All)</span>
+<span class="na">Aliases</span><span class="pi">:</span>
+
+<span class="na">Required</span><span class="pi">:</span> <span class="s">False</span>
+<span class="na">Position</span><span class="pi">:</span> <span class="s">Named</span>
+<span class="na">Default value</span><span class="pi">:</span> <span class="s">$PWD.Path</span>
+<span class="na">Accept pipeline input</span><span class="pi">:</span> <span class="s">False</span>
+<span class="na">Accept wildcard characters</span><span class="pi">:</span> <span class="s">False</span>
+</code></pre></div></div>
+
+<h3 id="-createintunewinpackage">-CreateIntuneWinPackage</h3>
+<p>Create a Intune package for the application.
+Default is false.</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">Type</span><span class="pi">:</span> <span class="s">SwitchParameter</span>
+<span class="na">Parameter Sets</span><span class="pi">:</span> <span class="s">(All)</span>
+<span class="na">Aliases</span><span class="pi">:</span>
+
+<span class="na">Required</span><span class="pi">:</span> <span class="s">False</span>
+<span class="na">Position</span><span class="pi">:</span> <span class="s">Named</span>
+<span class="na">Default value</span><span class="pi">:</span> <span class="s">False</span>
 <span class="na">Accept pipeline input</span><span class="pi">:</span> <span class="s">False</span>
 <span class="na">Accept wildcard characters</span><span class="pi">:</span> <span class="s">False</span>
 </code></pre></div></div>
@@ -503,11 +510,8 @@ If you do not provide a version, the script will attempt to extract it from the 
 
 <h2 id="inputs">INPUTS</h2>
 
-<h3 id="none">None</h3>
-
 <h2 id="outputs">OUTPUTS</h2>
 
-<h3 id="systemobject">System.Object</h3>
 <h2 id="notes">NOTES</h2>
 
 <h2 id="related-links">RELATED LINKS</h2>

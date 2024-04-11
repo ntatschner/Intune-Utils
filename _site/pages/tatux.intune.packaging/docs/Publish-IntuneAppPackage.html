@@ -312,6 +312,7 @@ $('#toc').on('click', 'a', function() {
    <h1 id="publish-intuneapppackage">Publish-IntuneAppPackage</h1>
 
 <h2 id="synopsis">SYNOPSIS</h2>
+<p>This function takes the .intunewin and configuration .json and publishes the application to Intune</p>
 
 <h2 id="syntax">SYNTAX</h2>
 
@@ -320,42 +321,21 @@ $('#toc').on('click', 'a', function() {
 </code></pre></div></div>
 
 <h2 id="description">DESCRIPTION</h2>
+<p>This function takes the .intunewin and configuration .json and publishes the application to Intune.
+If the application already exists in Intune, the function will update the application if the -Force switch is used.</p>
 
 <h2 id="examples">EXAMPLES</h2>
 
-<h3 id="example-1">Example 1</h3>
-<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">PS</span><span class="w"> </span><span class="nx">C:\</span><span class="err">&gt;</span><span class="w"> 
-</span></code></pre></div></div>
+<h3 id="example-1">EXAMPLE 1</h3>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Publish-IntuneAppPackage -IntuneAppJSONPath "C:\Temp\IntuneApp.json" -IntuneWinPath "C:\Temp\IntuneApp.intunewin"
+</code></pre></div></div>
+
+<p>This example will publish the application to Intune using the configuration in the JSON file and the .intunewin file.</p>
 
 <h2 id="parameters">PARAMETERS</h2>
 
-<h3 id="-force">-Force</h3>
-
-<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">Type</span><span class="pi">:</span> <span class="s">SwitchParameter</span>
-<span class="na">Parameter Sets</span><span class="pi">:</span> <span class="s">(All)</span>
-<span class="na">Aliases</span><span class="pi">:</span>
-
-<span class="na">Required</span><span class="pi">:</span> <span class="s">False</span>
-<span class="na">Position</span><span class="pi">:</span> <span class="s">Named</span>
-<span class="na">Default value</span><span class="pi">:</span> <span class="s">None</span>
-<span class="na">Accept pipeline input</span><span class="pi">:</span> <span class="s">False</span>
-<span class="na">Accept wildcard characters</span><span class="pi">:</span> <span class="s">False</span>
-</code></pre></div></div>
-
 <h3 id="-intuneappjsonpath">-IntuneAppJSONPath</h3>
-
-<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">Type</span><span class="pi">:</span> <span class="s">String</span>
-<span class="na">Parameter Sets</span><span class="pi">:</span> <span class="s">(All)</span>
-<span class="na">Aliases</span><span class="pi">:</span>
-
-<span class="na">Required</span><span class="pi">:</span> <span class="s">True</span>
-<span class="na">Position</span><span class="pi">:</span> <span class="m">0</span>
-<span class="na">Default value</span><span class="pi">:</span> <span class="s">None</span>
-<span class="na">Accept pipeline input</span><span class="pi">:</span> <span class="s">False</span>
-<span class="na">Accept wildcard characters</span><span class="pi">:</span> <span class="s">False</span>
-</code></pre></div></div>
-
-<h3 id="-intunewinpath">-IntuneWinPath</h3>
+<p>The path to the JSON file that contains the Intune Application configuration</p>
 
 <div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">Type</span><span class="pi">:</span> <span class="s">String</span>
 <span class="na">Parameter Sets</span><span class="pi">:</span> <span class="s">(All)</span>
@@ -368,6 +348,34 @@ $('#toc').on('click', 'a', function() {
 <span class="na">Accept wildcard characters</span><span class="pi">:</span> <span class="s">False</span>
 </code></pre></div></div>
 
+<h3 id="-intunewinpath">-IntuneWinPath</h3>
+<p>The path to the .intunewin file.</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">Type</span><span class="pi">:</span> <span class="s">String</span>
+<span class="na">Parameter Sets</span><span class="pi">:</span> <span class="s">(All)</span>
+<span class="na">Aliases</span><span class="pi">:</span>
+
+<span class="na">Required</span><span class="pi">:</span> <span class="s">True</span>
+<span class="na">Position</span><span class="pi">:</span> <span class="m">2</span>
+<span class="na">Default value</span><span class="pi">:</span> <span class="s">None</span>
+<span class="na">Accept pipeline input</span><span class="pi">:</span> <span class="s">False</span>
+<span class="na">Accept wildcard characters</span><span class="pi">:</span> <span class="s">False</span>
+</code></pre></div></div>
+
+<h3 id="-force">-Force</h3>
+<p>If the application already exists in Intune, this switch will force the application to be updated.</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">Type</span><span class="pi">:</span> <span class="s">SwitchParameter</span>
+<span class="na">Parameter Sets</span><span class="pi">:</span> <span class="s">(All)</span>
+<span class="na">Aliases</span><span class="pi">:</span>
+
+<span class="na">Required</span><span class="pi">:</span> <span class="s">False</span>
+<span class="na">Position</span><span class="pi">:</span> <span class="s">Named</span>
+<span class="na">Default value</span><span class="pi">:</span> <span class="s">False</span>
+<span class="na">Accept pipeline input</span><span class="pi">:</span> <span class="s">False</span>
+<span class="na">Accept wildcard characters</span><span class="pi">:</span> <span class="s">False</span>
+</code></pre></div></div>
+
 <h3 id="-notenantdetails">-NoTenantDetails</h3>
 
 <div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">Type</span><span class="pi">:</span> <span class="s">SwitchParameter</span>
@@ -376,7 +384,7 @@ $('#toc').on('click', 'a', function() {
 
 <span class="na">Required</span><span class="pi">:</span> <span class="s">False</span>
 <span class="na">Position</span><span class="pi">:</span> <span class="s">Named</span>
-<span class="na">Default value</span><span class="pi">:</span> <span class="s">None</span>
+<span class="na">Default value</span><span class="pi">:</span> <span class="s">False</span>
 <span class="na">Accept pipeline input</span><span class="pi">:</span> <span class="s">False</span>
 <span class="na">Accept wildcard characters</span><span class="pi">:</span> <span class="s">False</span>
 </code></pre></div></div>
@@ -399,12 +407,9 @@ $('#toc').on('click', 'a', function() {
 
 <h2 id="inputs">INPUTS</h2>
 
-<h3 id="none">None</h3>
-
 <h2 id="outputs">OUTPUTS</h2>
 
-<h3 id="systemmanagementautomationpsobject">System.Management.Automation.PSObject</h3>
-
+<h3 id="the-function-will-output-the-intune-application-details-that-was-created">The function will output the Intune Application details that was created.</h3>
 <h2 id="notes">NOTES</h2>
 
 <h2 id="related-links">RELATED LINKS</h2>
