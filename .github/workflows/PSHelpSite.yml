@@ -87,7 +87,7 @@ jobs:
                 New-Item -ItemType Directory -Path $gistFolderPath -Force
               }
             }
-      - name: Copy .md files to each gist folder
+      - name: Copy PowerShell Help files to each module path in the gist folder
         run: |
             Get-ChildItem -Path ./src/onlinehelp | ForEach-Object {
               $folderName = $_.Name
