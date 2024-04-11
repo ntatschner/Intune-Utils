@@ -29,17 +29,17 @@ entries:
       type: homepage
 
   - title: Module tatux.intune.packaging
-    url: /tatux.intune.packaging.html
+    url: /pages/tatux.intune.packaging/docs/tatux.intune.packaging.html
     output: web, pdf
     folderitems:
 
     - title: New-APFDeployment
-      url: /New-APFDeployment.html
+      url: /pages/tatux.intune.packaging/docs/New-APFDeployment.html
       output: web, pdf
       type: cmdlet
 
     - title: Get-MSIProperties
-      url: /Get-MSIProperties.html
+      url: /pages/tatux.intune.packaging/docs/Get-MSIProperties.html
       output: web, pdf
       type: cmdlet
 
