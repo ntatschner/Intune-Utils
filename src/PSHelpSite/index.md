@@ -7,5 +7,4 @@ permalink: index.html
 summary: A collection of tools to help with Intune.
 ---
 
-
-{% include links.html %}
+Main Page
