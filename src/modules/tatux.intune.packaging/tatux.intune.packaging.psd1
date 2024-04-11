@@ -99,7 +99,7 @@
     } # End of PrivateData hashtable
 
     # HelpInfo URI of this module
-    HelpInfoURI = "https://pwsh.dev.tatux.co.uk/tatux.intune.packaging/files/"
+    HelpInfoURI = "https://pwsh.dev.tatux.co.uk/pages/tatux.intune.packaging/files/"
 
     # Default prefix for commands exported from this module. Override the default prefix using Import-Module -Prefix.
     # DefaultCommandPrefix = ''

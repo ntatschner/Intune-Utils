@@ -28,6 +28,10 @@ entries:
       output: web, pdf
       type: homepage
 
-    - title: Module tatux.intune.packaging
-      url: /pages/tatux.intune.packaging/tatux.intune.packaging.html
-      output: web, pdf
+  - title: Module tatux.intune.packaging
+    url: /pages/tatux.intune.packaging/docs/tatux.intune.packaging.html
+    output: web, pdf
+    folderitems:
+
+
+
