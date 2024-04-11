@@ -225,3 +225,6 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## NOTES
 
 ## RELATED LINKS
+
+## LINKS
+https://pwsh.dev.tatux.co.uk/pages/tatux.intune.packaging/docs/New-APFDeployment.html
