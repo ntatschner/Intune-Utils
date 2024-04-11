@@ -1,7 +1,7 @@
 ---
 external help file: tatux.intune.packaging-help.xml
 Module Name: tatux.intune.packaging
-online version:
+online version: https://pwsh.dev.tatux.co.uk/pages/tatux.intune.packaging/docs/New-APFDeployment.html
 schema: 2.0.0
 ---
 
