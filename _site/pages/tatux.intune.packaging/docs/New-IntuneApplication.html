@@ -312,6 +312,7 @@ $('#toc').on('click', 'a', function() {
    <h1 id="new-intuneapplication">New-IntuneApplication</h1>
 
 <h2 id="synopsis">SYNOPSIS</h2>
+<p>Creates a new Intune Application Deployment, automatically generating the .intunewin file and optionally the JSON file, and optionally publishing it</p>
 
 <h2 id="syntax">SYNTAX</h2>
 
@@ -326,169 +327,43 @@ $('#toc').on('click', 'a', function() {
 </code></pre></div></div>
 
 <h2 id="description">DESCRIPTION</h2>
+<p>This PowerShell Advanced Function Creates a new Intune Application Deployment,
+this can either generate the .intunewin file and a json file describing the application or
+create the intunewin file and publish it directly to Intune.</p>
 
 <h2 id="examples">EXAMPLES</h2>
 
-<h3 id="example-1">Example 1</h3>
-<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">PS</span><span class="w"> </span><span class="nx">C:\</span><span class="err">&gt;</span><span class="w"> 
-</span></code></pre></div></div>
+<h3 id="example-1">EXAMPLE 1</h3>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>New-IntuneApplication -ApplicationName "7-Zip" -Description "7-Zip is a file archiver with a high compression ratio." -Publisher "7-Zip" -Version "19.00" -Developer "Igor Pavlov" -InstallCommand "msiexec /i 7z1900-x64.msi /qn" -UninstallCommand "msiexec /x 7z1900-x64.msi /qn" -RequirementRuleType "Config" -RequirementRuleConfig "OS: Windows 10" -DetectionRuleType "MSI" -LogoPath "C:\Program Files\7-Zip\7zFM.exe" -AssignmentType "All-Devices" -IntuneWinPath "C:\Temp\7-Zip" -Publish
+Creates a new Intune Application Deployment for 7-Zip, generates the .intunewin file, and publishes it to Intune.
+</code></pre></div></div>
 
 <h2 id="parameters">PARAMETERS</h2>
 
 <h3 id="-applicationname">-ApplicationName</h3>
+<p>The name of the application to be created.</p>
 
 <div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">Type</span><span class="pi">:</span> <span class="s">String</span>
 <span class="na">Parameter Sets</span><span class="pi">:</span> <span class="s">(All)</span>
 <span class="na">Aliases</span><span class="pi">:</span>
 
 <span class="na">Required</span><span class="pi">:</span> <span class="s">True</span>
-<span class="na">Position</span><span class="pi">:</span> <span class="m">0</span>
+<span class="na">Position</span><span class="pi">:</span> <span class="m">1</span>
 <span class="na">Default value</span><span class="pi">:</span> <span class="s">None</span>
 <span class="na">Accept pipeline input</span><span class="pi">:</span> <span class="s">False</span>
 <span class="na">Accept wildcard characters</span><span class="pi">:</span> <span class="s">False</span>
 </code></pre></div></div>
 
-<h3 id="-assignmentgroup">-AssignmentGroup</h3>
+<h3 id="-sourcefiles">-SourceFiles</h3>
+<p>This can be a list of files or a directory.
+If you specify a directory, the function will include all files in the directory and subdirectories.</p>
 
-<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">Type</span><span class="pi">:</span> <span class="s">String</span>
-<span class="na">Parameter Sets</span><span class="pi">:</span> <span class="s">(All)</span>
-<span class="na">Aliases</span><span class="pi">:</span>
-
-<span class="na">Required</span><span class="pi">:</span> <span class="s">False</span>
-<span class="na">Position</span><span class="pi">:</span> <span class="m">19</span>
-<span class="na">Default value</span><span class="pi">:</span> <span class="s">None</span>
-<span class="na">Accept pipeline input</span><span class="pi">:</span> <span class="s">False</span>
-<span class="na">Accept wildcard characters</span><span class="pi">:</span> <span class="s">False</span>
-</code></pre></div></div>
-
-<h3 id="-assignmenttype">-AssignmentType</h3>
-
-<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">Type</span><span class="pi">:</span> <span class="s">String</span>
-<span class="na">Parameter Sets</span><span class="pi">:</span> <span class="s">(All)</span>
-<span class="na">Aliases</span><span class="pi">:</span>
-<span class="na">Accepted values</span><span class="pi">:</span> <span class="s">User-Group, Device-Group, All-Users, All-Devices</span>
-
-<span class="na">Required</span><span class="pi">:</span> <span class="s">True</span>
-<span class="na">Position</span><span class="pi">:</span> <span class="m">18</span>
-<span class="na">Default value</span><span class="pi">:</span> <span class="s">None</span>
-<span class="na">Accept pipeline input</span><span class="pi">:</span> <span class="s">False</span>
-<span class="na">Accept wildcard characters</span><span class="pi">:</span> <span class="s">False</span>
-</code></pre></div></div>
-
-<h3 id="-description">-Description</h3>
-
-<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">Type</span><span class="pi">:</span> <span class="s">String</span>
-<span class="na">Parameter Sets</span><span class="pi">:</span> <span class="s">(All)</span>
-<span class="na">Aliases</span><span class="pi">:</span>
-
-<span class="na">Required</span><span class="pi">:</span> <span class="s">False</span>
-<span class="na">Position</span><span class="pi">:</span> <span class="m">4</span>
-<span class="na">Default value</span><span class="pi">:</span> <span class="s">None</span>
-<span class="na">Accept pipeline input</span><span class="pi">:</span> <span class="s">False</span>
-<span class="na">Accept wildcard characters</span><span class="pi">:</span> <span class="s">False</span>
-</code></pre></div></div>
-
-<h3 id="-detectionruleconfig">-DetectionRuleConfig</h3>
-
-<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">Type</span><span class="pi">:</span> <span class="s">Hashtable</span>
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">Type</span><span class="pi">:</span> <span class="s">String[]</span>
 <span class="na">Parameter Sets</span><span class="pi">:</span> <span class="s">(All)</span>
 <span class="na">Aliases</span><span class="pi">:</span>
 
 <span class="na">Required</span><span class="pi">:</span> <span class="s">True</span>
-<span class="na">Position</span><span class="pi">:</span> <span class="m">17</span>
-<span class="na">Default value</span><span class="pi">:</span> <span class="s">None</span>
-<span class="na">Accept pipeline input</span><span class="pi">:</span> <span class="s">False</span>
-<span class="na">Accept wildcard characters</span><span class="pi">:</span> <span class="s">False</span>
-</code></pre></div></div>
-
-<h3 id="-developer">-Developer</h3>
-
-<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">Type</span><span class="pi">:</span> <span class="s">String</span>
-<span class="na">Parameter Sets</span><span class="pi">:</span> <span class="s">(All)</span>
-<span class="na">Aliases</span><span class="pi">:</span>
-
-<span class="na">Required</span><span class="pi">:</span> <span class="s">False</span>
-<span class="na">Position</span><span class="pi">:</span> <span class="m">7</span>
-<span class="na">Default value</span><span class="pi">:</span> <span class="s">None</span>
-<span class="na">Accept pipeline input</span><span class="pi">:</span> <span class="s">False</span>
-<span class="na">Accept wildcard characters</span><span class="pi">:</span> <span class="s">False</span>
-</code></pre></div></div>
-
-<h3 id="-filterrule">-FilterRule</h3>
-
-<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">Type</span><span class="pi">:</span> <span class="s">String</span>
-<span class="na">Parameter Sets</span><span class="pi">:</span> <span class="s">(All)</span>
-<span class="na">Aliases</span><span class="pi">:</span>
-
-<span class="na">Required</span><span class="pi">:</span> <span class="s">False</span>
-<span class="na">Position</span><span class="pi">:</span> <span class="m">21</span>
-<span class="na">Default value</span><span class="pi">:</span> <span class="s">None</span>
-<span class="na">Accept pipeline input</span><span class="pi">:</span> <span class="s">False</span>
-<span class="na">Accept wildcard characters</span><span class="pi">:</span> <span class="s">False</span>
-</code></pre></div></div>
-
-<h3 id="-filterruletype">-FilterRuleType</h3>
-
-<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">Type</span><span class="pi">:</span> <span class="s">String</span>
-<span class="na">Parameter Sets</span><span class="pi">:</span> <span class="s">(All)</span>
-<span class="na">Aliases</span><span class="pi">:</span>
-<span class="na">Accepted values</span><span class="pi">:</span> <span class="s">Include, Exclude</span>
-
-<span class="na">Required</span><span class="pi">:</span> <span class="s">False</span>
-<span class="na">Position</span><span class="pi">:</span> <span class="m">20</span>
-<span class="na">Default value</span><span class="pi">:</span> <span class="s">None</span>
-<span class="na">Accept pipeline input</span><span class="pi">:</span> <span class="s">False</span>
-<span class="na">Accept wildcard characters</span><span class="pi">:</span> <span class="s">False</span>
-</code></pre></div></div>
-
-<h3 id="-installcommand">-InstallCommand</h3>
-
-<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">Type</span><span class="pi">:</span> <span class="s">String</span>
-<span class="na">Parameter Sets</span><span class="pi">:</span> <span class="s">(All)</span>
-<span class="na">Aliases</span><span class="pi">:</span>
-
-<span class="na">Required</span><span class="pi">:</span> <span class="s">True</span>
-<span class="na">Position</span><span class="pi">:</span> <span class="m">14</span>
-<span class="na">Default value</span><span class="pi">:</span> <span class="s">None</span>
-<span class="na">Accept pipeline input</span><span class="pi">:</span> <span class="s">False</span>
-<span class="na">Accept wildcard characters</span><span class="pi">:</span> <span class="s">False</span>
-</code></pre></div></div>
-
-<h3 id="-installfor">-InstallFor</h3>
-
-<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">Type</span><span class="pi">:</span> <span class="s">String</span>
-<span class="na">Parameter Sets</span><span class="pi">:</span> <span class="s">(All)</span>
-<span class="na">Aliases</span><span class="pi">:</span>
-<span class="na">Accepted values</span><span class="pi">:</span> <span class="s">User, System</span>
-
-<span class="na">Required</span><span class="pi">:</span> <span class="s">False</span>
-<span class="na">Position</span><span class="pi">:</span> <span class="m">11</span>
-<span class="na">Default value</span><span class="pi">:</span> <span class="s">None</span>
-<span class="na">Accept pipeline input</span><span class="pi">:</span> <span class="s">False</span>
-<span class="na">Accept wildcard characters</span><span class="pi">:</span> <span class="s">False</span>
-</code></pre></div></div>
-
-<h3 id="-intunetoolspath">-IntuneToolsPath</h3>
-
-<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">Type</span><span class="pi">:</span> <span class="s">String</span>
-<span class="na">Parameter Sets</span><span class="pi">:</span> <span class="s">(All)</span>
-<span class="na">Aliases</span><span class="pi">:</span>
-
-<span class="na">Required</span><span class="pi">:</span> <span class="s">False</span>
-<span class="na">Position</span><span class="pi">:</span> <span class="m">22</span>
-<span class="na">Default value</span><span class="pi">:</span> <span class="s">None</span>
-<span class="na">Accept pipeline input</span><span class="pi">:</span> <span class="s">False</span>
-<span class="na">Accept wildcard characters</span><span class="pi">:</span> <span class="s">False</span>
-</code></pre></div></div>
-
-<h3 id="-logopath">-LogoPath</h3>
-
-<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">Type</span><span class="pi">:</span> <span class="s">String</span>
-<span class="na">Parameter Sets</span><span class="pi">:</span> <span class="s">(All)</span>
-<span class="na">Aliases</span><span class="pi">:</span>
-
-<span class="na">Required</span><span class="pi">:</span> <span class="s">False</span>
-<span class="na">Position</span><span class="pi">:</span> <span class="m">10</span>
+<span class="na">Position</span><span class="pi">:</span> <span class="m">2</span>
 <span class="na">Default value</span><span class="pi">:</span> <span class="s">None</span>
 <span class="na">Accept pipeline input</span><span class="pi">:</span> <span class="s">False</span>
 <span class="na">Accept wildcard characters</span><span class="pi">:</span> <span class="s">False</span>
@@ -501,91 +376,29 @@ $('#toc').on('click', 'a', function() {
 <span class="na">Aliases</span><span class="pi">:</span>
 
 <span class="na">Required</span><span class="pi">:</span> <span class="s">True</span>
-<span class="na">Position</span><span class="pi">:</span> <span class="m">2</span>
-<span class="na">Default value</span><span class="pi">:</span> <span class="s">None</span>
-<span class="na">Accept pipeline input</span><span class="pi">:</span> <span class="s">False</span>
-<span class="na">Accept wildcard characters</span><span class="pi">:</span> <span class="s">False</span>
-</code></pre></div></div>
-
-<h3 id="-nocleanup">-NoCleanUp</h3>
-
-<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">Type</span><span class="pi">:</span> <span class="s">SwitchParameter</span>
-<span class="na">Parameter Sets</span><span class="pi">:</span> <span class="s">(All)</span>
-<span class="na">Aliases</span><span class="pi">:</span>
-
-<span class="na">Required</span><span class="pi">:</span> <span class="s">False</span>
-<span class="na">Position</span><span class="pi">:</span> <span class="s">Named</span>
-<span class="na">Default value</span><span class="pi">:</span> <span class="s">None</span>
-<span class="na">Accept pipeline input</span><span class="pi">:</span> <span class="s">False</span>
-<span class="na">Accept wildcard characters</span><span class="pi">:</span> <span class="s">False</span>
-</code></pre></div></div>
-
-<h3 id="-nointunewin">-NoIntuneWin</h3>
-
-<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">Type</span><span class="pi">:</span> <span class="s">SwitchParameter</span>
-<span class="na">Parameter Sets</span><span class="pi">:</span> <span class="s">(All)</span>
-<span class="na">Aliases</span><span class="pi">:</span>
-
-<span class="na">Required</span><span class="pi">:</span> <span class="s">False</span>
-<span class="na">Position</span><span class="pi">:</span> <span class="s">Named</span>
-<span class="na">Default value</span><span class="pi">:</span> <span class="s">None</span>
-<span class="na">Accept pipeline input</span><span class="pi">:</span> <span class="s">False</span>
-<span class="na">Accept wildcard characters</span><span class="pi">:</span> <span class="s">False</span>
-</code></pre></div></div>
-
-<h3 id="-nojson">-NoJson</h3>
-
-<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">Type</span><span class="pi">:</span> <span class="s">SwitchParameter</span>
-<span class="na">Parameter Sets</span><span class="pi">:</span> <span class="s">(All)</span>
-<span class="na">Aliases</span><span class="pi">:</span>
-
-<span class="na">Required</span><span class="pi">:</span> <span class="s">False</span>
-<span class="na">Position</span><span class="pi">:</span> <span class="s">Named</span>
-<span class="na">Default value</span><span class="pi">:</span> <span class="s">None</span>
-<span class="na">Accept pipeline input</span><span class="pi">:</span> <span class="s">False</span>
-<span class="na">Accept wildcard characters</span><span class="pi">:</span> <span class="s">False</span>
-</code></pre></div></div>
-
-<h3 id="-outputfolder">-OutputFolder</h3>
-
-<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">Type</span><span class="pi">:</span> <span class="s">String</span>
-<span class="na">Parameter Sets</span><span class="pi">:</span> <span class="s">(All)</span>
-<span class="na">Aliases</span><span class="pi">:</span>
-
-<span class="na">Required</span><span class="pi">:</span> <span class="s">False</span>
 <span class="na">Position</span><span class="pi">:</span> <span class="m">3</span>
 <span class="na">Default value</span><span class="pi">:</span> <span class="s">None</span>
 <span class="na">Accept pipeline input</span><span class="pi">:</span> <span class="s">False</span>
 <span class="na">Accept wildcard characters</span><span class="pi">:</span> <span class="s">False</span>
 </code></pre></div></div>
 
-<h3 id="-overwrite">-Overwrite</h3>
+<h3 id="-outputfolder">-OutputFolder</h3>
+<p>The folder to save the .intunewin file and JSON config, current directory by default.</p>
 
-<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">Type</span><span class="pi">:</span> <span class="s">SwitchParameter</span>
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">Type</span><span class="pi">:</span> <span class="s">String</span>
 <span class="na">Parameter Sets</span><span class="pi">:</span> <span class="s">(All)</span>
 <span class="na">Aliases</span><span class="pi">:</span>
 
 <span class="na">Required</span><span class="pi">:</span> <span class="s">False</span>
-<span class="na">Position</span><span class="pi">:</span> <span class="s">Named</span>
-<span class="na">Default value</span><span class="pi">:</span> <span class="s">None</span>
+<span class="na">Position</span><span class="pi">:</span> <span class="m">4</span>
+<span class="na">Default value</span><span class="pi">:</span> <span class="s">$($PWD.Path)</span>
 <span class="na">Accept pipeline input</span><span class="pi">:</span> <span class="s">False</span>
 <span class="na">Accept wildcard characters</span><span class="pi">:</span> <span class="s">False</span>
 </code></pre></div></div>
 
-<h3 id="-publish">-Publish</h3>
-
-<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">Type</span><span class="pi">:</span> <span class="s">SwitchParameter</span>
-<span class="na">Parameter Sets</span><span class="pi">:</span> <span class="s">(All)</span>
-<span class="na">Aliases</span><span class="pi">:</span>
-
-<span class="na">Required</span><span class="pi">:</span> <span class="s">False</span>
-<span class="na">Position</span><span class="pi">:</span> <span class="s">Named</span>
-<span class="na">Default value</span><span class="pi">:</span> <span class="s">None</span>
-<span class="na">Accept pipeline input</span><span class="pi">:</span> <span class="s">False</span>
-<span class="na">Accept wildcard characters</span><span class="pi">:</span> <span class="s">False</span>
-</code></pre></div></div>
-
-<h3 id="-publisher">-Publisher</h3>
+<h3 id="-description">-Description</h3>
+<p>The description of the application.
+You can either pass a Markdown formatted file or a string.</p>
 
 <div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">Type</span><span class="pi">:</span> <span class="s">String</span>
 <span class="na">Parameter Sets</span><span class="pi">:</span> <span class="s">(All)</span>
@@ -593,65 +406,13 @@ $('#toc').on('click', 'a', function() {
 
 <span class="na">Required</span><span class="pi">:</span> <span class="s">False</span>
 <span class="na">Position</span><span class="pi">:</span> <span class="m">5</span>
-<span class="na">Default value</span><span class="pi">:</span> <span class="s">None</span>
+<span class="na">Default value</span><span class="pi">:</span> <span class="s2">"</span><span class="s">#</span><span class="nv"> </span><span class="s">$ApplicationName`nPublisher:</span><span class="nv"> </span><span class="s">$Publisher`nVersion:</span><span class="nv"> </span><span class="s">$Version`nDeveloper:</span><span class="nv"> </span><span class="s">$Developer`n`n$notes"</span>
 <span class="na">Accept pipeline input</span><span class="pi">:</span> <span class="s">False</span>
 <span class="na">Accept wildcard characters</span><span class="pi">:</span> <span class="s">False</span>
 </code></pre></div></div>
 
-<h3 id="-requirementruleconfig">-RequirementRuleConfig</h3>
-
-<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">Type</span><span class="pi">:</span> <span class="s">Hashtable</span>
-<span class="na">Parameter Sets</span><span class="pi">:</span> <span class="s">(All)</span>
-<span class="na">Aliases</span><span class="pi">:</span>
-
-<span class="na">Required</span><span class="pi">:</span> <span class="s">False</span>
-<span class="na">Position</span><span class="pi">:</span> <span class="m">16</span>
-<span class="na">Default value</span><span class="pi">:</span> <span class="s">None</span>
-<span class="na">Accept pipeline input</span><span class="pi">:</span> <span class="s">False</span>
-<span class="na">Accept wildcard characters</span><span class="pi">:</span> <span class="s">False</span>
-</code></pre></div></div>
-
-<h3 id="-restartbehavior">-RestartBehavior</h3>
-
-<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">Type</span><span class="pi">:</span> <span class="s">String</span>
-<span class="na">Parameter Sets</span><span class="pi">:</span> <span class="s">(All)</span>
-<span class="na">Aliases</span><span class="pi">:</span>
-<span class="na">Accepted values</span><span class="pi">:</span> <span class="s">basedOnReturnCode, allow, suppress, force</span>
-
-<span class="na">Required</span><span class="pi">:</span> <span class="s">False</span>
-<span class="na">Position</span><span class="pi">:</span> <span class="m">12</span>
-<span class="na">Default value</span><span class="pi">:</span> <span class="s">None</span>
-<span class="na">Accept pipeline input</span><span class="pi">:</span> <span class="s">False</span>
-<span class="na">Accept wildcard characters</span><span class="pi">:</span> <span class="s">False</span>
-</code></pre></div></div>
-
-<h3 id="-sourcefiles">-SourceFiles</h3>
-
-<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">Type</span><span class="pi">:</span> <span class="s">String[]</span>
-<span class="na">Parameter Sets</span><span class="pi">:</span> <span class="s">(All)</span>
-<span class="na">Aliases</span><span class="pi">:</span>
-
-<span class="na">Required</span><span class="pi">:</span> <span class="s">True</span>
-<span class="na">Position</span><span class="pi">:</span> <span class="m">1</span>
-<span class="na">Default value</span><span class="pi">:</span> <span class="s">None</span>
-<span class="na">Accept pipeline input</span><span class="pi">:</span> <span class="s">False</span>
-<span class="na">Accept wildcard characters</span><span class="pi">:</span> <span class="s">False</span>
-</code></pre></div></div>
-
-<h3 id="-uninstallcommand">-UninstallCommand</h3>
-
-<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">Type</span><span class="pi">:</span> <span class="s">String</span>
-<span class="na">Parameter Sets</span><span class="pi">:</span> <span class="s">(All)</span>
-<span class="na">Aliases</span><span class="pi">:</span>
-
-<span class="na">Required</span><span class="pi">:</span> <span class="s">True</span>
-<span class="na">Position</span><span class="pi">:</span> <span class="m">15</span>
-<span class="na">Default value</span><span class="pi">:</span> <span class="s">None</span>
-<span class="na">Accept pipeline input</span><span class="pi">:</span> <span class="s">False</span>
-<span class="na">Accept wildcard characters</span><span class="pi">:</span> <span class="s">False</span>
-</code></pre></div></div>
-
-<h3 id="-version">-Version</h3>
+<h3 id="-publisher">-Publisher</h3>
+<p>The publisher of the application.</p>
 
 <div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">Type</span><span class="pi">:</span> <span class="s">String</span>
 <span class="na">Parameter Sets</span><span class="pi">:</span> <span class="s">(All)</span>
@@ -659,25 +420,40 @@ $('#toc').on('click', 'a', function() {
 
 <span class="na">Required</span><span class="pi">:</span> <span class="s">False</span>
 <span class="na">Position</span><span class="pi">:</span> <span class="m">6</span>
-<span class="na">Default value</span><span class="pi">:</span> <span class="s">None</span>
+<span class="na">Default value</span><span class="pi">:</span> <span class="s">$Env:USERNAME</span>
 <span class="na">Accept pipeline input</span><span class="pi">:</span> <span class="s">False</span>
 <span class="na">Accept wildcard characters</span><span class="pi">:</span> <span class="s">False</span>
 </code></pre></div></div>
 
-<h3 id="-isfeatured">-isFeatured</h3>
+<h3 id="-version">-Version</h3>
+<p>The version of the application.</p>
 
-<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">Type</span><span class="pi">:</span> <span class="s">Boolean</span>
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">Type</span><span class="pi">:</span> <span class="s">String</span>
 <span class="na">Parameter Sets</span><span class="pi">:</span> <span class="s">(All)</span>
 <span class="na">Aliases</span><span class="pi">:</span>
 
 <span class="na">Required</span><span class="pi">:</span> <span class="s">False</span>
-<span class="na">Position</span><span class="pi">:</span> <span class="m">13</span>
-<span class="na">Default value</span><span class="pi">:</span> <span class="s">None</span>
+<span class="na">Position</span><span class="pi">:</span> <span class="m">7</span>
+<span class="na">Default value</span><span class="pi">:</span> <span class="m">1.0</span>
 <span class="na">Accept pipeline input</span><span class="pi">:</span> <span class="s">False</span>
 <span class="na">Accept wildcard characters</span><span class="pi">:</span> <span class="s">False</span>
 </code></pre></div></div>
 
-<h3 id="-notes">-notes</h3>
+<h3 id="-developer">-Developer</h3>
+<p>The developer of the application.</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">Type</span><span class="pi">:</span> <span class="s">String</span>
+<span class="na">Parameter Sets</span><span class="pi">:</span> <span class="s">(All)</span>
+<span class="na">Aliases</span><span class="pi">:</span>
+
+<span class="na">Required</span><span class="pi">:</span> <span class="s">False</span>
+<span class="na">Position</span><span class="pi">:</span> <span class="m">8</span>
+<span class="na">Default value</span><span class="pi">:</span> <span class="s">$Env:USERNAME</span>
+<span class="na">Accept pipeline input</span><span class="pi">:</span> <span class="s">False</span>
+<span class="na">Accept wildcard characters</span><span class="pi">:</span> <span class="s">False</span>
+</code></pre></div></div>
+
+<h3 id="-owner">-owner</h3>
 
 <div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">Type</span><span class="pi">:</span> <span class="s">String</span>
 <span class="na">Parameter Sets</span><span class="pi">:</span> <span class="s">(All)</span>
@@ -690,15 +466,267 @@ $('#toc').on('click', 'a', function() {
 <span class="na">Accept wildcard characters</span><span class="pi">:</span> <span class="s">False</span>
 </code></pre></div></div>
 
-<h3 id="-owner">-owner</h3>
+<h3 id="-notes">-notes</h3>
 
 <div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">Type</span><span class="pi">:</span> <span class="s">String</span>
 <span class="na">Parameter Sets</span><span class="pi">:</span> <span class="s">(All)</span>
 <span class="na">Aliases</span><span class="pi">:</span>
 
 <span class="na">Required</span><span class="pi">:</span> <span class="s">False</span>
-<span class="na">Position</span><span class="pi">:</span> <span class="m">8</span>
+<span class="na">Position</span><span class="pi">:</span> <span class="m">10</span>
 <span class="na">Default value</span><span class="pi">:</span> <span class="s">None</span>
+<span class="na">Accept pipeline input</span><span class="pi">:</span> <span class="s">False</span>
+<span class="na">Accept wildcard characters</span><span class="pi">:</span> <span class="s">False</span>
+</code></pre></div></div>
+
+<h3 id="-logopath">-LogoPath</h3>
+<p>The path to the image file for the application.
+Needs to be a PNG or JPG with a max resolution of 256x256 pixels.</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">Type</span><span class="pi">:</span> <span class="s">String</span>
+<span class="na">Parameter Sets</span><span class="pi">:</span> <span class="s">(All)</span>
+<span class="na">Aliases</span><span class="pi">:</span>
+
+<span class="na">Required</span><span class="pi">:</span> <span class="s">False</span>
+<span class="na">Position</span><span class="pi">:</span> <span class="m">11</span>
+<span class="na">Default value</span><span class="pi">:</span> <span class="s">None</span>
+<span class="na">Accept pipeline input</span><span class="pi">:</span> <span class="s">False</span>
+<span class="na">Accept wildcard characters</span><span class="pi">:</span> <span class="s">False</span>
+</code></pre></div></div>
+
+<h3 id="-installfor">-InstallFor</h3>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">Type</span><span class="pi">:</span> <span class="s">String</span>
+<span class="na">Parameter Sets</span><span class="pi">:</span> <span class="s">(All)</span>
+<span class="na">Aliases</span><span class="pi">:</span>
+
+<span class="na">Required</span><span class="pi">:</span> <span class="s">False</span>
+<span class="na">Position</span><span class="pi">:</span> <span class="m">12</span>
+<span class="na">Default value</span><span class="pi">:</span> <span class="s">System</span>
+<span class="na">Accept pipeline input</span><span class="pi">:</span> <span class="s">False</span>
+<span class="na">Accept wildcard characters</span><span class="pi">:</span> <span class="s">False</span>
+</code></pre></div></div>
+
+<h3 id="-restartbehavior">-RestartBehavior</h3>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">Type</span><span class="pi">:</span> <span class="s">String</span>
+<span class="na">Parameter Sets</span><span class="pi">:</span> <span class="s">(All)</span>
+<span class="na">Aliases</span><span class="pi">:</span>
+
+<span class="na">Required</span><span class="pi">:</span> <span class="s">False</span>
+<span class="na">Position</span><span class="pi">:</span> <span class="m">13</span>
+<span class="na">Default value</span><span class="pi">:</span> <span class="s">BasedOnReturnCode</span>
+<span class="na">Accept pipeline input</span><span class="pi">:</span> <span class="s">False</span>
+<span class="na">Accept wildcard characters</span><span class="pi">:</span> <span class="s">False</span>
+</code></pre></div></div>
+
+<h3 id="-isfeatured">-isFeatured</h3>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">Type</span><span class="pi">:</span> <span class="s">Boolean</span>
+<span class="na">Parameter Sets</span><span class="pi">:</span> <span class="s">(All)</span>
+<span class="na">Aliases</span><span class="pi">:</span>
+
+<span class="na">Required</span><span class="pi">:</span> <span class="s">False</span>
+<span class="na">Position</span><span class="pi">:</span> <span class="m">14</span>
+<span class="na">Default value</span><span class="pi">:</span> <span class="s">False</span>
+<span class="na">Accept pipeline input</span><span class="pi">:</span> <span class="s">False</span>
+<span class="na">Accept wildcard characters</span><span class="pi">:</span> <span class="s">False</span>
+</code></pre></div></div>
+
+<h3 id="-installcommand">-InstallCommand</h3>
+<p>The command to install the application.</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">Type</span><span class="pi">:</span> <span class="s">String</span>
+<span class="na">Parameter Sets</span><span class="pi">:</span> <span class="s">(All)</span>
+<span class="na">Aliases</span><span class="pi">:</span>
+
+<span class="na">Required</span><span class="pi">:</span> <span class="s">True</span>
+<span class="na">Position</span><span class="pi">:</span> <span class="m">15</span>
+<span class="na">Default value</span><span class="pi">:</span> <span class="s">None</span>
+<span class="na">Accept pipeline input</span><span class="pi">:</span> <span class="s">False</span>
+<span class="na">Accept wildcard characters</span><span class="pi">:</span> <span class="s">False</span>
+</code></pre></div></div>
+
+<h3 id="-uninstallcommand">-UninstallCommand</h3>
+<p>The command to uninstall the application.</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">Type</span><span class="pi">:</span> <span class="s">String</span>
+<span class="na">Parameter Sets</span><span class="pi">:</span> <span class="s">(All)</span>
+<span class="na">Aliases</span><span class="pi">:</span>
+
+<span class="na">Required</span><span class="pi">:</span> <span class="s">True</span>
+<span class="na">Position</span><span class="pi">:</span> <span class="m">16</span>
+<span class="na">Default value</span><span class="pi">:</span> <span class="s">None</span>
+<span class="na">Accept pipeline input</span><span class="pi">:</span> <span class="s">False</span>
+<span class="na">Accept wildcard characters</span><span class="pi">:</span> <span class="s">False</span>
+</code></pre></div></div>
+
+<h3 id="-requirementruleconfig">-RequirementRuleConfig</h3>
+<p>The requirement rule Config path for the application.
+A string of parsable requirements.</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">Type</span><span class="pi">:</span> <span class="s">Hashtable</span>
+<span class="na">Parameter Sets</span><span class="pi">:</span> <span class="s">(All)</span>
+<span class="na">Aliases</span><span class="pi">:</span>
+
+<span class="na">Required</span><span class="pi">:</span> <span class="s">False</span>
+<span class="na">Position</span><span class="pi">:</span> <span class="m">17</span>
+<span class="na">Default value</span><span class="pi">:</span> <span class="s">None</span>
+<span class="na">Accept pipeline input</span><span class="pi">:</span> <span class="s">False</span>
+<span class="na">Accept wildcard characters</span><span class="pi">:</span> <span class="s">False</span>
+</code></pre></div></div>
+
+<h3 id="-detectionruleconfig">-DetectionRuleConfig</h3>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">Type</span><span class="pi">:</span> <span class="s">Hashtable</span>
+<span class="na">Parameter Sets</span><span class="pi">:</span> <span class="s">(All)</span>
+<span class="na">Aliases</span><span class="pi">:</span>
+
+<span class="na">Required</span><span class="pi">:</span> <span class="s">True</span>
+<span class="na">Position</span><span class="pi">:</span> <span class="m">18</span>
+<span class="na">Default value</span><span class="pi">:</span> <span class="s">None</span>
+<span class="na">Accept pipeline input</span><span class="pi">:</span> <span class="s">False</span>
+<span class="na">Accept wildcard characters</span><span class="pi">:</span> <span class="s">False</span>
+</code></pre></div></div>
+
+<h3 id="-assignmenttype">-AssignmentType</h3>
+<p>The assignment type for the application.
+Either User-Group, Device-Group, All-Users, All-Devices.</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">Type</span><span class="pi">:</span> <span class="s">String</span>
+<span class="na">Parameter Sets</span><span class="pi">:</span> <span class="s">(All)</span>
+<span class="na">Aliases</span><span class="pi">:</span>
+
+<span class="na">Required</span><span class="pi">:</span> <span class="s">True</span>
+<span class="na">Position</span><span class="pi">:</span> <span class="m">19</span>
+<span class="na">Default value</span><span class="pi">:</span> <span class="s">None</span>
+<span class="na">Accept pipeline input</span><span class="pi">:</span> <span class="s">False</span>
+<span class="na">Accept wildcard characters</span><span class="pi">:</span> <span class="s">False</span>
+</code></pre></div></div>
+
+<h3 id="-assignmentgroup">-AssignmentGroup</h3>
+<p>The group to assign the application to.</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">Type</span><span class="pi">:</span> <span class="s">String</span>
+<span class="na">Parameter Sets</span><span class="pi">:</span> <span class="s">(All)</span>
+<span class="na">Aliases</span><span class="pi">:</span>
+
+<span class="na">Required</span><span class="pi">:</span> <span class="s">False</span>
+<span class="na">Position</span><span class="pi">:</span> <span class="m">20</span>
+<span class="na">Default value</span><span class="pi">:</span> <span class="s">None</span>
+<span class="na">Accept pipeline input</span><span class="pi">:</span> <span class="s">False</span>
+<span class="na">Accept wildcard characters</span><span class="pi">:</span> <span class="s">False</span>
+</code></pre></div></div>
+
+<h3 id="-filterruletype">-FilterRuleType</h3>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">Type</span><span class="pi">:</span> <span class="s">String</span>
+<span class="na">Parameter Sets</span><span class="pi">:</span> <span class="s">(All)</span>
+<span class="na">Aliases</span><span class="pi">:</span>
+
+<span class="na">Required</span><span class="pi">:</span> <span class="s">False</span>
+<span class="na">Position</span><span class="pi">:</span> <span class="m">21</span>
+<span class="na">Default value</span><span class="pi">:</span> <span class="s">None</span>
+<span class="na">Accept pipeline input</span><span class="pi">:</span> <span class="s">False</span>
+<span class="na">Accept wildcard characters</span><span class="pi">:</span> <span class="s">False</span>
+</code></pre></div></div>
+
+<h3 id="-filterrule">-FilterRule</h3>
+<p>The filter rule for the application.</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">Type</span><span class="pi">:</span> <span class="s">String</span>
+<span class="na">Parameter Sets</span><span class="pi">:</span> <span class="s">(All)</span>
+<span class="na">Aliases</span><span class="pi">:</span>
+
+<span class="na">Required</span><span class="pi">:</span> <span class="s">False</span>
+<span class="na">Position</span><span class="pi">:</span> <span class="m">22</span>
+<span class="na">Default value</span><span class="pi">:</span> <span class="s">None</span>
+<span class="na">Accept pipeline input</span><span class="pi">:</span> <span class="s">False</span>
+<span class="na">Accept wildcard characters</span><span class="pi">:</span> <span class="s">False</span>
+</code></pre></div></div>
+
+<h3 id="-publish">-Publish</h3>
+<p>Publish the application directly to Intune.</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">Type</span><span class="pi">:</span> <span class="s">SwitchParameter</span>
+<span class="na">Parameter Sets</span><span class="pi">:</span> <span class="s">(All)</span>
+<span class="na">Aliases</span><span class="pi">:</span>
+
+<span class="na">Required</span><span class="pi">:</span> <span class="s">False</span>
+<span class="na">Position</span><span class="pi">:</span> <span class="s">Named</span>
+<span class="na">Default value</span><span class="pi">:</span> <span class="s">False</span>
+<span class="na">Accept pipeline input</span><span class="pi">:</span> <span class="s">False</span>
+<span class="na">Accept wildcard characters</span><span class="pi">:</span> <span class="s">False</span>
+</code></pre></div></div>
+
+<h3 id="-intunetoolspath">-IntuneToolsPath</h3>
+<p>The path to the IntuneWinAppUtil.exe tool.
+If not specified the function will look for the tool in the current directory.
+If not found the function will download the tool from the internet.</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">Type</span><span class="pi">:</span> <span class="s">String</span>
+<span class="na">Parameter Sets</span><span class="pi">:</span> <span class="s">(All)</span>
+<span class="na">Aliases</span><span class="pi">:</span>
+
+<span class="na">Required</span><span class="pi">:</span> <span class="s">False</span>
+<span class="na">Position</span><span class="pi">:</span> <span class="m">23</span>
+<span class="na">Default value</span><span class="pi">:</span> <span class="s">.\IntuneWinAppUtil.exe</span>
+<span class="na">Accept pipeline input</span><span class="pi">:</span> <span class="s">False</span>
+<span class="na">Accept wildcard characters</span><span class="pi">:</span> <span class="s">False</span>
+</code></pre></div></div>
+
+<h3 id="-overwrite">-Overwrite</h3>
+<p>Overwrite the .intunewin file and JSON if they already exists.</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">Type</span><span class="pi">:</span> <span class="s">SwitchParameter</span>
+<span class="na">Parameter Sets</span><span class="pi">:</span> <span class="s">(All)</span>
+<span class="na">Aliases</span><span class="pi">:</span>
+
+<span class="na">Required</span><span class="pi">:</span> <span class="s">False</span>
+<span class="na">Position</span><span class="pi">:</span> <span class="s">Named</span>
+<span class="na">Default value</span><span class="pi">:</span> <span class="s">False</span>
+<span class="na">Accept pipeline input</span><span class="pi">:</span> <span class="s">False</span>
+<span class="na">Accept wildcard characters</span><span class="pi">:</span> <span class="s">False</span>
+</code></pre></div></div>
+
+<h3 id="-nojson">-NoJson</h3>
+<p>Do not generate the JSON file.</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">Type</span><span class="pi">:</span> <span class="s">SwitchParameter</span>
+<span class="na">Parameter Sets</span><span class="pi">:</span> <span class="s">(All)</span>
+<span class="na">Aliases</span><span class="pi">:</span>
+
+<span class="na">Required</span><span class="pi">:</span> <span class="s">False</span>
+<span class="na">Position</span><span class="pi">:</span> <span class="s">Named</span>
+<span class="na">Default value</span><span class="pi">:</span> <span class="s">False</span>
+<span class="na">Accept pipeline input</span><span class="pi">:</span> <span class="s">False</span>
+<span class="na">Accept wildcard characters</span><span class="pi">:</span> <span class="s">False</span>
+</code></pre></div></div>
+
+<h3 id="-nointunewin">-NoIntuneWin</h3>
+<p>Do not generate the .intunewin file.</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">Type</span><span class="pi">:</span> <span class="s">SwitchParameter</span>
+<span class="na">Parameter Sets</span><span class="pi">:</span> <span class="s">(All)</span>
+<span class="na">Aliases</span><span class="pi">:</span>
+
+<span class="na">Required</span><span class="pi">:</span> <span class="s">False</span>
+<span class="na">Position</span><span class="pi">:</span> <span class="s">Named</span>
+<span class="na">Default value</span><span class="pi">:</span> <span class="s">False</span>
+<span class="na">Accept pipeline input</span><span class="pi">:</span> <span class="s">False</span>
+<span class="na">Accept wildcard characters</span><span class="pi">:</span> <span class="s">False</span>
+</code></pre></div></div>
+
+<h3 id="-nocleanup">-NoCleanUp</h3>
+<p>Do not clean up the files after publishing.</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">Type</span><span class="pi">:</span> <span class="s">SwitchParameter</span>
+<span class="na">Parameter Sets</span><span class="pi">:</span> <span class="s">(All)</span>
+<span class="na">Aliases</span><span class="pi">:</span>
+
+<span class="na">Required</span><span class="pi">:</span> <span class="s">False</span>
+<span class="na">Position</span><span class="pi">:</span> <span class="s">Named</span>
+<span class="na">Default value</span><span class="pi">:</span> <span class="s">False</span>
 <span class="na">Accept pipeline input</span><span class="pi">:</span> <span class="s">False</span>
 <span class="na">Accept wildcard characters</span><span class="pi">:</span> <span class="s">False</span>
 </code></pre></div></div>
@@ -721,12 +749,9 @@ $('#toc').on('click', 'a', function() {
 
 <h2 id="inputs">INPUTS</h2>
 
-<h3 id="none">None</h3>
-
 <h2 id="outputs">OUTPUTS</h2>
 
 <h3 id="systemmanagementautomationpsobject">System.Management.Automation.PSObject</h3>
-
 <h2 id="notes">NOTES</h2>
 
 <h2 id="related-links">RELATED LINKS</h2>
