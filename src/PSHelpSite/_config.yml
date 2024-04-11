@@ -90,20 +90,10 @@ defaults:
     sidebar: main_sidebar
     topnav: topnav
 
-# these are defaults used for the frontmatter for these file types
-
 sidebars:
-- home_sidebar
 - main_sidebar
-- other
 
 description: "Intune Utilities is a collection of PowerShell modules that help you manage Microsoft Intune."
-# the description is used in the feed.xml file
-
-# needed for sitemap.xml file only
-# url: http://idratherbewriting.com
-# baseurl: /documentation-theme-jekyll
-
 
 github: [metadata]
 
