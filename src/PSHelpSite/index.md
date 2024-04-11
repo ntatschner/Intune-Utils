@@ -1,7 +1,7 @@
 ---
 title: "Tatux Utilities"
 keywords: homepage
-tags: [getting_started]
+tags: [homepage]
 sidebar: main_sidebar
 permalink: index.html
 summary: A collection of tools to help with Intune.
