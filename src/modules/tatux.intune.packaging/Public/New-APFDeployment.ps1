@@ -1,6 +1,6 @@
 function New-APFDeployment {
     param(
-        [CmdletBinding(SupportsShouldProcess)]
+        [CmdletBinding(SupportsShouldProcess, HelpUri = 'https://pwsh.dev.tatux.co.uk/pages/tatux.intune.packaging/New-APFDeployment.html')]
         [OutputType([string])]
 
         [Parameter(ParameterSetName = "config")]
