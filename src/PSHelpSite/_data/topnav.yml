@@ -4,7 +4,7 @@ topnav:
 - title: Topnav
   items:
   - title: GitHub
-    external_url: https://https://github.com/ntatschner/Intune-Utils
+    external_url: https://github.com/ntatschner/Intune-Utils
   - title: News
     url: /news
 
