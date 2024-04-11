@@ -8,7 +8,7 @@ schema: 2.0.0
 # New-IntuneApplication
 
 ## SYNOPSIS
-{{ Fill in the Synopsis }}
+Creates a new Intune Application Deployment, automatically generating the .intunewin file and optionally the JSON file, and optionally publishing it
 
 ## SYNTAX
 
@@ -24,21 +24,22 @@ New-IntuneApplication [-ApplicationName] <String> [-SourceFiles] <String[]> [-Ma
 ```
 
 ## DESCRIPTION
-{{ Fill in the Description }}
+This PowerShell Advanced Function Creates a new Intune Application Deployment,
+this can either generate the .intunewin file and a json file describing the application or
+create the intunewin file and publish it directly to Intune.
 
 ## EXAMPLES
 
-### Example 1
-```powershell
-PS C:\> {{ Add example code here }}
+### EXAMPLE 1
 ```
-
-{{ Add example description here }}
+New-IntuneApplication -ApplicationName "7-Zip" -Description "7-Zip is a file archiver with a high compression ratio." -Publisher "7-Zip" -Version "19.00" -Developer "Igor Pavlov" -InstallCommand "msiexec /i 7z1900-x64.msi /qn" -UninstallCommand "msiexec /x 7z1900-x64.msi /qn" -RequirementRuleType "Config" -RequirementRuleConfig "OS: Windows 10" -DetectionRuleType "MSI" -LogoPath "C:\Program Files\7-Zip\7zFM.exe" -AssignmentType "All-Devices" -IntuneWinPath "C:\Temp\7-Zip" -Publish
+Creates a new Intune Application Deployment for 7-Zip, generates the .intunewin file, and publishes it to Intune.
+```
 
 ## PARAMETERS
 
 ### -ApplicationName
-{{ Fill ApplicationName Description }}
+The name of the application to be created.
 
 ```yaml
 Type: String
@@ -46,175 +47,23 @@ Parameter Sets: (All)
 Aliases:
 
 Required: True
-Position: 0
+Position: 1
 Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -AssignmentGroup
-{{ Fill AssignmentGroup Description }}
+### -SourceFiles
+This can be a list of files or a directory.
+If you specify a directory, the function will include all files in the directory and subdirectories.
 
 ```yaml
-Type: String
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: 19
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -AssignmentType
-{{ Fill AssignmentType Description }}
-
-```yaml
-Type: String
-Parameter Sets: (All)
-Aliases:
-Accepted values: User-Group, Device-Group, All-Users, All-Devices
-
-Required: True
-Position: 18
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -Description
-{{ Fill Description Description }}
-
-```yaml
-Type: String
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: 4
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -DetectionRuleConfig
-{{ Fill DetectionRuleConfig Description }}
-
-```yaml
-Type: Hashtable
+Type: String[]
 Parameter Sets: (All)
 Aliases:
 
 Required: True
-Position: 17
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -Developer
-{{ Fill Developer Description }}
-
-```yaml
-Type: String
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: 7
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -FilterRule
-{{ Fill FilterRule Description }}
-
-```yaml
-Type: String
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: 21
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -FilterRuleType
-{{ Fill FilterRuleType Description }}
-
-```yaml
-Type: String
-Parameter Sets: (All)
-Aliases:
-Accepted values: Include, Exclude
-
-Required: False
-Position: 20
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -InstallCommand
-{{ Fill InstallCommand Description }}
-
-```yaml
-Type: String
-Parameter Sets: (All)
-Aliases:
-
-Required: True
-Position: 14
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -InstallFor
-{{ Fill InstallFor Description }}
-
-```yaml
-Type: String
-Parameter Sets: (All)
-Aliases:
-Accepted values: User, System
-
-Required: False
-Position: 11
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -IntuneToolsPath
-{{ Fill IntuneToolsPath Description }}
-
-```yaml
-Type: String
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: 22
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -LogoPath
-{{ Fill LogoPath Description }}
-
-```yaml
-Type: String
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: 10
+Position: 2
 Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
@@ -229,59 +78,14 @@ Parameter Sets: (All)
 Aliases:
 
 Required: True
-Position: 2
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -NoCleanUp
-{{ Fill NoCleanUp Description }}
-
-```yaml
-Type: SwitchParameter
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -NoIntuneWin
-{{ Fill NoIntuneWin Description }}
-
-```yaml
-Type: SwitchParameter
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -NoJson
-{{ Fill NoJson Description }}
-
-```yaml
-Type: SwitchParameter
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: Named
+Position: 3
 Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
 ### -OutputFolder
-{{ Fill OutputFolder Description }}
+The folder to save the .intunewin file and JSON config, current directory by default.
 
 ```yaml
 Type: String
@@ -289,44 +93,15 @@ Parameter Sets: (All)
 Aliases:
 
 Required: False
-Position: 3
-Default value: None
+Position: 4
+Default value: $($PWD.Path)
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -Overwrite
-{{ Fill Overwrite Description }}
-
-```yaml
-Type: SwitchParameter
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -Publish
-{{ Fill Publish Description }}
-
-```yaml
-Type: SwitchParameter
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -Publisher
-{{ Fill Publisher Description }}
+### -Description
+The description of the application.
+You can either pass a Markdown formatted file or a string.
 
 ```yaml
 Type: String
@@ -335,74 +110,13 @@ Aliases:
 
 Required: False
 Position: 5
-Default value: None
+Default value: "# $ApplicationName`nPublisher: $Publisher`nVersion: $Version`nDeveloper: $Developer`n`n$notes"
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -RequirementRuleConfig
-{{ Fill RequirementRuleConfig Description }}
-
-```yaml
-Type: Hashtable
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: 16
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -RestartBehavior
-{{ Fill RestartBehavior Description }}
-
-```yaml
-Type: String
-Parameter Sets: (All)
-Aliases:
-Accepted values: basedOnReturnCode, allow, suppress, force
-
-Required: False
-Position: 12
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -SourceFiles
-{{ Fill SourceFiles Description }}
-
-```yaml
-Type: String[]
-Parameter Sets: (All)
-Aliases:
-
-Required: True
-Position: 1
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -UninstallCommand
-{{ Fill UninstallCommand Description }}
-
-```yaml
-Type: String
-Parameter Sets: (All)
-Aliases:
-
-Required: True
-Position: 15
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -Version
-{{ Fill Version Description }}
+### -Publisher
+The publisher of the application.
 
 ```yaml
 Type: String
@@ -411,21 +125,51 @@ Aliases:
 
 Required: False
 Position: 6
-Default value: None
+Default value: $Env:USERNAME
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -isFeatured
-{{ Fill isFeatured Description }}
+### -Version
+The version of the application.
 
 ```yaml
-Type: Boolean
+Type: String
 Parameter Sets: (All)
 Aliases:
 
 Required: False
-Position: 13
+Position: 7
+Default value: 1.0
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Developer
+The developer of the application.
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: 8
+Default value: $Env:USERNAME
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -owner
+{{ Fill owner Description }}
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: 9
 Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
@@ -440,14 +184,15 @@ Parameter Sets: (All)
 Aliases:
 
 Required: False
-Position: 9
+Position: 10
 Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -owner
-{{ Fill owner Description }}
+### -LogoPath
+The path to the image file for the application.
+Needs to be a PNG or JPG with a max resolution of 256x256 pixels.
 
 ```yaml
 Type: String
@@ -455,8 +200,267 @@ Parameter Sets: (All)
 Aliases:
 
 Required: False
-Position: 8
+Position: 11
 Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -InstallFor
+{{ Fill InstallFor Description }}
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: 12
+Default value: System
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -RestartBehavior
+{{ Fill RestartBehavior Description }}
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: 13
+Default value: BasedOnReturnCode
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -isFeatured
+{{ Fill isFeatured Description }}
+
+```yaml
+Type: Boolean
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: 14
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -InstallCommand
+The command to install the application.
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: True
+Position: 15
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -UninstallCommand
+The command to uninstall the application.
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: True
+Position: 16
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -RequirementRuleConfig
+The requirement rule Config path for the application.
+A string of parsable requirements.
+
+```yaml
+Type: Hashtable
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: 17
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -DetectionRuleConfig
+{{ Fill DetectionRuleConfig Description }}
+
+```yaml
+Type: Hashtable
+Parameter Sets: (All)
+Aliases:
+
+Required: True
+Position: 18
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -AssignmentType
+The assignment type for the application.
+Either User-Group, Device-Group, All-Users, All-Devices.
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: True
+Position: 19
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -AssignmentGroup
+The group to assign the application to.
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: 20
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -FilterRuleType
+{{ Fill FilterRuleType Description }}
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: 21
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -FilterRule
+The filter rule for the application.
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: 22
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Publish
+Publish the application directly to Intune.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -IntuneToolsPath
+The path to the IntuneWinAppUtil.exe tool.
+If not specified the function will look for the tool in the current directory.
+If not found the function will download the tool from the internet.
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: 23
+Default value: .\IntuneWinAppUtil.exe
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Overwrite
+Overwrite the .intunewin file and JSON if they already exists.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -NoJson
+Do not generate the JSON file.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -NoIntuneWin
+Do not generate the .intunewin file.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -NoCleanUp
+Do not clean up the files after publishing.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: False
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
@@ -481,12 +485,9 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## INPUTS
 
-### None
-
 ## OUTPUTS
 
 ### System.Management.Automation.PSObject
-
 ## NOTES
 
 ## RELATED LINKS

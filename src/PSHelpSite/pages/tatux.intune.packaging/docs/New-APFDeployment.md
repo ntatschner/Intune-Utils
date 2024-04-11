@@ -8,7 +8,7 @@ schema: 2.0.0
 # New-APFDeployment
 
 ## SYNOPSIS
-{{ Fill in the Synopsis }}
+Creates a new APF deployment.
 
 ## SYNTAX
 
@@ -20,86 +20,23 @@ New-APFDeployment [-Name <String>] [-Version <Version>] [-Target <String>] [-Ins
 ```
 
 ## DESCRIPTION
-{{ Fill in the Description }}
+The New-APFDeployment function creates a new APF deployment based on the provided parameters.
 
 ## EXAMPLES
 
-### Example 1
-```powershell
-PS C:\> {{ Add example code here }}
+### EXAMPLE 1
+```
+New-APFDeployment -Name "MyApp" -Version 1.0.0.0 -Path "C:\Installers\MyApp.msi" -DestinationFolder "C:\Deployments\MyApp"
 ```
 
-{{ Add example description here }}
+This example creates a new APF deployment for an application named "MyApp" with version 1.0.0.0.
+The installer file is located at "C:\Installers\MyApp.msi", and the deployment files will be copied to "C:\Deployments\MyApp".
 
 ## PARAMETERS
 
-### -CreateIntuneWinPackage
-Create a Intune package for the application.
-Default is false.
-
-```yaml
-Type: SwitchParameter
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -DestinationFolder
-The folder where the files will be copied to.
-Default is the current directory.
-
-```yaml
-Type: String
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -IncludedFiles
-Paths to any additional files that need to be included in the installation.
-
-```yaml
-Type: String[]
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -InstallSwitches
-The switches to use when installing the application.
-Default is empty.
-You'll have to manually edit the configuration file.
-
-```yaml
-Type: String
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
 ### -Name
-The name of the application. 
-This is written in to the exported configuration files. 
+The name of the application.
+This is written into the exported configuration files. 
 If you do not provide a name, the script will attempt to extract it from the installer file.
 
 ```yaml
@@ -114,15 +51,18 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -Path
-{{ Fill Path Description }}
+### -Version
+The version of the application.
+This is written into the exported configuration files. 
+This should be in the format of x.x.x.x.
+If you do not provide a version, the script will attempt to extract it from the installer file.
 
 ```yaml
-Type: Object
+Type: Version
 Parameter Sets: (All)
-Aliases: InstallerFile, SourceFile
+Aliases: ApplicationVersion, AppVersion
 
-Required: True
+Required: False
 Position: Named
 Default value: None
 Accept pipeline input: False
@@ -137,17 +77,16 @@ Default is 'system'.
 Type: String
 Parameter Sets: (All)
 Aliases:
-Accepted values: system, user
 
 Required: False
 Position: Named
-Default value: None
+Default value: System
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -UninstallPath
-The path to the uninstall file.
+### -InstallSwitches
+The switches to use when installing the application.
 Default is empty.
 You'll have to manually edit the configuration file.
 
@@ -180,20 +119,83 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -Version
-The version of the application. 
-This is written in to the exported configuration files. 
-This should be in the format of x.x.x.x. 
-If you do not provide a version, the script will attempt to extract it from the installer file.
+### -UninstallPath
+The path to the uninstall file.
+Default is empty.
+You'll have to manually edit the configuration file.
 
 ```yaml
-Type: Version
+Type: String
 Parameter Sets: (All)
-Aliases: ApplicationVersion, AppVersion
+Aliases:
 
 Required: False
 Position: Named
 Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Path
+The path to the installer file.
+This should be a .msi or .exe file.
+This parameter is mandatory.
+
+```yaml
+Type: Object
+Parameter Sets: (All)
+Aliases: InstallerFile, SourceFile
+
+Required: True
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -IncludedFiles
+Paths to any additional files that need to be included in the installation.
+
+```yaml
+Type: String[]
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -DestinationFolder
+The folder where the files will be copied to.
+Default is the current directory.
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: $PWD.Path
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -CreateIntuneWinPackage
+Create a Intune package for the application.
+Default is false.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: False
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
@@ -218,11 +220,8 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## INPUTS
 
-### None
-
 ## OUTPUTS
 
-### System.Object
 ## NOTES
 
 ## RELATED LINKS

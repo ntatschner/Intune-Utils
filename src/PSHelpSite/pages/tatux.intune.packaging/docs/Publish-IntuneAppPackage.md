@@ -8,7 +8,7 @@ schema: 2.0.0
 # Publish-IntuneAppPackage
 
 ## SYNOPSIS
-{{ Fill in the Synopsis }}
+This function takes the .intunewin and configuration .json and publishes the application to Intune
 
 ## SYNTAX
 
@@ -18,51 +18,22 @@ Publish-IntuneAppPackage [-IntuneAppJSONPath] <String> [-IntuneWinPath] <String>
 ```
 
 ## DESCRIPTION
-{{ Fill in the Description }}
+This function takes the .intunewin and configuration .json and publishes the application to Intune.
+If the application already exists in Intune, the function will update the application if the -Force switch is used.
 
 ## EXAMPLES
 
-### Example 1
-```powershell
-PS C:\> {{ Add example code here }}
+### EXAMPLE 1
+```
+Publish-IntuneAppPackage -IntuneAppJSONPath "C:\Temp\IntuneApp.json" -IntuneWinPath "C:\Temp\IntuneApp.intunewin"
 ```
 
-{{ Add example description here }}
+This example will publish the application to Intune using the configuration in the JSON file and the .intunewin file.
 
 ## PARAMETERS
 
-### -Force
-{{ Fill Force Description }}
-
-```yaml
-Type: SwitchParameter
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
 ### -IntuneAppJSONPath
-{{ Fill IntuneAppJSONPath Description }}
-
-```yaml
-Type: String
-Parameter Sets: (All)
-Aliases:
-
-Required: True
-Position: 0
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -IntuneWinPath
-{{ Fill IntuneWinPath Description }}
+The path to the JSON file that contains the Intune Application configuration
 
 ```yaml
 Type: String
@@ -72,6 +43,36 @@ Aliases:
 Required: True
 Position: 1
 Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -IntuneWinPath
+The path to the .intunewin file.
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: True
+Position: 2
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Force
+If the application already exists in Intune, this switch will force the application to be updated.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: False
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
@@ -86,7 +87,7 @@ Aliases:
 
 Required: False
 Position: Named
-Default value: None
+Default value: False
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
@@ -111,12 +112,9 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## INPUTS
 
-### None
-
 ## OUTPUTS
 
-### System.Management.Automation.PSObject
-
+### The function will output the Intune Application details that was created.
 ## NOTES
 
 ## RELATED LINKS
