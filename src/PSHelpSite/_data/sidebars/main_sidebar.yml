@@ -33,5 +33,13 @@ entries:
     output: web, pdf
     folderitems:
 
+    - title: New-APFDeployment
+      url: /pages/tatux.intune.packaging/docs/New-APFDeployment.html
+      output: web, pdf
+      type: cmdlet
 
+    - title: Get-MSIProperties
+      url: /pages/tatux.intune.packaging/docs/Get-MSIProperties.html
+      output: web, pdf
+      type: cmdlet
 
