@@ -41,7 +41,7 @@ feedback_email: nigel@tatux.co.uk
 # feedback_disable: true
 # if you uncomment the previous line, the Feedback link gets removed
 
-feedback_text: "Need help? Questions?"
+feedback_text: "Need help?"
 # if you uncomment the previous line, it changes the Feedback text
 
 feedback_link: "https://tatux.in/"
