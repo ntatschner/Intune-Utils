@@ -6,7 +6,7 @@ on:
   push:
     branches: ["main"]
     paths:
-      - 'src/gh_pages/**'
+      - 'src/PSHelpSite/**'
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -29,7 +29,7 @@ jobs:
     outputs:
       commit_id: ${{ steps.commit.outputs.commit_id }}
     env: 
-      BUNDLE_GEMFILE: ${{ github.workspace }}/src/gh_pages/Gemfile
+      BUNDLE_GEMFILE: ${{ github.workspace }}/src/PSHelpSite/Gemfile
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -47,7 +47,7 @@ jobs:
       
       - name: Build with Jekyll
 
-        working-directory: ./src/gh_pages
+        working-directory: ./src/PSHelpSite
         run: bundle exec jekyll build --source . --destination ../../_site/
         env:
           JEKYLL_ENV: production
