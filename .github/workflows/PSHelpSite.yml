@@ -125,7 +125,7 @@ jobs:
         run: |
           $Folders = Get-ChildItem -Directory -Path ./src/onlinehelp
           foreach ($folder in $Folders) {
-            $gistFolderPath = "./_site/$($folder.Name)"
+            $gistFolderPath = "./_site/pages/$($folder.Name)"
             $mainmdfile = "$gistFolderPath/$($folder.Name).md"
             $indexmdfile = "$gistFolderPath/index.md"
             if (Test-Path $mainmdfile) {
