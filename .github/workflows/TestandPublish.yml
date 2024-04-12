@@ -29,6 +29,7 @@ jobs:
         run: |
           Set-PSRepository PSGallery -InstallationPolicy Trusted
           Install-Module PSScriptAnalyzer -ErrorAction Stop
+          install-module -name 'Microsoft.Graph.Intune', 'Microsoft.Graph.Authentication' 
       
       - name: Run Pester Tests
         if: github.event_name == 'pull_request' || 'workflow_dispatch'
