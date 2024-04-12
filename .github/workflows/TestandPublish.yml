@@ -63,6 +63,15 @@ jobs:
             }
           }
 
+      - name: Validate Module Manifest
+        shell: pwsh
+        run: |
+          Get-ChildItem -Path .\src\modules\ -Directory | ForEach-Object {
+            $ModuleName = $_.Name
+            Write-Output "Validating module manifest for $ModuleName"
+            Test-ModuleManifest -Path ".\src\modules\$ModuleName\$ModuleName.psd1" -ErrorAction Stop
+          }
+
   Publish:
     runs-on: windows-latest
     needs: RunTests
