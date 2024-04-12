@@ -17,7 +17,7 @@ function Get-MSIProperties {
 
         # Creating WI object and load MSI database
         $WindowsInstaller = New-Object -ComObject WindowsInstaller.Installer
-        $WindowsInstallerDatabase = $WindowsInstaller.GetType().InvokeMember("OpenDatabase", "InvokeMethod", $null, $WindowsInstaller, @(($msiDbName), 0))
+        $WindowsInstallerDatabase = $WindowsInstaller.GetType().InvokeMember("OpenDatabase", "InvokeMethod", $null, $WindowsInstaller, @(($Path), 0))
 
         # Open the Property-view
         $WindowsInstallerDatabaseView = $WindowsInstallerDatabase.GetType().InvokeMember("OpenView", "InvokeMethod", $null, $WindowsInstallerDatabase, "SELECT * FROM Property")
