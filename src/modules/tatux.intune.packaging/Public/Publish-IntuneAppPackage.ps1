@@ -1,4 +1,4 @@
-#requires -Version 7.0 -Modules 'Microsoft.Graph.Intune', 'Microsoft.Graph.Authentication'
+#requires -Modules 'Microsoft.Graph.Intune', 'Microsoft.Graph.Authentication'
 # Takes the .intunewin and configuration .json and publishes the application to Intune
 function Publish-IntuneAppPackage {
     [CmdletBinding()]
