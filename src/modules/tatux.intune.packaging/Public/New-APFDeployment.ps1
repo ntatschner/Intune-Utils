@@ -111,10 +111,15 @@ function New-APFDeployment {
     Copy-Item -Path "$PSScriptRoot\Templates\Application\*" -Destination $AppFolder -Recurse
 
     # Update the template files with the application name and version
+    $InstallerFileName = (Get-ChildItem -Path $Path).BaseName
     $MainConfig = Get-Content -Path "$AppFolder\config.installer.json" | ConvertFrom-Json
     $MainConfig.name = $Name
     $MainConfig.version = $Version.ToString()
-    $MainConfig.filename = (Get-ChildItem -Path $Path).Name
+    $MainConfig.filename = $InstallerFileName
+    $MainConfig.target = $Target
+    $MainConfig.installSwitches = $InstallSwitches
+    $MainConfig.uninstallSwitches = $UninstallSwitches
+    $MainConfig.uninstallPath = $UninstallPath
     $MainConfig | ConvertTo-Json -Depth 10 | Set-Content -Path "$AppFolder\config.installer.json"
 
     $DetectionScript = Get-Content -Path "$AppFolder\Intune-D-AppDetection.ps1"
@@ -139,7 +144,7 @@ function New-APFDeployment {
                 }
             } 
             # Create IntuneWin package
-            $IntunewinFullPath = Join-Path -Path $DestinationFolder -ChildPath "$Name.intunewin"
+            $IntunewinFullPath = Join-Path -Path $DestinationFolder -ChildPath "$InstallerFileName.intunewin"
             $MainInstallerFilePath = Join-Path -Path $AppFolder -ChildPath (Get-Item -Path $Path).Name
             if (Test-Path $IntunewinFullPath) {
                 if ($PSCmdlet.ShouldContinue("Overwrite existing IntuneWin package? Warning: This will delete the existing package.", "Confirm Overwrite")) {

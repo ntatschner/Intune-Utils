@@ -1,8 +1,8 @@
 # Intune detection script to check if the application is installed using the version info in the config.installer.json file
 
 # App name and version as per config.installer.json
-$AppName = ""
-$Version = ""
+$AppName = "##NAME_TEMPLATE"
+$Version = "##VERSION_TEMPLATE"
 $APFBase = "APF"
 
 # Paths to check for the version info file
