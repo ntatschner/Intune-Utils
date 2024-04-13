@@ -12,10 +12,10 @@
     # RootModule = ''
 
     # Version number of this module.
-    ModuleVersion        = '0.5'
+    ModuleVersion        = '0.6'
 
     # Supported PSEditions
-    #CompatiblePSEditions = @()
+    CompatiblePSEditions = @('Desktop')
 
     # ID used to uniquely identify this module
     GUID                 = 'bfe12388-5f86-4da1-b08b-a439ff6f690c'
