@@ -115,7 +115,7 @@ function New-APFDeployment {
     $MainConfig = Get-Content -Path "$AppFolder\config.installer.json" | ConvertFrom-Json
     $MainConfig.name = $Name
     $MainConfig.version = $Version.ToString()
-    $MainConfig.filename = $InstallerFileName
+    $MainConfig.filename = (Get-ChildItem -Path $Path).Name
     $MainConfig.target = $Target
     $MainConfig.installSwitches = $InstallSwitches
     $MainConfig.uninstallSwitches = $UninstallSwitches
