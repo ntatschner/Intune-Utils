@@ -20,6 +20,9 @@ jobs:
     outputs:
       module_directories: ${{ steps.modulepaths.outputs.module_directories }}
     steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        
       - name: Get All Module Paths
         id: modulepaths
         shell: pwsh
