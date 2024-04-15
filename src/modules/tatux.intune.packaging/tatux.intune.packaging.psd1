@@ -51,7 +51,10 @@
     # ProcessorArchitecture = ''
 
     # Modules that must be imported into the global environment prior to importing this module
-    RequiredModules      = @("Microsoft.Graph.Intune", "Microsoft.Graph.Authentication")
+    RequiredModules = @(
+        @{ ModuleName = 'Microsoft.Graph.Intune'; ModuleVersion = '6.1907.1.0' },
+        @{ ModuleName = 'Microsoft.Graph.Authentication'; ModuleVersion = '2.17.0' }
+    )
 
     # Assemblies that must be loaded prior to importing this module
     # RequiredAssemblies = @()
