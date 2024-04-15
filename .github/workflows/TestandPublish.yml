@@ -15,12 +15,11 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
 
 jobs:
-  RunTests:
+  SetUp:
     runs-on: windows-latest
     outputs:
       module_directories: ${{ steps.modulepaths.outputs.module_directories }}
     steps:
-
       - name: Get All Module Paths
         id: modulepaths
         shell: pwsh
@@ -30,11 +29,9 @@ jobs:
           echo "module_directories=$outpaths" >> $GITHUB_OUTPUT
 
   Publish:
-    needs: RunTests
+    needs: SetUp
     uses: ntatschner/tatux_shared_workflows/.github/workflows/Publish_To_PSGallery.yml@main
     with:
-      module_path: ${{ needs.RunTests.outputs.module_directories }}
+      module_path: ${{ needs.SetUp.outputs.module_directories }}
     secrets:
       api_key: ${{ secrets.API_KEY }}
-
-
