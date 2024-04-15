@@ -170,5 +170,6 @@ function New-APFDeployment {
     }
     else {
         Write-Output "The application '$Name' has been successfully packaged.`nThis can be found in the folder '$AppFolder'."
+        Write-Output "When publishing the application to Intune, use`n'powershell.exe -ExecutionPolicy Bypass -File Intune-I-MainInstaller.ps1' for the install Command and`n'powershell.exe -ExecutionPolicy Bypass -File Intune-I-MainInstaller.ps1 -Uninstall' for the Uninstall Command."
     }
 }
