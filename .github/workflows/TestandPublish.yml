@@ -20,53 +20,6 @@ jobs:
     outputs:
       module_directories: ${{ steps.modulepaths.outputs.module_directories }}
     steps:
-      - uses: actions/checkout@v4
-      - name: Setup PowerShell module cache
-        id: cacher
-        uses: actions/cache@v3
-        with:
-          path: "~/.local/share/powershell/Modules"
-          key: ${{ runner.os }}-PSScriptAnalyzer
-      - name: Install required PowerShell modules
-        if: steps.cacher.outputs.cache-hit != 'true'
-        shell: pwsh
-        run: |
-          Set-PSRepository PSGallery -InstallationPolicy Trusted
-          Install-Module PSScriptAnalyzer -ErrorAction Stop
-          install-Module -name 'Microsoft.Graph.Intune', 'Microsoft.Graph.Authentication' -ErrorAction Stop 
-      
-      - name: Run Pester Tests
-        if: github.event_name == 'pull_request' || 'workflow_dispatch'
-        run: |
-          Get-ChildItem -Path .\src\modules\ -Directory | ForEach-Object {
-            $ModuleName = $_.Name
-            Write-Output "Running Pester Tests for $ModuleName"
-            Write-Output "Running Pester Tests for Public Functions"
-            Invoke-Pester -Path ".\src\modules\$ModuleName\Public\Tests"
-            Write-Output "Running Pester Tests for Private Functions"
-            Invoke-Pester -Path ".\src\modules\$ModuleName\Private\Tests"
-          }
-
-      - name: Lint with PSScriptAnalyzer
-        shell: pwsh
-        run: |
-          Get-ChildItem -Path .\src\modules\ -Directory | ForEach-Object {
-            $ModuleName = $_.Name
-            Write-Output "Running PSScriptAnalyzer Tests for $ModuleName"
-            Write-Output "Running Tests for Public Functions"
-            Invoke-ScriptAnalyzer -Path ".\src\modules\$ModuleName\Public\*.ps1" -Outvariable issues
-            $errors   += $issues.Where({$_.Severity -eq 'Error'})
-            $warnings += $issues.Where({$_.Severity -eq 'Warning'})
-            Write-Output "Running Pester Tests for Private Functions"
-            Invoke-ScriptAnalyzer -Path ".\src\modules\$ModuleName\Private\*.ps1" -Outvariable issues
-            $errors   += $issues.Where({$_.Severity -eq 'Error'})
-            $warnings += $issues.Where({$_.Severity -eq 'Warning'})
-            if ($errors) {
-              Write-Error "There were $($errors.Count) errors and $($warnings.Count) warnings total." -ErrorAction Stop
-            } else {
-                Write-Output "There were $($errors.Count) errors and $($warnings.Count) warnings total."
-            }
-          }
 
       - name: Get All Module Paths
         id: modulepaths
@@ -78,7 +31,7 @@ jobs:
 
   Publish:
     needs: RunTests
-    uses: ntatschner/tatux_shared_workflows/.github/Publish_To_PSGallery.yml@main
+    uses: ntatschner/tatux_shared_workflows/.github/workflows/Publish_To_PSGallery.yml@main
     with:
       module_path: ${{ needs.RunTests.outputs.module_directories }}
     secrets:
