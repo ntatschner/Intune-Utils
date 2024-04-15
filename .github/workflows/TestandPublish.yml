@@ -22,7 +22,7 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-        
+
       - name: Get All Module Paths
         id: modulepaths
         shell: pwsh
@@ -30,6 +30,9 @@ jobs:
           $modulepaths = Get-ChildItem -Path ${{ github.workspace }}\src\modules\ -Directory
           $outpaths = $modulepaths.FullName -join ','
           echo "module_directories=$outpaths" >> $GITHUB_OUTPUT
+          if ($modulepaths.Count -eq 0) {
+            Write-Error "No modules found in src/modules"
+          }
 
   Publish:
     needs: SetUp
