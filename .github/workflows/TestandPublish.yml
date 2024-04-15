@@ -33,6 +33,7 @@ jobs:
           if ($modulepaths.Count -eq 0) {
             Write-Error "No modules found in src/modules"
           }
+          Write-output "Module paths: $outpaths"
 
   Publish:
     needs: SetUp
