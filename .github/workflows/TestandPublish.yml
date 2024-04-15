@@ -11,6 +11,9 @@ on:
       - 'src/modules/**'
   workflow_dispatch:
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+
 jobs:
   RunTests:
     runs-on: windows-latest
@@ -74,53 +77,11 @@ jobs:
           echo "module_directories=$outpaths" >> $GITHUB_OUTPUT
 
   Publish:
+    needs: RunTests
     uses: ntatschner/tatux_shared_workflows/.github/Publish_To_PSGallery.yml@main
     with:
       module_path: ${{ needs.RunTests.outputs.module_directories }}
     secrets:
       api_key: ${{ secrets.API_KEY }}
-
-  # Publish:
-  #   runs-on: windows-latest
-  #   needs: RunTests
-  #   steps:
-  #     - uses: actions/checkout@v4
-
-  #     - name: Setup PowerShell module cache
-  #       id: cacher
-  #       uses: actions/cache@v3
-  #       with:
-  #         path: "~/.local/share/powershell/Modules"
-  #         key: ${{ runner.os }}-PSScriptAnalyzer
-  #     - name: Install required PowerShell modules
-  #       if: steps.cacher.outputs.cache-hit != 'true'
-  #       shell: pwsh
-  #       run: |
-  #         Set-PSRepository PSGallery -InstallationPolicy Trusted
-  #         Install-Module PSScriptAnalyzer -ErrorAction Stop
-  #         install-Module -name 'Microsoft.Graph.Intune', 'Microsoft.Graph.Authentication' -ErrorAction Stop 
-
-  #     - name: Test and Publish modules
-  #       id: version
-  #       run: |
-  #         foreach ($module in (Get-ChildItem -Path .\src\modules\ -Directory)) {
-  #           $ModuleName = $module.Name
-  #           $repoVersion = (Import-PowerShellDataFile -Path .\src\modules\$ModuleName\$ModuleName.psd1).ModuleVersion
-  #           try {
-  #             $publishedVersion = (Find-Module -Name $ModuleName -ErrorAction Stop).Version
-  #           } catch {
-  #             Write-Output "Module $ModuleName not found in PSGallery, creating new module version $repoVersion"
-  #           }
-  #           if ($repoVersion -gt $publishedVersion -or $publishedVersion -eq $null) {
-  #             Write-Output "Publishing module $ModuleName version $repoVersion"
-  #             try {
-  #               Publish-PSResource -Path .\src\modules\$ModuleName -Repository PSGallery -ApiKey ${{ secrets.API_KEY }} -ErrorAction Stop
-  #             } catch {
-  #               Write-Error "Failed to publish module $ModuleName. Error: $_"
-  #             }
-  #           } else {
-  #             Write-Output "Published version ($publishedVersion) matches repo version ($repoVersion)"
-  #           }
-  #         }
 
 
