@@ -24,7 +24,7 @@ jobs:
         id: modulepaths
         shell: pwsh
         run: |
-          $modulepaths = Get-ChildItem -Path .\src\modules\ -Directory
+          $modulepaths = Get-ChildItem -Path ${{ github.workspace }}\src\modules\ -Directory
           $outpaths = $modulepaths.FullName -join ','
           echo "module_directories=$outpaths" >> $GITHUB_OUTPUT
 
