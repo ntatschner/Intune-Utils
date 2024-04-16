@@ -83,14 +83,4 @@
 
     # Default prefix for commands exported from this module. Override the default prefix using Import-Module -Prefix.
     # DefaultCommandPrefix = ''
-    OnFirstImport = {
-        Set-ModuleConfig -UpdateWarning $true
-    }
-    OnImport = {
-        $CurrentConfig = Get-ModuleConfig
-        if ($CurrentConfig.UpdateWarning -eq 'True') {
-            Get-ModuleStatus -ShowMessage
-        }
-    }
 }
-

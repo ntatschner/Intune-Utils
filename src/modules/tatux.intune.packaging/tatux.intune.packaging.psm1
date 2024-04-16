@@ -31,3 +31,9 @@ $Time = Get-Date -UFormat "%H:%M:%S"
 #region export Public functions ($Public.BaseName) for WIP modules
 Export-ModuleMember -Function $Public.Basename
 #endregion
+
+# Module Config setup and import
+$CurrentConfig = Get-ModuleConfig
+if ($CurrentConfig.UpdateWarning -eq 'True') {
+    Get-ModuleStatus -ShowMessage
+}
