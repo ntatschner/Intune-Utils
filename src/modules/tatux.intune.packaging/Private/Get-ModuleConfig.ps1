@@ -11,7 +11,9 @@ function Get-ModuleConfig {
         Set-ModuleConfig @HashTable
         Get-ModuleConfig
     } else {
-        $Config = (Get-Content -Path $ConfigPath | ConvertFrom-Json -AsHashtable)
+        $DefaultConfig = Get-Content -Path $ConfigDefaults | ConvertFrom-Json
+        $HashTable = @{}
+        $DefaultConfig.PSObject.Properties | ForEach-Object { $HashTable[$_.Name] = $_.Value }
         $Config
     }
 }
