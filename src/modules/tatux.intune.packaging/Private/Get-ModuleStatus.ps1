@@ -7,7 +7,7 @@ function Get-ModuleStatus {
         $ModuleDiscovery = Split-Path -Path $(Split-Path -Path $PSScriptRoot -Parent) -Leaf
         [version]$CurrentlyLoadedModuleVersion = (Get-Module -Name $ModuleDiscovery).Version
 
-        [version]$LatestModuleVersion = (Find-Module -Name $ModuleDiscovery).Version
+        $LatestModuleVersion = (Find-Module -Name $ModuleDiscovery).Version
 
         if ($CurrentlyLoadedModuleVersion -lt $LatestModuleVersion) {
             if ($ShowMessage) {
