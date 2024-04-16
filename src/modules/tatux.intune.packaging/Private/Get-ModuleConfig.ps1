@@ -14,6 +14,6 @@ function Get-ModuleConfig {
         $DefaultConfig = Get-Content -Path $ConfigDefaults | ConvertFrom-Json
         $HashTable = @{}
         $DefaultConfig.PSObject.Properties | ForEach-Object { $HashTable[$_.Name] = $_.Value }
-        $Config
+        $HashTable
     }
 }

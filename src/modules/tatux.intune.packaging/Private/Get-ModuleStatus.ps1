@@ -4,14 +4,14 @@ function Get-ModuleStatus {
     )
     try {
         # Get the current version of the installed module and check against the latest version in PSGallery, then notify the user as a warning message that an update is availible.
-        $ModuleDiscovery = $(Get-Command -Name Get-ModuleStatus -ShowCommandInfo).Module.Name
+        $ModuleDiscovery = Split-Path -Path $(Split-Path -Path $PSScriptRoot -Parent) -Leaf
         [version]$CurrentlyLoadedModuleVersion = (Get-Module -Name $ModuleDiscovery).Version
 
         [version]$LatestModuleVersion = (Find-Module -Name $ModuleDiscovery).Version
 
         if ($CurrentlyLoadedModuleVersion -lt $LatestModuleVersion) {
             if ($ShowMessage) {
-                Write-Warning "An update is available for the module '$ModuleDiscovery'. Installed version: $CurrentlyLoadedModuleVersion, Latest version: $LatestModuleVersion"
+                Write-Host -ForegroundColor Yellow "An update is available for the module '$ModuleDiscovery'. Installed version: $CurrentlyLoadedModuleVersion, Latest version: $LatestModuleVersion.`nPlease run 'Update-Module $ModuleDiscovery' to update the module."
             }
             return
         }
