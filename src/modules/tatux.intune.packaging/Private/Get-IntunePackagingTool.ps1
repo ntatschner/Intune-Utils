@@ -59,7 +59,7 @@ Get-IntunePackagingTool -Path "C:\path\to\extract\to"
         try {
             # Download the Intune Content Prep Tools
             Write-Verbose "Downloading the Intune Content Prep Tools from Github;`n$DownloadUrl`nto $DownloadPath..."
-            Invoke-WebRequest -Uri $DownloadUrl -OutFile $DownloadPath -ErrorAction Stop
+            Invoke-WebRequest -Uri $DownloadUrl -OutFile $DownloadPath -UseBasicParsing -ErrorAction Stop
             $local:ExtractionPath = $DownloadPath -replace (Get-item -Path $DownloadPath).Extension , ""
         }
         catch {
