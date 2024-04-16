@@ -41,7 +41,7 @@ Get-IntunePackagingTool -Path "C:\path\to\extract\to"
         if ([string]::IsNullOrEmpty($DownloadUrl) -and [string]::IsNullOrEmpty($DownloadTag)) {
             # Set the download URL and path for the latest release
             Write-Verbose "Getting the latest release of the Intune Content Prep Tools..."
-            $LatestTag = $(Invoke-WebRequest -Uri "https://github.com/microsoft/Microsoft-Win32-Content-Prep-Tool/releases/latest" -Headers @{"Accept" = "application/json" } | ConvertFrom-Json).tag_name
+            $LatestTag = $(Invoke-WebRequest -Uri "https://github.com/microsoft/Microsoft-Win32-Content-Prep-Tool/releases/latest" -Headers @{"Accept" = "application/json" } -UseBasicParsing | ConvertFrom-Json).tag_name
             Write-Debug "Latest tag: $LatestTag"
             $local:DownloadUrl = "https://github.com/microsoft/Microsoft-Win32-Content-Prep-Tool/archive/refs/tags/$LatestTag.zip"
             Write-Debug "Download URL: $DownloadUrl"

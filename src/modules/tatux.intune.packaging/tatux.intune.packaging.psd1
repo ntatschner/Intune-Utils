@@ -12,7 +12,7 @@
     # RootModule = ''
 
     # Version number of this module.
-    ModuleVersion        = '0.9.0.9'
+    ModuleVersion        = '0.9.0.10'
 
     # Supported PSEditions
     CompatiblePSEditions = @('Desktop')
@@ -72,7 +72,7 @@
             )
 
             # ReleaseNotes of this module
-            ReleaseNotes = 'Initial release of the module.'
+            ReleaseNotes = 'Added update module config framework and notification of updates on module load.'
 
         } # End of PSData hashtable
 
