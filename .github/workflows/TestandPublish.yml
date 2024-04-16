@@ -35,7 +35,7 @@ jobs:
           }
           Write-output "Module paths: $outpaths"
 
-  Publish:
+  TestAndPublish:
     needs: SetUp
     uses: ntatschner/tatux_shared_workflows/.github/workflows/Publish_To_PSGallery.yml@main
     with:
