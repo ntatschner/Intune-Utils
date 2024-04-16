@@ -4,7 +4,7 @@ function Get-ModuleStatus {
     )
     try {
         # Get the current version of the installed module and check against the latest version in PSGallery, then notify the user as a warning message that an update is availible.
-        $ModuleDiscovery = Split-Path -Path $(Split-Path -Path $PSScriptRoot -Parent) -Leaf
+        $ModuleDiscovery = $(Join-Path -Path $(Split-Path -Path $PSScriptRoot -Parent) -ChildPath "tatux.intune.packaging.psd1").Replace(".psd1", "")
         [version]$CurrentlyLoadedModuleVersion = (Get-Module -Name $ModuleDiscovery).Version
 
         $LatestModuleVersion = (Find-Module -Name $ModuleDiscovery).Version
