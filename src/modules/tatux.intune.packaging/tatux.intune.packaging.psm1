@@ -35,5 +35,5 @@ Export-ModuleMember -Function $Public.Basename
 # Module Config setup and import
 $CurrentConfig = Get-ModuleConfig
 if ($CurrentConfig.UpdateWarning -eq 'True') {
-    Get-ModuleStatus -ShowMessage
+    Get-ModuleStatus -ShowMessage -ModuleName $CurrentConfig.ModuleName -ModulePath $CurrentConfig.ModulePath
 }

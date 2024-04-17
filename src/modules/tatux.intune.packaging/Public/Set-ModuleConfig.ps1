@@ -2,7 +2,11 @@ function Set-ModuleConfig {
     [CmdletBinding()]
     param(
         [ValidateSet('True', 'False')]
-        [string]$UpdateWarning
+        [string]$UpdateWarning,
+        
+        [string]$ModuleName,
+
+        [string]$ModulePath
     )
 
     $ConfigPath = Join-Path -Path $(Split-Path -Path $PSScriptRoot -Parent) -ChildPath 'ModuleConfig.json'
