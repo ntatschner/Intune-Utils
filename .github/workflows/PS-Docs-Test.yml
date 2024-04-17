@@ -1,0 +1,29 @@
+name: Test deployment
+
+on:
+    # Runs on pushes targeting the default branch
+    push:
+      branches: ["main"]
+      paths:
+        - 'src/docs_site/tatux-intune/**'
+  
+    # Allows you to run this workflow manually from the Actions tab
+    workflow_dispatch:
+        
+jobs:
+  test-deploy:
+    name: Test deployment
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 18
+          cache: yarn
+
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+      - name: Test build website
+        run: yarn build
