@@ -1,0 +1,428 @@
+---
+id: New-Win32Rule
+title: New-Win32Rule
+description: Help page for the PowerShell command "New-Win32Rule"
+keywords:
+  - PowerShell
+  - Documentation
+hide_title: false
+hide_table_of_contents: false
+---
+
+## SYNOPSIS
+
+\{\{ Fill in the Synopsis \}\}
+
+## SYNTAX
+
+### registry
+
+```powershell
+New-Win32Rule [-RuleParentType <String>] [-RuleType <String>] -Path <String> [-Check32BitOn64System <Boolean>]
+ [-Operator <String>] [-ComparisonValue <String>] -ValueName <String> -RegistryOperationType <String>
+ [-ProgressAction <ActionPreference>] [<CommonParameters>]
+```
+
+### file
+
+```powershell
+New-Win32Rule [-RuleParentType <String>] [-RuleType <String>] -Path <String> -FileOrFolderName <String>
+ [-Check32BitOn64System <Boolean>] [-FileOperationType <String>] [-Operator <String>]
+ [-ComparisonValue <String>] [-ProgressAction <ActionPreference>] [<CommonParameters>]
+```
+
+### msi
+
+```powershell
+New-Win32Rule [-RuleParentType <String>] [-RuleType <String>] -MSIPath <String> [-ProductCode <String>]
+ [-ProductVersionOperator <String>] [-ProductVersion <String>] [-AutoDetect <Boolean>] [-Operator <String>]
+ [-ProgressAction <ActionPreference>] [<CommonParameters>]
+```
+
+### script
+
+```powershell
+New-Win32Rule [-RuleParentType <String>] [-RuleType <String>] [-Operator <String>] -DisplayName <String>
+ [-EnforceSignatureCheck <Boolean>] [-RunAs32Bit <Boolean>] [-runAsAccount <String>] -ScriptPath <String>
+ [-ProgressAction <ActionPreference>] [<CommonParameters>]
+```
+
+## DESCRIPTION
+
+\{\{ Fill in the Description \}\}
+
+## EXAMPLES
+
+### Example 1
+
+```powershell
+PS C:\> {{ Add example code here }}
+```
+
+\{\{ Add example description here \}\}
+
+## PARAMETERS
+
+### -AutoDetect
+
+Detect the MSI properties automatically.
+
+```yaml
+Type: Boolean
+Parameter Sets: msi
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Check32BitOn64System
+
+Expand 32bit variables on a 64bit system?
+
+```yaml
+Type: Boolean
+Parameter Sets: registry, file
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -ComparisonValue
+
+The value to compare against.
+
+```yaml
+Type: String
+Parameter Sets: registry, file
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -DisplayName
+
+The script display name.
+Default will be file name.
+
+```yaml
+Type: String
+Parameter Sets: script
+Aliases:
+
+Required: True
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -EnforceSignatureCheck
+
+The enforces a script signature check.
+
+```yaml
+Type: Boolean
+Parameter Sets: script
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -FileOperationType
+
+The path or file operation type.
+If exists is selected then the operator and comparison value are not required.
+
+```yaml
+Type: String
+Parameter Sets: file
+Aliases:
+Accepted values: notConfigured, exists, modifiedDate, createdDate, version, sizeInMB
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -FileOrFolderName
+
+The file or folder name.
+
+```yaml
+Type: String
+Parameter Sets: file
+Aliases:
+
+Required: True
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -MSIPath
+
+The path to the MSI file.
+
+```yaml
+Type: String
+Parameter Sets: msi
+Aliases:
+
+Required: True
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Operator
+
+The operator for comparison.
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+Accepted values: notConfigured, equal, notEqual, greaterThan, greaterThanOrEqual, lessThan, lessThanOrEqual
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Path
+
+The registry key path.
+
+```yaml
+Type: String
+Parameter Sets: registry, file
+Aliases:
+
+Required: True
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -ProductCode
+
+The product code to detect.
+
+```yaml
+Type: String
+Parameter Sets: msi
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -ProductVersion
+
+The value to compare against.
+
+```yaml
+Type: String
+Parameter Sets: msi
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -ProductVersionOperator
+
+The MSI operation type.
+If exists is selected then the operator and comparison value are not required.
+
+```yaml
+Type: String
+Parameter Sets: msi
+Aliases:
+Accepted values: notConfigured, equal, notEqual, greaterThan, greaterThanOrEqual, lessThan, lessThanOrEqual
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -RegistryOperationType
+
+The registry operation type.
+If exists is selected then the operator and comparison value are not required.
+
+```yaml
+Type: String
+Parameter Sets: registry
+Aliases:
+Accepted values: notConfigured, exists, doesNotExist, string, integer, version
+
+Required: True
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -RuleParentType
+
+The type of rule to create.
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+Accepted values: requirement, detection
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -RuleType
+
+\{\{ Fill RuleType Description \}\}
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+Accepted values: file, registry, script, msi
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -RunAs32Bit
+
+Run script as 32bit on 64bit systems.
+
+```yaml
+Type: Boolean
+Parameter Sets: script
+Aliases:
+Accepted values: $true, false
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -ScriptPath
+
+The script path.
+
+```yaml
+Type: String
+Parameter Sets: script
+Aliases:
+
+Required: True
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -ValueName
+
+The registry value name to detect.
+
+```yaml
+Type: String
+Parameter Sets: registry
+Aliases:
+
+Required: True
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -runAsAccount
+
+The account type to run the requirements script as.
+
+```yaml
+Type: String
+Parameter Sets: script
+Aliases:
+Accepted values: system, user
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -ProgressAction
+
+\{\{ Fill ProgressAction Description \}\}
+
+```yaml
+Type: ActionPreference
+Parameter Sets: (All)
+Aliases: proga
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### CommonParameters
+
+This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable. For more information, see [about_CommonParameters](http://go.microsoft.com/fwlink/?LinkID=113216).
+
+## INPUTS
+
+### None
+
+## OUTPUTS
+
+### System.Collections.Hashtable
+
+## NOTES
+
+## RELATED LINKS
