@@ -1,4 +1,4 @@
-name: Deploy to GitHub Pages
+name: Deploy Docs Site to GitHub Pages
 
 on:
   # Runs on pushes targeting the default branch
@@ -18,13 +18,16 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
+          
       - uses: actions/setup-node@v4
         with:
           node-version: 18
           cache: npm
 
       - name: Install dependencies
+        working-directory: src/docs_site/tatux-intune
         run: npm ci
+
       - name: Build website
         working-directory: src/docs_site/tatux-intune
         run: npm run build
