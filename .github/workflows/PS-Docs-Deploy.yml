@@ -21,17 +21,18 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 18
-          cache: yarn
+          cache: npm
 
       - name: Install dependencies
-        run: yarn install --frozen-lockfile
+        run: npm ci
       - name: Build website
-        run: yarn build
+        working-directory: src/docs_site/tatux-intune
+        run: npm run build
 
       - name: Upload Build Artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: build
+          path: src/docs_site/tatux-intune/build
 
   deploy:
     name: Deploy to GitHub Pages
