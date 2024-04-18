@@ -21,6 +21,7 @@ jobs:
           
       - uses: actions/setup-node@v4
         with:
+          cache-dependency-path: src/docs_site/tatux-intune/
           node-version: 18
           cache: npm
 
