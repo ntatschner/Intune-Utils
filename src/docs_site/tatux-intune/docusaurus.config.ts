@@ -37,10 +37,11 @@ const config: Config = {
       'classic',
       {
         docs: {
-          routeBasePath: '/', // Serve the docs at the site's root
-          /* other docs plugin options */
+          sidebarPath: './sidebars.ts',
         },
-        blog: false,
+        blog: {
+          showReadingTime: true,
+        },
         theme: {
           customCss: './src/css/custom.css',
         },
