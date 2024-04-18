@@ -9,14 +9,14 @@
  */
 
 module.exports = [
-    'docs/Get-MSIProperties',
-    'docs/New-APFDeployment',
-    'docs/New-IntuneApplication',
-    'docs/New-Win32ApplicationInfo',
-    'docs/New-Win32Installation',
-    'docs/New-Win32InstallExperience',
-    'docs/New-Win32Requirement',
-    'docs/New-Win32ReturnCode',
-    'docs/New-Win32Rule',
-    'docs/Publish-IntuneAppPackage'
+    'Get-MSIProperties',
+    'New-APFDeployment',
+    'New-IntuneApplication',
+    'New-Win32ApplicationInfo',
+    'New-Win32Installation',
+    'New-Win32InstallExperience',
+    'New-Win32Requirement',
+    'New-Win32ReturnCode',
+    'New-Win32Rule',
+    'Publish-IntuneAppPackage'
 ];
