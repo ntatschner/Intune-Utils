@@ -44,7 +44,7 @@ jobs:
       id: generate_new_help
       run: |
         $WebSiteURL = "https:\\pwsh.dev.tatux.co.uk"
-        $ModuleParentPaths = Get-ChilItem -Path ${{ github.workspace }}\src\modules\ -Directory
+        $ModuleParentPaths = Get-ChildItem -Path ${{ github.workspace }}\src\modules\ -Directory
         $SitePath = "${{ github.workspace }}\src\docs_site\powershell_docs"
         $ModuleParentPaths | % {
             $ModulePath = $_.FullName
