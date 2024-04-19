@@ -67,7 +67,7 @@ jobs:
                 }
                 New-ExternalHelp -Path $ModulePath -OutputPath $OriginalCabPath -ErrorAction Stop
               } catch {
-                Write-Error "Failed to generate external help for $Module"
+                Write-Error "Failed to generate external help for $Module. Error: $_.Exception.Message"
                 break
               }
             }
@@ -101,7 +101,7 @@ jobs:
               Update-MarkdownHelp -Path $OriginalMDPath -Force -AlphabeticParamsOrder
               New-ExternalHelp -Path $ModulePath -OutputPath $OriginalCabPath -ErrorAction Stop              
             } catch {
-              Write-Error "Failed to update help for $FunctionName in $Module"
+              Write-Error "Failed to update help for $Module. Error: $_.Exception.Message"
               break
             }
             try {
@@ -131,7 +131,7 @@ jobs:
             try {
               New-ExternalHelpCab -Path $OriginalMDPath -OutputPath $OriginalCabPath -IncrementHelpVersion -ErrorAction Stop
             } catch {
-              Write-Error "Failed to generate external help for $Module"
+              Write-Error "Failed to generate external help for $Module. Error: $_.Exception.Message"
               break
             }
             try {
@@ -160,7 +160,7 @@ jobs:
             try {
               New-DocusaurusHelp -Module $Module -PrependMarkdown -DocsFolder $moduleDocsPath -MetaKeywords @("PowerShell", "Commands", "$Module") -ErrorAction Stop
             } catch {
-              Write-Error "Failed to convert help for $FunctionName in $Module"
+              Write-Error "Failed to convert help for $Module. Error: $_.Exception.Message"
               break
             }
             Write-Output "Converted help for $Module"
