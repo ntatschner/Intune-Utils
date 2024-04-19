@@ -73,7 +73,7 @@ jobs:
             }
             try {
               Import-Module $ModulePath -Force -ErrorAction Stop
-              New-MarkdownHelp -Module $Module -OutputFolder $OriginalMDPath -AlphabeticParamsOrder:$true -OnlineVersionUrl "$WebSiteURL\c\$Module\" -ErrorAction Stop
+              New-MarkdownHelp -Module $Module -OutputFolder $OriginalMDPath -AlphabeticParamsOrder -ErrorAction Stop
             } catch {
               Write-Error "Failed to generate help for $Module. Error: $_"
               break
