@@ -162,7 +162,8 @@ jobs:
               Write-Error "Failed to copy cab files for $Module"
               break
             Write-Output "Generated external help for $Module"
-        }
+            }
+          }
         Write-Output "Generated external help for all modules"
 
 
