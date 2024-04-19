@@ -67,7 +67,7 @@ jobs:
                 }
                 New-ExternalHelp -Path $ModulePath -OutputPath $OriginalCabPath -ErrorAction Stop
               } catch {
-                Write-Error "Failed to generate external help for $Module. Error: $_.Exception.Message"
+                Write-Error "Failed to generate external help for $Module. Error: $_"
                 break
               }
             }
