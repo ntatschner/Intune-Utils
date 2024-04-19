@@ -124,7 +124,7 @@ jobs:
               Remove-Item -Path $ModuleDocsPath\* -Force -ErrorAction Stop
               Copy-Item -Path $OriginalMDPath\* -Destination $ModuleDocsPath -Force -ErrorAction Stop
             } catch {
-              Write-Error "Failed to copy markdown files for $Module"
+              Write-Error "Failed to copy markdown files for $Module. Error: $_"
               break
             }
             Write-Output "Updated help for $Module"
