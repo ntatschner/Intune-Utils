@@ -103,7 +103,7 @@ jobs:
       id: update_existing_help
       run: |
         $WebSiteURL = "https:\\pwsh.dev.tatux.co.uk"
-        $ModuleParentPaths = Get-ChilItem -Path ${{ github.workspace }}\src\onlinehelp -Directory
+        $ModuleParentPaths = Get-ChildItem -Path ${{ github.workspace }}\src\onlinehelp -Directory
         $SitePath = "${{ github.workspace }}\src\docs_site\powershell_docs"
         $ModuleParentPaths | % {
           $ModuleDocsPath = "${{ github.workspace }}\src\docs_site\powershell_docs\docs\$Module\docs\"
