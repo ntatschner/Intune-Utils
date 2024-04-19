@@ -106,16 +106,17 @@ jobs:
         $ModuleParentPaths = Get-ChildItem -Path ${{ github.workspace }}\src\onlinehelp -Directory
         $SitePath = "${{ github.workspace }}\src\docs_site\powershell_docs"
         $ModuleParentPaths | % {
-            $ModuleDocsPath = "${{ github.workspace }}\src\docs_site\powershell_docs\docs\$Module\docs\"
             $ModulePath = $_.FullName
             $Module = $_.Name
+            $ModuleFilesPath = "${{ github.workspace }}\src\modules\$Module"
+            $ModuleDocsPath = "${{ github.workspace }}\src\docs_site\powershell_docs\docs\$Module\docs\"
             $OriginalMDPath = "${{ github.workspace }}\src\onlinehelp\$Module\docs\"
             $OriginalCabPath = "${{ github.workspace }}\src\onlinehelp\$Module\files\"
             $ModuleDocsPath = "${{ github.workspace }}\src\docs_site\powershell_docs\docs\$Module\docs\"
             $ModulePath
             $Module
             try {
-              Import-Module $ModulePath -Force -ErrorAction Stop
+              Import-Module $ModuleFilesPath -Force -ErrorAction Stop
               Update-MarkdownHelp -Path $OriginalMDPath -Force -AlphabeticParamsOrder
               New-ExternalHelp -Path $ModulePath -OutputPath $OriginalCabPath -ErrorAction Stop              
             } catch {
