@@ -5,7 +5,7 @@ on:
     push:
       branches: ["main"]
       paths:
-        - 'src/docs_site/tatux-intune/**'
+        - 'src/docs_site/powershell_docs/**'
   
     # Allows you to run this workflow manually from the Actions tab
     workflow_dispatch:
@@ -21,14 +21,14 @@ jobs:
           
       - uses: actions/setup-node@v4
         with:
-          cache-dependency-path: src/docs_site/tatux-intune/
+          cache-dependency-path: src/docs_site/powershell_docs/
           node-version: 18
           cache: npm
 
       - name: Install dependencies
-        working-directory: src/docs_site/tatux-intune
+        working-directory: src/docs_site/powershell_docs
         run: npm ci
 
       - name: Test Build website
-        working-directory: src/docs_site/tatux-intune
+        working-directory: src/docs_site/powershell_docs
         run: npm run build

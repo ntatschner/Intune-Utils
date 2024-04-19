@@ -1,5 +1,5 @@
 {
-  "name": "tatux-intune",
+  "name": "powershell-docs",
   "version": "0.0.0",
   "private": true,
   "scripts": {
@@ -11,8 +11,7 @@
     "clear": "docusaurus clear",
     "serve": "docusaurus serve",
     "write-translations": "docusaurus write-translations",
-    "write-heading-ids": "docusaurus write-heading-ids",
-    "typecheck": "tsc"
+    "write-heading-ids": "docusaurus write-heading-ids"
   },
   "dependencies": {
     "@docusaurus/core": "3.2.1",
@@ -25,9 +24,7 @@
   },
   "devDependencies": {
     "@docusaurus/module-type-aliases": "3.2.1",
-    "@docusaurus/tsconfig": "3.2.1",
-    "@docusaurus/types": "3.2.1",
-    "typescript": "~5.2.2"
+    "@docusaurus/types": "3.2.1"
   },
   "browserslist": {
     "production": [
