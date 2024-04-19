@@ -122,6 +122,9 @@ jobs:
               break
             }
             try {
+              if (-Not (Test-Path -Path $ModuleDocsPath)) {
+                  New-Item -Path $ModuleDocsPath -ItemType Directory -Erroraction stop
+              }
               Remove-Item -Path $ModuleDocsPath\* -Force -ErrorAction Stop
               Copy-Item -Path $OriginalMDPath\* -Destination $ModuleDocsPath -Force -ErrorAction Stop
             } catch {
