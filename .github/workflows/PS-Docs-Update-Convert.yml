@@ -89,7 +89,7 @@ jobs:
             }
             try {
               Import-Module $ModulePath -Force -ErrorAction Stop
-              New-MarkdownHelp -Module $Module -OutputFolder $OriginalMDPath -AlphabeticParamsOrder -ErrorAction Stop
+              New-MarkdownHelp -Module $Module -OutputFolder $OriginalMDPath -AlphabeticParamsOrder -ErrorAction SilentlyContinue
             } catch {
               Write-Error "Failed to generate help for $Module. Error: $_"
               break
