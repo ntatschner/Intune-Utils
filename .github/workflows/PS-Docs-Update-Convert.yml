@@ -106,11 +106,12 @@ jobs:
         $ModuleParentPaths = Get-ChildItem -Path ${{ github.workspace }}\src\onlinehelp -Directory
         $SitePath = "${{ github.workspace }}\src\docs_site\powershell_docs"
         $ModuleParentPaths | % {
-          $ModuleDocsPath = "${{ github.workspace }}\src\docs_site\powershell_docs\docs\$Module\docs\"
+            $ModuleDocsPath = "${{ github.workspace }}\src\docs_site\powershell_docs\docs\$Module\docs\"
             $ModulePath = $_.FullName
             $Module = $_.Name
             $OriginalMDPath = "${{ github.workspace }}\src\onlinehelp\$Module\docs\"
             $OriginalCabPath = "${{ github.workspace }}\src\onlinehelp\$Module\files\"
+            $ModuleDocsPath = "${{ github.workspace }}\src\docs_site\powershell_docs\docs\$Module\docs\"
             $ModulePath
             $Module
             try {
