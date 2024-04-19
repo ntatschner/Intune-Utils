@@ -1,0 +1,176 @@
+name: Update Powershell Documentation and convert to Docusaurus format
+
+on:
+    push:
+        branches:
+        - main
+        paths:
+        - 'src/onlinehelp/**'
+    
+    workflow_dispatch:
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+concurrency:
+    group: ${{ github.workflow }}-Help-Update
+
+jobs:
+  Docs_Build:
+    runs-on: windows-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+    
+    - name: Setup PowerShell module cache
+      id: cacher
+      uses: actions/cache@v3
+      with:
+          path: "~/.local/share/powershell/Modules"
+          key: ${{ runner.os }}-PowershellDocs
+    
+    - name: Install PowerShell Dependencies - PlatyPS and Docusaurus
+      if: steps.cacher.outputs.cache-hit != 'true'
+      id: dependencies
+      run: |
+        Set-PSRepository PSGallery -InstallationPolicy Trusted
+        Install-Module -Name PlatyPS -Force -Scope CurrentUser -AllowClobber
+        Install-Module -Name Alt3.Docusaurus.Powershell -Scope CurrentUser -AllowClobber
+
+    - name: Generate External and Markdown Help Files for New Functions
+      if: steps.dependencies.outcome == 'success'
+      id: generate_new_help
+      run: |
+        $WebSiteURL = "https:\\pwsh.dev.tatux.co.uk"
+        $ModuleParentPaths = Get-ChilItem -Path ${{ github.workspace }}\src\modules\ -Directory
+        $SitePath = "${{ github.workspace }}\src\docs_site\powershell_docs"
+        $ModuleParentPaths | % {
+            $ModulePath = $_.FullName
+            $Module = $_.Name
+            $OriginalMDPath = "${{ github.workspace }}\src\onlinehelp\$Module\docs\"
+            $OriginalCabPath = "${{ github.workspace }}\src\onlinehelp\$Module\files\"
+            $ModuleDocPath = "${{ github.workspace }}\src\docs_site\powershell_docs\docs\$Module\docs"
+            $ModulePath
+            $Module
+            if (-not (Test-Path $OriginalMDPath)) {
+              try {
+                New-Item -Path $OriginalMDPath -ItemType Directory -Force -Erroraction stop
+              } catch {
+                Write-Error "Failed to create directory $OriginalMDPath"
+                break
+              }
+              try {
+                if (-not (Test-Path $OriginalCabPath)) {
+                  New-Item -Path $OriginalCabPath -ItemType Directory -Force -Erroraction stop
+                }
+                New-ExternalHelp -Path $ModulePath -OutputPath $OriginalCabPath -ErrorAction Stop
+              } catch {
+                Write-Error "Failed to generate external help for $Module"
+                break
+              }
+            }
+            try {
+              Import-Module $ModulePath -Force -ErrorAction Stop
+              New-MarkdownHelp -Module $Module -OutputPath $ModuleDocPath -AlphabeticParamsOrder -WithModulePage -ModulePagePath "${{ github.workspace }}\src\docs_site\powershell_docs\docs\$Module\" -OnlineVersionUrl "$WebSiteURL\c\$Module\" -ErrorAction Stop
+            } catch {
+              Write-Error "Failed to generate help for $Module"
+              break
+            }
+            Write-Output "Generated help for $Module"
+        }
+        Write-Output "Generated help for all modules"
+      
+    - name: Update Markdown Existing Help
+      if: steps.dependencies.outcome == 'success'
+      id: update_existing_help
+      run: |
+        $WebSiteURL = "https:\\pwsh.dev.tatux.co.uk"
+        $ModuleParentPaths = Get-ChilItem -Path ${{ github.workspace }}\src\onlinehelp -Directory
+        $SitePath = "${{ github.workspace }}\src\docs_site\powershell_docs"
+        $ModuleParentPaths | % {
+          $ModuleDocsPath = "${{ github.workspace }}\src\docs_site\powershell_docs\docs\$Module\docs\"
+            $ModulePath = $_.FullName
+            $Module = $_.Name
+            $OriginalMDPath = "${{ github.workspace }}\src\onlinehelp\$Module\docs\"
+            $OriginalCabPath = "${{ github.workspace }}\src\onlinehelp\$Module\files\"
+            $ModulePath
+            $Module
+            try {
+              Update-MarkdownHelp -Path $OriginalMDPath -Force -AlphabeticParamsOrder
+              New-ExternalHelp -Path $ModulePath -OutputPath $OriginalCabPath -ErrorAction Stop              
+            } catch {
+              Write-Error "Failed to update help for $FunctionName in $Module"
+              break
+            }
+            try {
+              Remove-Item -Path $ModuleDocsPath\* -Force -ErrorAction Stop
+              Copy-Item -Path $OriginalMDPath\* -Destination $ModuleDocsPath -Force -ErrorAction Stop
+            } catch {
+              Write-Error "Failed to copy markdown files for $Module"
+              break
+            }
+            Write-Output "Updated help for $Module"
+        }
+        Write-Output "Updated help for all modules"
+
+    - name: Create and Update Help Cab File
+      if: steps.dependencies.outcome == 'success'
+      id: create_cab
+      run: |
+        $ModuleParentPaths = Get-ChildItem -Path ${{ github.workspace }}\src\onlinehelp -Directory
+        $ModuleParentPaths | % {
+            $ModuleCabPath = "${{ github.workspace }}\src\docs_site\powershell_docs\docs\$Module\files\"
+            $ModulePath = $_.FullName
+            $Module = $_.Name
+            $ModulePath
+            $Module
+            $OriginalCabPath = "${{ github.workspace }}\src\onlinehelp\$Module\files\"
+            $OriginalMDPath = "${{ github.workspace }}\src\onlinehelp\$Module\docs\"
+            try {
+              New-ExternalHelpCab -Path $OriginalMDPath -OutputPath $OriginalCabPath -IncrementHelpVersion -ErrorAction Stop
+            } catch {
+              Write-Error "Failed to generate external help for $Module"
+              break
+            }
+            try {
+              Remove-Item -Path $ModuleCabPath\* -Force -ErrorAction Stop
+              Copy-Item -Path $OriginalCabPath\* -Destination $ModuleCabPath -Force -ErrorAction Stop
+            } catch {
+              Write-Error "Failed to copy cab files for $Module"
+              break
+            Write-Output "Generated external help for $Module"
+        }
+        Write-Output "Generated external help for all modules"
+
+
+    - name: Convert Help Markdown to Docusaurus Format
+      if: steps.dependencies.outcome == 'success'
+      id: convert_to_docusaurus
+      run: |
+        $ModuleParentPaths = Get-ChilItem -Path ${{ github.workspace }}\src\modules\ -Directory
+        $ModuleParentPaths | % {
+            $ModulePath = $_.FullName
+            $Module = $_.Name
+            $ModuleDocsPath = "${{ github.workspace }}\src\docs_site\powershell_docs\docs\$Module\docs\"
+            $ModulePath
+            $Module            
+            Import-Module $ModulePath -Force
+            try {
+              New-DocusaurusHelp -Module $Module -PrependMarkdown -DocsFolder $moduleDocsPath -MetaKeywords @("PowerShell", "Commands", "$Module") -ErrorAction Stop
+            } catch {
+              Write-Error "Failed to convert help for $FunctionName in $Module"
+              break
+            }
+            Write-Output "Converted help for $Module"
+        }
+
+    - name: Commit and Push Changes
+      if: steps.convert_to_docusaurus.outcome == 'success'
+      run: |
+        git config --global user.email "ntatschner@gmail.com"
+        git config --global user.name "Nathan Tatschner"
+        git add .
+        git commit -m "Update PowerShell Documentation and convert to Docusaurus format - ${{ github.sha }}"
+        git push

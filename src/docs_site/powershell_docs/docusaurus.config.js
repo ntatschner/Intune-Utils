@@ -18,6 +18,8 @@ const config = {
   // For GitHub pages deployment, it is often '/<projectName>/'
   baseUrl: '/',
 
+  staticDirectories: ['static', 'c'],
+
   organizationName: 'ntatschner', // Usually your GitHub org/user name.
   projectName: 'Intune-Utils', // Usually your repo name.
   deploymentBranch: 'main',
