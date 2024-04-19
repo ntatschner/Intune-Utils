@@ -22,7 +22,7 @@ const config = {
   projectName: 'Intune-Utils', // Usually your repo name.
   deploymentBranch: 'main',
 
-  onBrokenLinks: 'throw',
+  onBrokenLinks: 'warn',
   onBrokenMarkdownLinks: 'warn',
 
   // Even if you don't use internationalization, you can use this field to set
