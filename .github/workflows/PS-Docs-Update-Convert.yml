@@ -151,13 +151,16 @@ jobs:
             $OriginalCabPath = "${{ github.workspace }}\src\onlinehelp\$Module\files\"
             $OriginalMDPath = "${{ github.workspace }}\src\onlinehelp\$Module\docs\"
             try {
-              New-ExternalHelpCab -Path $OriginalMDPath -OutputPath $OriginalCabPath -IncrementHelpVersion -ErrorAction Stop
+              New-ExternalHelpCab -CabFilesFolder $OriginalMDPath -OutputPath $OriginalCabPath -IncrementHelpVersion -ErrorAction Stop
             } catch {
               Write-Error "Failed to generate external help for $Module. Error: $_.Exception.Message"
               break
             }
             try {
               Remove-Item -Path $ModuleCabPath\* -Force -ErrorAction Stop
+              if -Not (Test-Path -Path $ModuleCabPath)) {
+                  New-Item-Path $ModuleCabPath -ItemType Directory -Erroraction stop
+              }
               Copy-Item -Path $OriginalCabPath\* -Destination $ModuleCabPath -Force -ErrorAction Stop
             } catch {
               Write-Error "Failed to copy cab files for $Module"
