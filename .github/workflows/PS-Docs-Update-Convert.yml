@@ -73,7 +73,7 @@ jobs:
             }
             try {
               Import-Module $ModulePath -Force -ErrorAction Stop
-              New-MarkdownHelp -Module $Module -OutputPath $OriginalMDPath -AlphabeticParamsOrder -OnlineVersionUrl "$WebSiteURL\c\$Module\" -ErrorAction Stop
+              New-MarkdownHelp -Module $Module -OutputFolder $OriginalMDPath -AlphabeticParamsOrder -OnlineVersionUrl "$WebSiteURL\c\$Module\" -ErrorAction Stop
             } catch {
               Write-Error "Failed to generate help for $Module. Error: $_.Exception.Message"
               break
