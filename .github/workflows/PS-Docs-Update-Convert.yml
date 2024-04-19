@@ -158,7 +158,7 @@ jobs:
             }
             try {
               Remove-Item -Path $ModuleCabPath\* -Force -ErrorAction Stop
-              if -Not (Test-Path -Path $ModuleCabPath)) {
+              if (-Not (Test-Path -Path $ModuleCabPath)) {
                   New-Item-Path $ModuleCabPath -ItemType Directory -Erroraction stop
               }
               Copy-Item -Path $OriginalCabPath\* -Destination $ModuleCabPath -Force -ErrorAction Stop
