@@ -115,6 +115,7 @@ jobs:
             $ModulePath
             $Module
             try {
+              Import-Module $ModulePath -Force -ErrorAction Stop
               Update-MarkdownHelp -Path $OriginalMDPath -Force -AlphabeticParamsOrder
               New-ExternalHelp -Path $ModulePath -OutputPath $OriginalCabPath -ErrorAction Stop              
             } catch {
