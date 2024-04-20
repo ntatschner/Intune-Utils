@@ -154,7 +154,7 @@ jobs:
               }
               Copy-Item -Path $OriginalCabPath\* -Destination $ModuleCabPath -Force -ErrorAction Stop
             } catch {
-              Write-Error "Failed to copy cab files for $Module"
+              Write-Error "Failed to copy cab files for $Module. Error: $_"
               break
             Write-Output "Generated external help for $Module"
             }
