@@ -109,7 +109,7 @@ jobs:
             try {
               Import-Module $ModuleFilesPath -Force -ErrorAction Stop
               Update-MarkdownHelp -Path $OriginalMDPath -Force -AlphabeticParamsOrder
-              New-ExternalHelp -Path $OriginalMDPath -OutputPath $OriginalCabPath -ErrorAction Stop              
+              New-ExternalHelp -Path $OriginalMDPath -OutputPath $OriginalCabPath -Force -ErrorAction Stop              
             } catch {
               Write-Error "Failed to update help for $Module. Error: $_.Exception.Message"
               break
