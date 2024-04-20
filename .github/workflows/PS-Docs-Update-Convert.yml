@@ -140,12 +140,12 @@ jobs:
             $ModulePath
             $ModuleCabPath = "${{ github.workspace }}\src\docs_site\powershell_docs\c\$Module\"
             $Module
-            $OriginalCabPath = "${{ github.workspace }}\src\onlinehelp\$Module\files\"
+            $OriginalCabPath = "${{ github.workspace }}\src\onlinehelp\$Module\en-GB\"
             $OriginalMDPath = "${{ github.workspace }}\src\onlinehelp\$Module\docs\"
             try {
               New-ExternalHelpCab -CabFilesFolder $OriginalCabPath -LandingPagePath "$OriginalMDPath$Module.md" -OutputFolder $OriginalCabPath -IncrementHelpVersion -ErrorAction Stop
             } catch {
-              Write-Error "Failed to generate external help for $Module. Error: $_.Exception.Message"
+              Write-Error "Failed to generate external help for $Module. Error: $_"
               break
             }
             try {
