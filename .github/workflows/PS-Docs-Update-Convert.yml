@@ -119,7 +119,7 @@ jobs:
                   New-Item -Path $ModuleDocsPath -ItemType Directory -Erroraction stop
               }
               Remove-Item -Path $ModuleDocsPath\* -Force -ErrorAction Stop
-              Copy-Item -Path $OriginalMDPath\* -Destination $ModuleDocsPath -Force -ErrorAction Stop
+              #Copy-Item -Path $OriginalMDPath\* -Destination $ModuleDocsPath -Force -ErrorAction Stop
             } catch {
               Write-Error "Failed to copy markdown files for $Module. Error: $_"
               break
@@ -176,7 +176,7 @@ jobs:
             $Module            
             Import-Module $ModulePath -Force
             try {
-              New-DocusaurusHelp -Module $Module -PrependMarkdown $ModuleDocsPath -Sidebar "" -MetaKeywords @("PowerShell", "Commands", "$Module") -ErrorAction Stop
+              New-DocusaurusHelp -Module $Module -PrependMarkdown $ModuleDocsPath -Sidebar "" -DocsFolder $ModuleDocsPath -MetaKeywords @("PowerShell", "Commands", "$Module") -ErrorAction Stop
             } catch {
               Write-Error "Failed to convert help for $Module. Error: $_.Exception.Message"
               break
