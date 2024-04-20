@@ -149,7 +149,7 @@ jobs:
               break
             }
             try {
-              Remove-Item -Path $ModuleCabPath\* -Force -ErrorAction Stop
+              Remove-Item -Path $ModuleCabPath\* -Force -ErrorAction SilentlyContinue 
               if (-Not (Test-Path -Path $ModuleCabPath)) {
                   New-Item-Path $ModuleCabPath -ItemType Directory -Erroraction stop
               }
