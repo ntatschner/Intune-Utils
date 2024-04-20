@@ -171,12 +171,12 @@ jobs:
         $ModuleParentPaths | % {
             $ModulePath = $_.FullName
             $Module = $_.Name
-            $ModuleDocsPath = "${{ github.workspace }}\src\docs_site\powershell_docs\docs\$Module\docs\"
+            $ModuleDocsPath = "${{ github.workspace }}\src\docs_site\powershell_docs\docs\$Module\"
             $ModulePath
             $Module            
             Import-Module $ModulePath -Force
             try {
-              New-DocusaurusHelp -Module $Module -PrependMarkdown $(Get-ChildItem  $ModuleDocsPath) -Sidebar "" -DocsFolder $ModuleDocsPath -MetaKeywords @("PowerShell", "Commands", "$Module") -ErrorAction Stop
+              New-DocusaurusHelp -Module $Module -PrependMarkdown $(Get-ChildItem  $ModuleDocsPath) -Sidebar "docs" -DocsFolder $ModuleDocsPath -MetaKeywords @("PowerShell", "Commands", "$Module") -ErrorAction Stop
             } catch {
               Write-Error "Failed to convert help for $Module. Error: $_.Exception.Message"
               break
