@@ -2,7 +2,7 @@
 Module Name: tatux.intune.packaging
 Module Guid: bfe12388-5f86-4da1-b08b-a439ff6f690c
 Download Help Link: {{ Update Download Link }}
-Help Version: 0.1
+Help Version: 0.2
 Locale: en-GB
 ---
 
@@ -40,4 +40,5 @@ Locale: en-GB
 
 ### [Publish-IntuneAppPackage](Publish-IntuneAppPackage.md)
 {{ Fill in the Description }}
+
 

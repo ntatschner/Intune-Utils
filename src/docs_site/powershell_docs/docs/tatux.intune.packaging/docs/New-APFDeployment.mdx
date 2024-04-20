@@ -1,18 +1,21 @@
 ---
-external help file: tatux.intune.packaging-help.xml
-Module Name: tatux.intune.packaging
-online version:
-schema: 2.0.0
+id: New-APFDeployment
+title: New-APFDeployment
+keywords:
+  - PowerShell
+  - Commands
+  - tatux.intune.packaging
+hide_title: false
+hide_table_of_contents: false
 ---
 
-# New-APFDeployment
-
 ## SYNOPSIS
-Creates a new APF deployment.
+
+\{\{ Fill in the Synopsis \}\}
 
 ## SYNTAX
 
-```
+```powershell
 New-APFDeployment [-Name <String>] [-Version <Version>] [-Target <String>] [-InstallSwitches <String>]
  [-UninstallSwitches <String>] [-UninstallPath <String>] -Path <Object> [-IncludedFiles <String[]>]
  [-DestinationFolder <String>] [-CreateIntuneWinPackage] [-ProgressAction <ActionPreference>]
@@ -20,21 +23,23 @@ New-APFDeployment [-Name <String>] [-Version <Version>] [-Target <String>] [-Ins
 ```
 
 ## DESCRIPTION
-The New-APFDeployment function creates a new APF deployment based on the provided parameters.
+
+\{\{ Fill in the Description \}\}
 
 ## EXAMPLES
 
-### EXAMPLE 1
-```
-New-APFDeployment -Name "MyApp" -Version 1.0.0.0 -Path "C:\Installers\MyApp.msi" -DestinationFolder "C:\Deployments\MyApp"
+### Example 1
+
+```powershell
+PS C:\> {{ Add example code here }}
 ```
 
-This example creates a new APF deployment for an application named "MyApp" with version 1.0.0.0.
-The installer file is located at "C:\Installers\MyApp.msi", and the deployment files will be copied to "C:\Deployments\MyApp".
+\{\{ Add example description here \}\}
 
 ## PARAMETERS
 
 ### -CreateIntuneWinPackage
+
 Create a Intune package for the application.
 Default is false.
 
@@ -45,12 +50,13 @@ Aliases:
 
 Required: False
 Position: Named
-Default value: False
+Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
 ### -DestinationFolder
+
 The folder where the files will be copied to.
 Default is the current directory.
 
@@ -61,12 +67,13 @@ Aliases:
 
 Required: False
 Position: Named
-Default value: $PWD.Path
+Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
 ### -IncludedFiles
+
 Paths to any additional files that need to be included in the installation.
 
 ```yaml
@@ -82,6 +89,7 @@ Accept wildcard characters: False
 ```
 
 ### -InstallSwitches
+
 The switches to use when installing the application.
 Default is empty.
 You'll have to manually edit the configuration file.
@@ -99,8 +107,9 @@ Accept wildcard characters: False
 ```
 
 ### -Name
-The name of the application.
-This is written into the exported configuration files. 
+
+The name of the application. 
+This is written in to the exported configuration files. 
 If you do not provide a name, the script will attempt to extract it from the installer file.
 
 ```yaml
@@ -116,9 +125,8 @@ Accept wildcard characters: False
 ```
 
 ### -Path
-The path to the installer file.
-This should be a .msi or .exe file.
-This parameter is mandatory.
+
+\{\{ Fill Path Description \}\}
 
 ```yaml
 Type: Object
@@ -132,22 +140,8 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -ProgressAction
-{{ Fill ProgressAction Description }}
-
-```yaml
-Type: ActionPreference
-Parameter Sets: (All)
-Aliases: proga
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
 ### -Target
+
 The target for the deployment, User context or System context.
 Default is 'system'.
 
@@ -159,12 +153,13 @@ Accepted values: system, user
 
 Required: False
 Position: Named
-Default value: System
+Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
 ### -UninstallPath
+
 The path to the uninstall file.
 Default is empty.
 You'll have to manually edit the configuration file.
@@ -182,6 +177,7 @@ Accept wildcard characters: False
 ```
 
 ### -UninstallSwitches
+
 The switches to use when uninstalling the application.
 Default is empty.
 You'll have to manually edit the configuration file.
@@ -199,9 +195,10 @@ Accept wildcard characters: False
 ```
 
 ### -Version
-The version of the application.
-This is written into the exported configuration files. 
-This should be in the format of x.x.x.x.
+
+The version of the application. 
+This is written in to the exported configuration files. 
+This should be in the format of x.x.x.x. 
 If you do not provide a version, the script will attempt to extract it from the installer file.
 
 ```yaml
@@ -216,12 +213,33 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
+### -ProgressAction
+
+\{\{ Fill ProgressAction Description \}\}
+
+```yaml
+Type: ActionPreference
+Parameter Sets: (All)
+Aliases: proga
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
 ### CommonParameters
+
 This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable. For more information, see [about_CommonParameters](http://go.microsoft.com/fwlink/?LinkID=113216).
 
 ## INPUTS
 
+### None
+
 ## OUTPUTS
+
+### System.Object
 
 ## NOTES
 
