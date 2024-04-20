@@ -176,7 +176,7 @@ jobs:
             $Module            
             Import-Module $ModulePath -Force
             try {
-              New-DocusaurusHelp -Module $Module -PrependMarkdown $ModuleDocsPath -DocsFolder $moduleDocsPath -MetaKeywords @("PowerShell", "Commands", "$Module") -ErrorAction Stop
+              New-DocusaurusHelp -Module $Module -PrependMarkdown $ModuleDocsPath -Sidebar "" -MetaKeywords @("PowerShell", "Commands", "$Module") -ErrorAction Stop
             } catch {
               Write-Error "Failed to convert help for $Module. Error: $_.Exception.Message"
               break
