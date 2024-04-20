@@ -181,7 +181,7 @@ jobs:
               Write-Error "Failed to convert help for $Module. Error: $_"
               break
             }
-            Write-Output "Converted help for $Module"
+            Write-Output "Converted help for '$($Module)'"
         }
 
     - name: Commit and Push Changes
