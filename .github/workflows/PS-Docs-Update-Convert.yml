@@ -176,12 +176,12 @@ jobs:
             $Module            
             Import-Module $ModulePath -Force
             try {
-              New-DocusaurusHelp -Module $Module -PrependMarkdown $(Get-ChildItem  $ModuleDocsPath) -Sidebar "docs" -DocsFolder "$ModuleDocsPathdocs -MetaKeywords @("PowerShell", "Commands", "$Module") -ErrorAction Stop
+              New-DocusaurusHelp -Module $Module -PrependMarkdown $(Get-ChildItem  $ModuleDocsPath) -Sidebar "docs" -DocsFolder "$ModuleDocsPathdocs" -MetaKeywords @("PowerShell", "Commands", "$Module") -ErrorAction Stop
             } catch {
               Write-Error "Failed to convert help for $Module. Error: $_"
               break
             }
-            #Write-Output "Converted help for '$($Module)'"
+            Write-Output "Converted help for '$($Module)'"
         }
 
     - name: Commit and Push Changes
