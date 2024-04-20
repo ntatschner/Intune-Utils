@@ -167,7 +167,7 @@ jobs:
       if: steps.dependencies.outcome == 'success'
       id: convert_to_docusaurus
       run: |
-        $ModuleParentPaths = Get-ChilItem -Path ${{ github.workspace }}\src\modules\ -Directory
+        $ModuleParentPaths = Get-ChildItem -Path ${{ github.workspace }}\src\modules\ -Directory
         $ModuleParentPaths | % {
             $ModulePath = $_.FullName
             $Module = $_.Name
