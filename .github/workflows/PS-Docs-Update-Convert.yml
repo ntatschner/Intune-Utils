@@ -78,23 +78,14 @@ jobs:
                 break
               }
               try {
-              Import-Module $ModulePath -Force -ErrorAction Stop
-              New-MarkdownHelp -Module $Module -OutputFolder $OriginalMDPath -AlphabeticParamsOrder -WithModulePage -ErrorAction SilentlyContinue
+                  Import-Module $ModulePath -Force -ErrorAction Stop
+                  New-MarkdownHelp -Module $Module -OutputFolder $OriginalMDPath -AlphabeticParamsOrder -WithModulePage -ErrorAction SilentlyContinue
             } catch {
               Write-Error "Failed to generate help for $Module. Error: $_"
               break
             }
             Write-Output "Generated help for $Module"
-        }
-              try {
-                if (-not (Test-Path $OriginalCabPath)) {
-                  New-Item -Path $OriginalCabPath -ItemType Directory -Force -Erroraction stop
-                }
-                New-ExternalHelp -Path $OriginalMDPath -OutputPath $OriginalCabPath -ErrorAction Stop
-              } catch {
-                Write-Error "Failed to generate external help for $Module. Error: $_"
-                break
-              }
+            }
             }
         Write-Output "Generated help for all modules"
       
@@ -118,7 +109,7 @@ jobs:
             try {
               Import-Module $ModuleFilesPath -Force -ErrorAction Stop
               Update-MarkdownHelp -Path $OriginalMDPath -Force -AlphabeticParamsOrder
-              New-ExternalHelp -Path $ModulePath -OutputPath $OriginalCabPath -ErrorAction Stop              
+              New-ExternalHelp -Path $OriginalMDPath -OutputPath $OriginalCabPath -ErrorAction Stop              
             } catch {
               Write-Error "Failed to update help for $Module. Error: $_.Exception.Message"
               break
