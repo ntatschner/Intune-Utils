@@ -224,5 +224,6 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## OUTPUTS
 
 ## NOTES
+A folder is created withe name of the application containing all the files and configuration.
 
 ## RELATED LINKS
