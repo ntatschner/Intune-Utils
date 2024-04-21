@@ -2182,7 +2182,7 @@ Creates a new Intune Application Deployment for 7-Zip, generates the .intunewin 
       <command:verb>New</command:verb>
       <command:noun>Win32Rule</command:noun>
       <maml:description>
-        <maml:para>{{ Fill in the Synopsis }}</maml:para>
+        <maml:para>Creates a win32Rule Object</maml:para>
       </maml:description>
     </command:details>
     <maml:description>
