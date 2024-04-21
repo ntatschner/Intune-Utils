@@ -2,7 +2,7 @@
 Module Name: tatux.intune.packaging
 Module Guid: bfe12388-5f86-4da1-b08b-a439ff6f690c
 Download Help Link: {{ Update Download Link }}
-Help Version: 0.10
+Help Version: 0.11
 Locale: en-GB
 ---
 
@@ -40,5 +40,8 @@ Creates a win32Rule Object
 
 ### [Publish-IntuneAppPackage](Publish-IntuneAppPackage.md)
 This function takes the .intunewin and configuration .json and publishes the application to Intune
+
+### [Set-ModuleConfig](Set-ModuleConfig.md)
+{{ Fill in the Synopsis }}
 
 
