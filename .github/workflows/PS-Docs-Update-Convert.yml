@@ -138,7 +138,6 @@ jobs:
             $Module = $_.Name
             $ModuleDocsPath = "${{ github.workspace }}\src\docs_site\powershell_docs\docs\$Module\"
             Write-Output "Working on $Module"
-            $Module            
             Import-Module $ModulePath -Force
             try {
               New-DocusaurusHelp -Module $Module -Sidebar "docs" -DocsFolder "$($ModuleDocsPath)" -MetaKeywords @("PowerShell", "Commands", "$Module") -NoPlaceHolderExamples -ErrorAction Stop
