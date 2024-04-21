@@ -15,7 +15,7 @@ Locale: en-GB
 {{ Fill in the Description }}
 
 ### [New-APFDeployment](New-APFDeployment.md)
-{{ Fill in the Description }}
+Creates and configures a Advanced Packaging Framework deployment folder for an application and optionally the intune win file.
 
 ### [New-IntuneApplication](New-IntuneApplication.md)
 {{ Fill in the Description }}
