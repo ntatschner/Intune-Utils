@@ -2,7 +2,7 @@
 Module Name: tatux.intune.packaging
 Module Guid: bfe12388-5f86-4da1-b08b-a439ff6f690c
 Download Help Link: {{ Update Download Link }}
-Help Version: 0.9
+Help Version: 0.10
 Locale: en-GB
 ---
 
@@ -12,40 +12,33 @@ Locale: en-GB
 
 ## tatux.intune.packaging Cmdlets
 ### [Get-MSIProperties](Get-MSIProperties.md)
-{{ Fill in the Description }}
+{{ Fill in the Synopsis }}
 
 ### [New-APFDeployment](New-APFDeployment.md)
-Creates and configures a Advanced Packaging Framework deployment folder for an application and optionally the intune win file. You then publish this to Intune.
+Creates a new APF deployment.
 
 ### [New-IntuneApplication](New-IntuneApplication.md)
-{{ Fill in the Description }}
+Creates a new Intune Application Deployment, automatically generating the .intunewin file and optionally the JSON file, and optionally publishing it
 
 ### [New-Win32ApplicationInfo](New-Win32ApplicationInfo.md)
-{{ Fill in the Description }}
+{{ Fill in the Synopsis }}
 
 ### [New-Win32Installation](New-Win32Installation.md)
-{{ Fill in the Description }}
+{{ Fill in the Synopsis }}
 
 ### [New-Win32InstallExperience](New-Win32InstallExperience.md)
-{{ Fill in the Description }}
+{{ Fill in the Synopsis }}
 
 ### [New-Win32Requirement](New-Win32Requirement.md)
-{{ Fill in the Description }}
+{{ Fill in the Synopsis }}
 
 ### [New-Win32ReturnCode](New-Win32ReturnCode.md)
-{{ Fill in the Description }}
+{{ Fill in the Synopsis }}
 
 ### [New-Win32Rule](New-Win32Rule.md)
-{{ Fill in the Description }}
+Creates a win32Rule Object
 
 ### [Publish-IntuneAppPackage](Publish-IntuneAppPackage.md)
-{{ Fill in the Description }}
-
-
-
-
-
-
-
+This function takes the .intunewin and configuration .json and publishes the application to Intune
 
 

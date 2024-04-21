@@ -112,9 +112,12 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## INPUTS
 
+### None
+
 ## OUTPUTS
 
-### The function will output the Intune Application details that was created.
+### System.Management.Automation.PSObject
+
 ## NOTES
 
 ## RELATED LINKS
