@@ -393,7 +393,7 @@
     <command:returnValues />
     <maml:alertSet>
       <maml:alert>
-        <maml:para></maml:para>
+        <maml:para>A folder is created withe name of the application containing all the files and configuration.</maml:para>
       </maml:alert>
     </maml:alertSet>
     <command:examples>
