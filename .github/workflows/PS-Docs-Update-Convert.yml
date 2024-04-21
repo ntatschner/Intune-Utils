@@ -118,7 +118,7 @@ jobs:
               if (-Not (Test-Path -Path $ModuleDocsPath)) {
                   New-Item -Path $ModuleDocsPath -ItemType Directory -Erroraction stop
               }
-              Remove-Item -Path $ModuleDocsPath\* -Force -ErrorAction Stop
+              #Remove-Item -Path $ModuleDocsPath\* -Force -ErrorAction Stop
               #Copy-Item -Path $OriginalMDPath\* -Destination $ModuleDocsPath -Force -ErrorAction Stop
             } catch {
               Write-Error "Failed to copy markdown files for $Module. Error: $_"
