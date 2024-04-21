@@ -72,7 +72,7 @@ jobs:
             Write-Output "Working on $Module"
             try {
               Import-Module $ModuleFilesPath -Force -ErrorAction Stop
-              Update-MarkdownHelpModule -Path $OriginalMDPath -Force -AlphabeticParamsOrder -RefreshModulePage -ModulePagePath $OriginalMDPath -UpdateInputOutput
+              Update-MarkdownHelpModule -Path $OriginalMDPath -Force -AlphabeticParamsOrder -RefreshModulePage -ModulePagePath $OriginalMDPath -UpdateInputOutput -ErrorAction Stop
               New-ExternalHelp -Path $OriginalMDPath -OutputPath $OriginalCabPath -Force -ErrorAction Stop              
             } catch {
               Write-Error "Failed to update help for $Module. Error: $_"
