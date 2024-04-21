@@ -71,14 +71,6 @@ jobs:
             $ModuleDocsPath = "${{ github.workspace }}\src\docs_site\powershell_docs\docs\$Module\docs\"
             Write-Output "Working on $Module"
             try {
-              Import-Module $ModuleFilesPath -Force -ErrorAction Stop
-              Update-MarkdownHelpModule -Path $OriginalMDPath -Force -AlphabeticParamsOrder -RefreshModulePage -ModulePagePath $OriginalMDPath -UpdateInputOutput -ErrorAction Stop
-              New-ExternalHelp -Path $OriginalMDPath -OutputPath $OriginalCabPath -Force -ErrorAction Stop              
-            } catch {
-              Write-Error "Failed to update help for $Module. Error: $_"
-              break
-            }
-            try {
               foreach ($f in @($OriginalMDPath, $OriginalCabPath, $ModuleDocsPath)) {
                 if (-not (Test-Path -Path $f)) {
                   New-Item -Path $f -ItemType Directory -Force
@@ -86,6 +78,19 @@ jobs:
               }
             } catch {
               Write-Error "Failed to copy markdown files for $Module. Error: $_"
+              break
+            }
+            try {
+              Import-Module $ModuleFilesPath -Force -ErrorAction Stop
+              Update-MarkdownHelpModule -Path $OriginalMDPath -Force -AlphabeticParamsOrder -RefreshModulePage -ModulePagePath $OriginalMDPath -UpdateInputOutput -ErrorAction Stop
+            } catch {
+              Write-Error "Failed to update markdown help for $Module. Error: $_"
+              break
+            }
+            try {
+              New-ExternalHelp -Path $OriginalMDPath -OutputPath $OriginalCabPath -Force -ErrorAction Stop 
+            } catch {
+              Write-Error "Failed to generate external help for $Module. Error: $_"
               break
             }
             Write-Output "Updated help for $Module"
