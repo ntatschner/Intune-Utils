@@ -2,7 +2,7 @@
 Module Name: tatux.intune.packaging
 Module Guid: bfe12388-5f86-4da1-b08b-a439ff6f690c
 Download Help Link: {{ Update Download Link }}
-Help Version: 0.6
+Help Version: 0.7
 Locale: en-GB
 ---
 
@@ -40,6 +40,7 @@ Creates and configures a Advanced Packaging Framework deployment folder for an a
 
 ### [Publish-IntuneAppPackage](Publish-IntuneAppPackage.md)
 {{ Fill in the Description }}
+
 
 
 
