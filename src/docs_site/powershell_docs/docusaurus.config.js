@@ -18,6 +18,8 @@ const config = {
   // For GitHub pages deployment, it is often '/<projectName>/'
   baseUrl: '/',
 
+  trailingSlash: true,
+
   staticDirectories: ['static', 'c'],
 
   organizationName: 'ntatschner', // Usually your GitHub org/user name.
