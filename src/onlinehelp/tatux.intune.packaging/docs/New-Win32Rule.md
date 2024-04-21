@@ -8,7 +8,7 @@ schema: 2.0.0
 # New-Win32Rule
 
 ## SYNOPSIS
-{{ Fill in the Synopsis }}
+Creates a win32Rule Object
 
 ## SYNTAX
 
