@@ -176,7 +176,7 @@ jobs:
             $Module            
             Import-Module $ModulePath -Force
             try {
-               New-DocusaurusHelp -Module $Module -Sidebar "docs" -DocsFolder "$($ModuleDocsPath)" -MetaKeywords @("PowerShell", "Commands", "$Module") -ErrorAction Stop
+               New-DocusaurusHelp -Module $Module -Sidebar "docs" -DocsFolder "$($ModuleDocsPath)" -MetaKeywords @("PowerShell", "Commands", "$Module") -NoPlaceHolderExamples -ErrorAction Stop
             } catch {
               Write-Error "Failed to convert help for $Module. Error: $_"
               break
