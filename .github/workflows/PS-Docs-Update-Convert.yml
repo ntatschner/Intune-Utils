@@ -55,7 +55,7 @@ jobs:
             }
             }
       
-    - name: Update Markdown Existing Help
+    - name: Create/Update Help Markdown and XML
       if: steps.dependencies.outcome == 'success'
       id: update_existing_help
       run: |
@@ -82,7 +82,7 @@ jobs:
             }
             try {
               Import-Module $ModuleFilesPath -Force -ErrorAction Stop
-              Update-MarkdownHelpModule -Path $OriginalMDPath -Force -AlphabeticParamsOrder -RefreshModulePage -ModulePagePath $OriginalMDPath -UpdateInputOutput -ErrorAction Stop
+              Update-MarkdownHelpModule -Path $OriginalMDPath -Force -AlphabeticParamsOrder -RefreshModulePage -UpdateInputOutput -ErrorAction Stop
             } catch {
               Write-Error "Failed to update markdown help for $Module. Error: $_"
               break
