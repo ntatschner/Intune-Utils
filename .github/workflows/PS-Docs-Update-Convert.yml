@@ -54,40 +54,6 @@ jobs:
                 Write-Output "No required modules found."
             }
             }
-
-    - name: Generate External and Markdown Help Files for New Functions
-      if: steps.dependencies.outcome == 'success'
-      id: generate_new_help
-      run: |
-        $WebSiteURL = "https:\\pwsh.dev.tatux.co.uk"
-        $ModuleParentPaths = Get-ChildItem -Path ${{ github.workspace }}\src\modules\ -Directory
-        $SitePath = "${{ github.workspace }}\src\docs_site\powershell_docs"
-        $ModuleParentPaths | % {
-            $ModulePath = $_.FullName
-            $Module = $_.Name
-            $OriginalMDPath = "${{ github.workspace }}\src\onlinehelp\$Module\docs\"
-            $OriginalCabPath = "${{ github.workspace }}\src\onlinehelp\$Module\en-GB\"
-            $ModuleDocPath = "${{ github.workspace }}\src\docs_site\powershell_docs\docs\$Module\docs"
-            $ModulePath
-            $Module
-            if (-not (Test-Path $OriginalMDPath)) {
-              try {
-                New-Item -Path $OriginalMDPath -ItemType Directory -Force -Erroraction stop
-              } catch {
-                Write-Error "Failed to create directory $OriginalMDPath"
-                break
-              }
-              try {
-                  Import-Module $ModulePath -Force -ErrorAction Stop
-                  New-MarkdownHelp -Module $Module -OutputFolder $OriginalMDPath -AlphabeticParamsOrder -WithModulePage -ErrorAction SilentlyContinue
-            } catch {
-              Write-Error "Failed to generate help for $Module. Error: $_"
-              break
-            }
-            Write-Output "Generated help for $Module"
-            }
-            }
-        Write-Output "Generated help for all modules"
       
     - name: Update Markdown Existing Help
       if: steps.dependencies.outcome == 'success'
@@ -100,26 +66,24 @@ jobs:
             $ModulePath = $_.FullName
             $Module = $_.Name
             $ModuleFilesPath = "${{ github.workspace }}\src\modules\$Module"
-            $ModuleDocsPath = "${{ github.workspace }}\src\docs_site\powershell_docs\docs\$Module\docs\"
             $OriginalMDPath = "${{ github.workspace }}\src\onlinehelp\$Module\docs\"
             $OriginalCabPath = "${{ github.workspace }}\src\onlinehelp\$Module\en-GB\"
             $ModuleDocsPath = "${{ github.workspace }}\src\docs_site\powershell_docs\docs\$Module\docs\"
-            $ModulePath
-            $Module
+            Write-Output "Working on $Module"
             try {
               Import-Module $ModuleFilesPath -Force -ErrorAction Stop
-              Update-MarkdownHelp -Path $OriginalMDPath -Force -AlphabeticParamsOrder
+              Update-MarkdownHelpModule -Path $OriginalMDPath -Force -AlphabeticParamsOrder -RefreshModulePage -ModulePagePath $OriginalMDPath -UpdateInputOutput
               New-ExternalHelp -Path $OriginalMDPath -OutputPath $OriginalCabPath -Force -ErrorAction Stop              
             } catch {
-              Write-Error "Failed to update help for $Module. Error: $_.Exception.Message"
+              Write-Error "Failed to update help for $Module. Error: $_"
               break
             }
             try {
-              if (-Not (Test-Path -Path $ModuleDocsPath)) {
-                  New-Item -Path $ModuleDocsPath -ItemType Directory -Erroraction stop
+              foreach ($f in @($OriginalMDPath, $OriginalCabPath, $ModuleDocsPath)) {
+                if (-not (Test-Path -Path $f)) {
+                  New-Item -Path $f -ItemType Directory -Force
+                }
               }
-              #Remove-Item -Path $ModuleDocsPath\* -Force -ErrorAction Stop
-              #Copy-Item -Path $OriginalMDPath\* -Destination $ModuleDocsPath -Force -ErrorAction Stop
             } catch {
               Write-Error "Failed to copy markdown files for $Module. Error: $_"
               break
@@ -137,9 +101,8 @@ jobs:
             
             $ModulePath = $_.FullName
             $Module = $_.Name
-            $ModulePath
-            $ModuleCabPath = "${{ github.workspace }}\src\docs_site\powershell_docs\c\$Module\"
-            $Module
+            Write-Output "Working on $Module"
+            $ModuleCabPath = "${{ github.workspace }}\src\docs_site\powershell_docs\c\$Module\"         
             $OriginalCabPath = "${{ github.workspace }}\src\onlinehelp\$Module\en-GB\"
             $OriginalMDPath = "${{ github.workspace }}\src\onlinehelp\$Module\docs\"
             try {
@@ -150,9 +113,6 @@ jobs:
             }
             try {
               Remove-Item -Path $ModuleCabPath\* -Force -ErrorAction SilentlyContinue 
-              if (-Not (Test-Path -Path $ModuleCabPath)) {
-                  New-Item -Path $ModuleCabPath -ItemType Directory -Erroraction stop
-              }
               Copy-Item -Path $OriginalCabPath\* -Destination $ModuleCabPath -Force -ErrorAction Stop
             } catch {
               Write-Error "Failed to copy cab files for $Module. Error: $_"
@@ -172,11 +132,11 @@ jobs:
             $ModulePath = $_.FullName
             $Module = $_.Name
             $ModuleDocsPath = "${{ github.workspace }}\src\docs_site\powershell_docs\docs\$Module\"
-            $ModulePath
+            Write-Output "Working on $Module"
             $Module            
             Import-Module $ModulePath -Force
             try {
-               New-DocusaurusHelp -Module $Module -Sidebar "docs" -DocsFolder "$($ModuleDocsPath)" -MetaKeywords @("PowerShell", "Commands", "$Module") -NoPlaceHolderExamples -ErrorAction Stop
+              New-DocusaurusHelp -Module $Module -Sidebar "docs" -DocsFolder "$($ModuleDocsPath)" -MetaKeywords @("PowerShell", "Commands", "$Module") -NoPlaceHolderExamples -ErrorAction Stop
             } catch {
               Write-Error "Failed to convert help for $Module. Error: $_"
               break
