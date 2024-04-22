@@ -175,6 +175,7 @@ jobs:
       uses: appleboy/scp-action@master
       with:
         host: ${{ secrets.SSH_HOST }}
+        port: 9284
         username: ${{ secrets.SSH_USER }}
         key: ${{ secrets.POWERSHELL_UPDATE_FILES_PRIVATE_KEY }} 
         passphrase: ${{ secrets.POWERSHELL_UPDATE_FILES_PRIVATE_KEY_PASSWORD }}
