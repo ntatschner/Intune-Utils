@@ -133,7 +133,7 @@ jobs:
             $Module = $_.Name
             $CabArray += "\src\onlinehelp\$Module\en-GB\"
         }
-        $CabArray = $CabArray -join ","
+        $CabArray = $($CabArray -join ",") -Replace '\\', '\'
         Write-Output "CabPaths=$CabArray" >> $env:GITHUB_OUTPUT
 
     - name: Convert Help Markdown to Docusaurus Format
