@@ -181,7 +181,9 @@ jobs:
         ssh-agent -a $SSH_AUTH_SOCK > /dev/null
         echo "echo $SSH_PASSPHRASE" > ~/.ssh_askpass && chmod +x ~/.ssh_askpass
         echo "$SSH_PRIVATE_KEY" | tr -d '\r' | DISPLAY=None SSH_ASKPASS=~/.ssh_askpass ssh-add - >/dev/null
-    
+    - name: Scp to host
+      run: |
+        scp -r src/onlinehelp/ ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:${{ secrets.SSH_REMOTE_PATH }}
     - name: Copy Cab files to Update.Tatux.co.uk via SSH
       uses: appleboy/scp-action@master
       with:
