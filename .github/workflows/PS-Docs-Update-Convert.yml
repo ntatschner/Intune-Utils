@@ -184,5 +184,4 @@ jobs:
 
     - name: Scp to host
       run: |
-        ssh-keyscan -H ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts
-        scp -r -P 9284 src/onlinehelp/ ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:${{ secrets.SSH_REMOTE_PATH }}
+        scp -r -P 9284 -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null src/onlinehelp/ ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:${{ secrets.SSH_REMOTE_PATH }}
