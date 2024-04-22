@@ -123,19 +123,6 @@ jobs:
           }
         Write-Output "Generated external help for all modules"
 
-    - name: Generate Help Cab Paths
-      if: steps.create_cab.outcome == 'success'
-      id: generate_cab_paths
-      run: |
-        $ModuleParentPaths = Get-ChildItem -Path ${{ github.workspace }}\src\onlinehelp -Directory
-        $CabArray = @()
-        $ModuleParentPaths | % {
-            $Module = $_.Name
-            $CabArray += "\src\onlinehelp\$Module\en-GB\"
-        }
-        $CabArray = $($CabArray -join ",") -Replace '\\', '\'
-        Write-Output "CabPaths=$CabArray" >> $env:GITHUB_OUTPUT
-
     - name: Convert Help Markdown to Docusaurus Format
       if: steps.dependencies.outcome == 'success'
       id: convert_to_docusaurus
@@ -171,6 +158,18 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v4
+    
+    - name: Generate Help Cab Paths
+      id: generate_cab_paths
+      run: |
+        $ModuleParentPaths = Get-ChildItem -Path ${{ github.workspace }}\src\onlinehelp -Directory
+        $CabArray = @()
+        $ModuleParentPaths | % {
+            $Module = $_.Name
+            $CabArray += "\src\onlinehelp\$Module\en-GB\"
+        }
+        $CabArray = $($CabArray -join ",") -Replace '\\', '\'
+        Write-Output "CabPaths=$CabArray" >> $env:GITHUB_OUTPUT
     
     - name: Copy Cab files to Update.Tatux.co.uk via SSH
       uses: appleboy/scp-action@master
