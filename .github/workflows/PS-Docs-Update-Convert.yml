@@ -20,6 +20,8 @@ concurrency:
 jobs:
   Docs_Build:
     runs-on: windows-latest
+    outputs:
+      CabPaths: ${{ steps.generate_cab_paths.outputs.CabPaths }}
     steps:
     - name: Checkout
       uses: actions/checkout@v4
@@ -134,18 +136,6 @@ jobs:
         $CabArray = $CabArray -join ","
         Write-Output "CabPaths=$CabArray" >> $env:GITHUB_OUTPUT
 
-    - name: Copy Cab files to Update.Tatux.co.uk via ssh
-      if: steps.create_cab.outcome == 'success'
-      uses: appleboy/scp-action@master
-      with:
-        host: ${{ secrets.SSH_HOST }}
-        username: ${{ secrets.SSH_USER }}
-        key: ${{ secrets.POWERSHELL_UPDATE_FILES_PRIVATE_KEY }} 
-        passphrase: ${{ secrets.POWERSHELL_UPDATE_FILES_PRIVATE_KEY_PASSWORD }}
-        source: ${{ steps.generate_cab_paths.outputs.CabPaths }}
-        target: ${{ secrets.SSH_REMOTE_PATH }}
-        rm: true
-
     - name: Convert Help Markdown to Docusaurus Format
       if: steps.dependencies.outcome == 'success'
       id: convert_to_docusaurus
@@ -174,3 +164,25 @@ jobs:
         git add .
         git commit -m "Update PowerShell Documentation and convert to Docusaurus format - ${{ github.sha }}"
         git push
+  
+  Updateable_Help_Copy:
+    runs-on: ubuntu-latest
+    needs: Docs_Build
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+      with:
+        ref: main
+        fetch-depth: 0
+    
+    - name: Copy Cab files to Update.Tatux.co.uk via ssh
+      if: steps.create_cab.outcome == 'success'
+      uses: appleboy/scp-action@master
+      with:
+        host: ${{ secrets.SSH_HOST }}
+        username: ${{ secrets.SSH_USER }}
+        key: ${{ secrets.POWERSHELL_UPDATE_FILES_PRIVATE_KEY }} 
+        passphrase: ${{ secrets.POWERSHELL_UPDATE_FILES_PRIVATE_KEY_PASSWORD }}
+        source: ${{ needs.Docs_Build.outputs.CabPaths }}
+        target: ${{ secrets.SSH_REMOTE_PATH }}
+        rm: true
