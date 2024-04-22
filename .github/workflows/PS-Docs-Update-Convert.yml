@@ -8,6 +8,8 @@ on:
         - 'src/onlinehelp/**'
     
     workflow_dispatch:
+env:
+  SSH_AUTH_SOCK: /tmp/ssh_agent.sock
 
 permissions:
   contents: write
@@ -170,6 +172,15 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v4
+
+    - name: Setup SSH with a passphrase
+      env:
+        SSH_PASSPHRASE: ${{secrets.POWERSHELL_UPDATE_FILES_PRIVATE_KEY_PASSWORD}}
+        SSH_PRIVATE_KEY: ${{secrets.POWERSHELL_UPDATE_FILES_PRIVATE_KEY}}
+      run: |
+        ssh-agent -a $SSH_AUTH_SOCK > /dev/null
+        echo "echo $SSH_PASSPHRASE" > ~/.ssh_askpass && chmod +x ~/.ssh_askpass
+        echo "$SSH_PRIVATE_KEY" | tr -d '\r' | DISPLAY=None SSH_ASKPASS=~/.ssh_askpass ssh-add - >/dev/null
     
     - name: Copy Cab files to Update.Tatux.co.uk via SSH
       uses: appleboy/scp-action@master
@@ -177,8 +188,6 @@ jobs:
         host: ${{ secrets.SSH_HOST }}
         port: 9284
         username: ${{ secrets.SSH_USER }}
-        key: ${{ secrets.POWERSHELL_UPDATE_FILES_PRIVATE_KEY }} 
-        passphrase: ${{ secrets.POWERSHELL_UPDATE_FILES_PRIVATE_KEY_PASSWORD }}
         source: "src/onlinehelp/*,!src/onlinehelp/*/docs/"
         target: ${{ secrets.SSH_REMOTE_PATH }}
         rm: true
