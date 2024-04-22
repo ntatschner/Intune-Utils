@@ -181,3 +181,4 @@ jobs:
         source: "src/onlinehelp/*,!src/onlinehelp/*/docs/"
         target: ${{ secrets.SSH_REMOTE_PATH }}
         rm: true
+        debug: true
