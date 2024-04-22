@@ -178,6 +178,6 @@ jobs:
         username: ${{ secrets.SSH_USER }}
         key: ${{ secrets.POWERSHELL_UPDATE_FILES_PRIVATE_KEY }} 
         passphrase: ${{ secrets.POWERSHELL_UPDATE_FILES_PRIVATE_KEY_PASSWORD }}
-        source: ${{ needs.Docs_Build.outputs.CabPaths }}
+        source: "/src/onlinehelp/*,!/src/onlinehelp/*/docs/"
         target: ${{ secrets.SSH_REMOTE_PATH }}
         rm: true
