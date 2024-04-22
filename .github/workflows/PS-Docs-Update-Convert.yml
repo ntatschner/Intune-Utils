@@ -117,16 +117,34 @@ jobs:
               Write-Error "Failed to generate external help for $Module. Error: $_"
               break
             }
-            try {
-              Copy-Item -Path $OriginalCabPath\* -Destination $ModuleCabPath -Force -ErrorAction Stop
-            } catch {
-              Write-Error "Failed to copy cab files for $Module. Error: $_"
-              break
             Write-Output "Generated external help for $Module"
-            }
           }
         Write-Output "Generated external help for all modules"
 
+    - name: Generate Help Cab Paths
+      if: steps.create_cab.outcome == 'success'
+      id: generate_cab_paths
+      run: |
+        $ModuleParentPaths = Get-ChildItem -Path ${{ github.workspace }}\src\onlinehelp -Directory
+        $CabArray = @()
+        $ModuleParentPaths | % {
+            $Module = $_.Name
+            $CabArray += "${{ github.workspace }}\src\onlinehelp\$Module\en-GB\"
+        }
+        $CabArray = $CabArray -join ","
+        Write-Output "CabPaths=$CabArray" >> $env:GITHUB_OUTPUT
+
+    - name: Copy Cab files to Update.Tatux.co.uk via ssh
+      if: steps.create_cab.outcome == 'success'
+      uses: appleboy/scp-action@master
+      with:
+        host: ${{ secrets.SSH_HOST }}
+        username: ${{ secrets.SSH_USER }}
+        key: ${{ secrets.POWERSHELL_UPDATE_FILES_PRIVATE_KEY }} 
+        passphrase: ${{ secrets.POWERSHELL_UPDATE_FILES_PRIVATE_KEY_PASSWORD }}
+        source: ${{ steps.generate_cab_paths.outputs.CabPaths }}
+        target: ${{ secrets.SSH_REMOTE_PATH }}
+        rm: true
 
     - name: Convert Help Markdown to Docusaurus Format
       if: steps.dependencies.outcome == 'success'
