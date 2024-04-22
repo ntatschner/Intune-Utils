@@ -131,7 +131,7 @@ jobs:
         $CabArray = @()
         $ModuleParentPaths | % {
             $Module = $_.Name
-            $CabArray += "${{ github.workspace }}\src\onlinehelp\$Module\en-GB\"
+            $CabArray += "\src\onlinehelp\$Module\en-GB\"
         }
         $CabArray = $CabArray -join ","
         Write-Output "CabPaths=$CabArray" >> $env:GITHUB_OUTPUT
