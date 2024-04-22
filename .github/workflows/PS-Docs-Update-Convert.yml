@@ -171,12 +171,8 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v4
-      with:
-        ref: main
-        fetch-depth: 0
     
-    - name: Copy Cab files to Update.Tatux.co.uk via ssh
-      if: steps.create_cab.outcome == 'success'
+    - name: Copy Cab files to Update.Tatux.co.uk via SSH
       uses: appleboy/scp-action@master
       with:
         host: ${{ secrets.SSH_HOST }}
