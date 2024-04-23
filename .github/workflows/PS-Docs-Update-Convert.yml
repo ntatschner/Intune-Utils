@@ -182,6 +182,6 @@ jobs:
         echo "echo $SSH_PASSPHRASE" > ~/.ssh_askpass && chmod +x ~/.ssh_askpass
         echo "$SSH_PRIVATE_KEY" | tr -d '\r' | DISPLAY=None SSH_ASKPASS=~/.ssh_askpass ssh-add - >/dev/null
 
-    - name: Scp to host
+    - name: RSYNC to host
       run: |
         rsync -r -e 'ssh -p 9284 -o StrictHostKeyChecking=no' --progress --exclude \Docs\ src/onlinehelp/* ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:${{ secrets.SSH_REMOTE_PATH }}
