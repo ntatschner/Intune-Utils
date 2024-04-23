@@ -184,4 +184,4 @@ jobs:
 
     - name: Scp to host
       run: |
-        scp -r -e ssh -P 9284 --Exclude \Docs\ src/onlinehelp/* ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:${{ secrets.SSH_REMOTE_PATH }}
+        rsync -r -e ssh -P 9284 --Exclude \Docs\ src/onlinehelp/* ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:${{ secrets.SSH_REMOTE_PATH }}
