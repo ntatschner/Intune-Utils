@@ -187,6 +187,7 @@ jobs:
         mkdir -p ~/.ssh
         chmod 700 ~/.ssh
         touch ~/.ssh/known_hosts
+        chmod 644 ~/.ssh/known_hosts
         ssh-keygen -R tatux.co.uk >> ~/.ssh/known_hosts
         ssh-keyscan -H tatux.co.uk >> ~/.ssh/known_hosts
         rsync -r -e 'ssh -p 9284' --progress --exclude \Docs\ src/onlinehelp/* ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:${{ secrets.SSH_REMOTE_PATH }}
