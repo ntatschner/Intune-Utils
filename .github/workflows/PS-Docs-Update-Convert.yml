@@ -186,4 +186,4 @@ jobs:
       run: |
         export LC_CTYPE=en_GB.UTF-8
         export LC_ALL=en_GB.UTF-8
-        rsync -r -e 'ssh -p 9284 -o StrictHostKeyChecking=no' --progress --exclude \Docs\ src/onlinehelp/* ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:${{ secrets.SSH_REMOTE_PATH }}
+        rsync -r -e 'ssh -p 9284 -o StrictHostKeyChecking=no' --exclude \Docs\ src/onlinehelp/* ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:${{ secrets.SSH_REMOTE_PATH }}
