@@ -185,3 +185,12 @@ jobs:
     - name: RSYNC to host
       run: |
         rsync -rP -e 'ssh -p 9284' --exclude \Docs\ src/onlinehelp/* ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:${{ secrets.SSH_REMOTE_PATH }}
+
+    - name: Rsync Deployments Action
+      uses: Burnett01/rsync-deployments@7.0.1
+      with:
+        switches: -avzr --exclude="Docs"
+        path: src/onlinehelp/
+        remote_path: ${{ secrets.SSH_REMOTE_PATH }}
+        remote_host: ${{ secrets.SSH_HOST }}
+        remote_user: ${{ secrets.SSH_USER }}
