@@ -182,7 +182,7 @@ jobs:
         echo "echo $SSH_PASSPHRASE" > ~/.ssh_askpass && chmod +x ~/.ssh_askpass
         echo "$SSH_PRIVATE_KEY" | tr -d '\r' | DISPLAY=None SSH_ASKPASS=~/.ssh_askpass ssh-add - >/dev/null
 
-    - name: rsync deployments
+    - name: rsync cab files
       uses: burnett01/rsync-deployments@7.0.1
       with:
         switches: -avzr --delete --exclude="\Docs\" -e "ssh -p 9284 -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null"
@@ -190,4 +190,5 @@ jobs:
         remote_path: ${{ secrets.SSH_REMOTE_PATH }}
         remote_host: ${{ secrets.SSH_HOST }}
         remote_user: ${{ secrets.SSH_USER }}
-        remote_key: ${{ secrets.DEPLOY_KEY }}
+        remote_key: ${{ secrets.POWERSHELL_UPDATE_FILES_PRIVATE_KEY }}
+        remote_key_pass: ${{ secrets.POWERSHELL_UPDATE_FILES_PRIVATE_KEY_PASSWORD }}
