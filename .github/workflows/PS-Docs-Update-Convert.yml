@@ -184,4 +184,4 @@ jobs:
 
     - name: RSYNC to host
       run: |
-        rsync -r -e 'ssh -p 9284 -o StrictHostKeyChecking=no' --exclude \Docs\ src/onlinehelp/* ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:${{ secrets.SSH_REMOTE_PATH }}
+        rsync -rP -e 'ssh -p 9284 -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null' --exclude \Docs\ src/onlinehelp/* ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:${{ secrets.SSH_REMOTE_PATH }}
