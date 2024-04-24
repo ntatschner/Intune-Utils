@@ -184,7 +184,8 @@ jobs:
 
     - name: RSYNC to host
       run: |
-        mkdir ~/.ssh
+        mkdir -p ~/.ssh
+        chmod 700 ~/.ssh
         touch ~/.ssh/known_hosts
         ssh-keygen -R tatux.co.uk >> ~/.ssh/known_hosts
         ssh-keyscan -H tatux.co.uk >> ~/.ssh/known_hosts
