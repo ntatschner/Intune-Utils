@@ -186,5 +186,5 @@ jobs:
       run: |
         mkdir ~/.ssh
         touch ~/.ssh/known_hosts
-        ssh-keygen -R tatux.co.uk
+        ssh-keygen -R tatux.co.uk >> ~/.ssh/known_hosts
         rsync -r -e 'ssh -p 9284' --progress --exclude \Docs\ src/onlinehelp/* ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:${{ secrets.SSH_REMOTE_PATH }}
