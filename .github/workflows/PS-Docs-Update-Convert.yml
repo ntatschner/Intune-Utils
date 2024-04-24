@@ -186,7 +186,7 @@ jobs:
       uses: burnett01/rsync-deployments@7.0.1
       with:
         switches: -avzr --delete --exclude="\Docs\" -e 'ssh -p 9284 -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null'
-        path: src/onlinehelp/*
+        path: src/onlinehelp/
         remote_path: ${{ secrets.SSH_REMOTE_PATH }}
         remote_host: ${{ secrets.SSH_HOST }}
         remote_user: ${{ secrets.SSH_USER }}
