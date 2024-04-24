@@ -182,10 +182,6 @@ jobs:
         echo "echo $SSH_PASSPHRASE" > ~/.ssh_askpass && chmod +x ~/.ssh_askpass
         echo "$SSH_PRIVATE_KEY" | tr -d '\r' | DISPLAY=None SSH_ASKPASS=~/.ssh_askpass ssh-add - >/dev/null
 
-    - name: RSYNC to host
-      run: |
-        rsync -rP -e 'ssh -p 9284' --exclude \Docs\ src/onlinehelp/* ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:${{ secrets.SSH_REMOTE_PATH }}
-
     - name: Rsync Deployments Action
       uses: Burnett01/rsync-deployments@7.0.1
       with:
