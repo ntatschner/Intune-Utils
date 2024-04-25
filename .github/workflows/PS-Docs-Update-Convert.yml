@@ -185,9 +185,9 @@ jobs:
     - name: Rsync Deployments Action
       uses: Burnett01/rsync-deployments@7.0.1
       with:
-        switches: -avzr --exclude="Docs"
+        switches: -avzr -e 'ssh -p 9284' --exclude="Docs"
         remote_key: ${{ secrets.POWERSHELL_UPDATE_FILES_PRIVATE_KEY }}
-        path: src/onlinehelp/
+        path: 'src/onlinehelp/'
         remote_path: ${{ secrets.SSH_REMOTE_PATH }}
         remote_host: ${{ secrets.SSH_HOST }}
         remote_user: ${{ secrets.SSH_USER }}
