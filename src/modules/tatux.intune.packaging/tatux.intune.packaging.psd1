@@ -4,7 +4,7 @@
     # RootModule = ''
 
     # Version number of this module.
-    ModuleVersion        = '0.9.0.23'
+    ModuleVersion        = '0.9.0.2'
 
     # Supported PSEditions
     CompatiblePSEditions = @('Desktop')
