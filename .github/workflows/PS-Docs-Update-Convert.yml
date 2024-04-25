@@ -184,5 +184,5 @@ jobs:
 
     - name: SCP to Server
       run: |
-        ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} -p 9284 "rm ${{ secrets.SSH_REMOTE_PATH }}\* -r"
+        ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} -p 9284 "rm ${{ secrets.SSH_REMOTE_PATH }}* -r"
         scp -r -P 9284 -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null src/onlinehelp/* ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:${{ secrets.SSH_REMOTE_PATH }}
