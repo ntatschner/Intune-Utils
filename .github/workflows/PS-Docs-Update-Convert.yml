@@ -191,3 +191,4 @@ jobs:
         remote_path: ${{ secrets.SSH_REMOTE_PATH }}
         remote_host: ${{ secrets.SSH_HOST }}
         remote_user: ${{ secrets.SSH_USER }}
+        remote_port: 9284
