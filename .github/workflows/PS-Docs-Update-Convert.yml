@@ -186,6 +186,7 @@ jobs:
       uses: Burnett01/rsync-deployments@7.0.1
       with:
         switches: -avzr --exclude="Docs"
+        remote_key: ${{ secrets.POWERSHELL_UPDATE_FILES_PRIVATE_KEY }}
         path: src/onlinehelp/
         remote_path: ${{ secrets.SSH_REMOTE_PATH }}
         remote_host: ${{ secrets.SSH_HOST }}
