@@ -73,10 +73,9 @@ jobs:
             $OriginalMDPath = "${{ github.workspace }}\src\onlinehelp\$Module\docs\"
             $OriginalCabPath = "${{ github.workspace }}\src\onlinehelp\$Module\"
             $ModuleDocsPath = "${{ github.workspace }}\src\docs_site\powershell_docs\docs\$Module\docs\"
-            $ModuleCabPath = "${{ github.workspace }}\src\docs_site\powershell_docs\c\$Module\"
             Write-Output "Working on $Module"
             try {
-              foreach ($f in @($OriginalMDPath, $OriginalCabPath, $ModuleDocsPath, $ModuleCabPath)) {
+              foreach ($f in @($OriginalMDPath, $OriginalCabPath, $ModuleDocsPath)) {
                 if (-not (Test-Path -Path $f)) {
                   New-Item -Path $f -ItemType Directory -Force
                 }
