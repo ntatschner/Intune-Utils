@@ -91,12 +91,6 @@ jobs:
               Write-Error "Failed to update markdown help for $Module. Error: $_"
               break
             }
-            try {
-              New-ExternalHelp -Path $OriginalMDPath -OutputPath $OriginalCabPath -Force -ErrorAction Stop 
-            } catch {
-              Write-Error "Failed to generate external help for $Module. Error: $_"
-              break
-            }
             Write-Output "Updated help for $Module"
         }
         Write-Output "Updated help for all modules"
@@ -112,7 +106,7 @@ jobs:
             $Module = $_.Name
             Write-Output "Working on $Module"
             $ModuleCabPath = "${{ github.workspace }}\src\docs_site\powershell_docs\c\$Module\"
-            $OriginalCabPath = "${{ github.workspace }}\src\onlinehelp\$Module\en-GB\"
+            $OriginalCabPath = "${{ github.workspace }}\src\onlinehelp\$Module\"
             $OriginalMDPath = "${{ github.workspace }}\src\onlinehelp\$Module\docs\"
             try {
               New-ExternalHelpCab -CabFilesFolder $OriginalCabPath -LandingPagePath "$OriginalMDPath$Module.md" -OutputFolder $OriginalCabPath -IncrementHelpVersion -ErrorAction Stop
