@@ -1,7 +1,7 @@
 ---
 Module Name: tatux.intune.packaging
 Module Guid: bfe12388-5f86-4da1-b08b-a439ff6f690c
-Download Help Link: "https://update.tatux.co.uk/tatux.intune.packaging/"
+Download Help Link: https://update.tatux.co.uk/tatux.intune.packaging/
 Help Version: 0.39
 Locale: en-GB
 ---
