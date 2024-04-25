@@ -45,22 +45,22 @@ jobs:
 
     - name: Install required Modules 
       run: |
-            $ModuleParentPaths = Get-ChildItem -Path ${{ github.workspace }}\src\modules\ -Directory
-            $ModuleParentPaths | % {
-            $ModuleName = $_.Name
-            Write-Output "Installing any required modules for $ModuleName"
-            $RequiredModules = (Import-PowerShellDataFile -Path "$($_.FullName)\$($ModuleName).psd1").RequiredModules
-            if ($RequiredModules) {
-                foreach ($module in $RequiredModules) {
-                    Install-Module -Name $module.ModuleName -RequiredVersion $module.ModuleVersion -Force -ErrorAction Stop
-                }
-            } else {
-                Write-Output "No required modules found."
+        $ModuleParentPaths = Get-ChildItem -Path ${{ github.workspace }}\src\modules\ -Directory
+        $ModuleParentPaths | % {
+        $ModuleName = $_.Name
+        Write-Output "Installing any required modules for $ModuleName"
+        $RequiredModules = (Import-PowerShellDataFile -Path "$($_.FullName)\$($ModuleName).psd1").RequiredModules
+        if ($RequiredModules) {
+            foreach ($module in $RequiredModules) {
+                Install-Module -Name $module.ModuleName -RequiredVersion $module.ModuleVersion -Force -ErrorAction Stop
             }
-            }
+          } else {
+            Write-Output "No required modules found."
+          }
+        }
       
     - name: Create/Update Help Markdown and XML
-      if: steps.dependencies.outcome == 'success'
+      if: steps.dependencies.outcome == 'success' || steps.dependencies.outcome == 'skipped'
       id: update_existing_help
       run: |
         $WebSiteURL = "https:\\pwsh.dev.tatux.co.uk"
@@ -103,7 +103,7 @@ jobs:
         Write-Output "Updated help for all modules"
 
     - name: Create and Update Help Cab File
-      if: steps.dependencies.outcome == 'success'
+      if: steps.dependencies.outcome == 'success' || steps.dependencies.outcome == 'skipped'
       id: create_cab
       run: |
         $ModuleParentPaths = Get-ChildItem -Path ${{ github.workspace }}\src\onlinehelp -Directory
@@ -138,7 +138,7 @@ jobs:
         Write-Output "CabPaths=$CabArray" >> $env:GITHUB_OUTPUT
 
     - name: Convert Help Markdown to Docusaurus Format
-      if: steps.dependencies.outcome == 'success'
+      if: steps.dependencies.outcome == 'success'  || steps.dependencies.outcome == 'skipped'
       id: convert_to_docusaurus
       run: |
         $ModuleParentPaths = Get-ChildItem -Path ${{ github.workspace }}\src\modules\ -Directory
