@@ -71,7 +71,7 @@ jobs:
             $Module = $_.Name
             $ModuleFilesPath = "${{ github.workspace }}\src\modules\$Module"
             $OriginalMDPath = "${{ github.workspace }}\src\onlinehelp\$Module\docs\"
-            $OriginalCabPath = "${{ github.workspace }}\src\onlinehelp\$Module\en-GB\"
+            $OriginalCabPath = "${{ github.workspace }}\src\onlinehelp\$Module\"
             $ModuleDocsPath = "${{ github.workspace }}\src\docs_site\powershell_docs\docs\$Module\docs\"
             Write-Output "Working on $Module"
             try {
