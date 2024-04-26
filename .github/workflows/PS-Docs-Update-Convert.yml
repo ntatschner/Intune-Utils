@@ -71,7 +71,7 @@ jobs:
             $Module = $_.Name
             $ModuleFilesPath = "${{ github.workspace }}\src\modules\$Module"
             $OriginalMDPath = "${{ github.workspace }}\src\onlinehelp\$Module\docs\"
-            $OriginalCabPath = "${{ github.workspace }}\src\onlinehelp\$Module\"
+            $OriginalCabPath = "${{ github.workspace }}\src\onlinehelp\$Module\en-GB\"
             $ModuleDocsPath = "${{ github.workspace }}\src\docs_site\powershell_docs\docs\$Module\docs\"
             Write-Output "Working on $Module"
             try {
@@ -89,6 +89,12 @@ jobs:
               Update-MarkdownHelpModule -Path $OriginalMDPath -Force -AlphabeticParamsOrder -RefreshModulePage -UpdateInputOutput -ErrorAction Stop
             } catch {
               Write-Error "Failed to update markdown help for $Module. Error: $_"
+              break
+            }
+            try {
+              New-ExternalHelp -Path $OriginalMDPath -OutputPath $OriginalCabPath -Force -ErrorAction Stop 
+            } catch {
+              Write-Error "Failed to generate external help for $Module. Error: $_"
               break
             }
             Write-Output "Updated help for $Module"
