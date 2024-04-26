@@ -4,7 +4,7 @@
     # RootModule = ''
 
     # Version number of this module.
-    ModuleVersion        = '0.9.0.2'
+    ModuleVersion        = '0.9.0.29'
 
     # Supported PSEditions
     CompatiblePSEditions = @('Desktop')
@@ -71,7 +71,7 @@
     } # End of PrivateData hashtable
 
     # HelpInfo URI of this module
-    HelpInfoURI = "https://update.tatux.co.uk/tatux.intune.packaging/"
+    HelpInfoURI = 'https://update.tatux.co.uk/tatux.intune.packaging/'
 
     # Default prefix for commands exported from this module. Override the default prefix using Import-Module -Prefix.
     # DefaultCommandPrefix = ''
