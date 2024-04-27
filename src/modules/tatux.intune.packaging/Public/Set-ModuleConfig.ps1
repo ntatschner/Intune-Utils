@@ -1,5 +1,5 @@
 function Set-ModuleConfig {
-    [CmdletBinding()]
+        [CmdletBinding(HelpUri = 'https://pwsh.dev.tatux.co.uk/tatux.intune.packaging/docs/Set-ModuleConfig/')]
     param(
         [ValidateSet('True', 'False')]
         [string]$UpdateWarning,
