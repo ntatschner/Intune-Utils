@@ -9,7 +9,7 @@ function Set-ModuleConfig {
         [string]$ModulePath
     )
 
-    $ConfigPath = Join-Path -Path $(Split-Path -Path $PSScriptRoot -Parent) -ChildPath 'ModuleConfig.json'
+    $ConfigPath = Join-Path -Path $(Split-Path -Path $PSScriptRoot -Parent) -ChildPath 'Module.Config.json'
     # Test to see if module config JSON exists and create it if it doesn't
     if (-not (Test-Path -Path $ConfigPath)) {
         New-Item -Path $ConfigPath -ItemType File -Force -Confirm:$false | Out-Null
