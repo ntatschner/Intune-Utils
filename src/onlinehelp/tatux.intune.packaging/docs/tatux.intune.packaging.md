@@ -12,7 +12,7 @@ Locale: en-GB
 
 ## tatux.intune.packaging Cmdlets
 ### [Get-MSIProperties](Get-MSIProperties.md)
-{{ Fill in the Synopsis }}
+Outputs the properties and values of the MSI database as a PSCustomObject. 
 
 ### [New-APFDeployment](New-APFDeployment.md)
 Creates a new APF deployment.
