@@ -1,11 +1,14 @@
 function Set-ModuleConfig {
         [CmdletBinding(HelpUri = 'https://pwsh.dev.tatux.co.uk/tatux.intune.packaging/docs/Set-ModuleConfig/')]
     param(
+        [Parameter(HelpMessage = "Determines if the update message is displayed when the module is loaded.")]
         [ValidateSet('True', 'False')]
         [string]$UpdateWarning,
         
+        [Parameter(HelpMessage = "Name of the module the configurationis being set for.")]
         [string]$ModuleName,
 
+        [Parameter(HelpMessage = "Path of the module.")]
         [string]$ModulePath
     )
 
