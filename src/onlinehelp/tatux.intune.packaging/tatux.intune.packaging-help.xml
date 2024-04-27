@@ -6,7 +6,7 @@
       <command:verb>Get</command:verb>
       <command:noun>MSIProperties</command:noun>
       <maml:description>
-        <maml:para>{{ Fill in the Synopsis }}</maml:para>
+        <maml:para>Outputs the properties and values of the MSI database as a PSCustomObject.</maml:para>
       </maml:description>
     </command:details>
     <maml:description>
