@@ -3,7 +3,7 @@ function Get-ModuleConfig {
     
     $ModulePath = (Split-Path -Path $PSCommandPath -Parent)
     $ModuleName = Get-ChildItem -Path $ModulePath -Filter "*.psd1" -File | Select-Object -First 1 | Select-Object -ExpandProperty BaseName
-    $ConfigPath = Join-Path -Path $(Join-Path -Path $($env:PSModulePath -split ';' | % {if ($_ -match $env:USERNAME) {$_}} -ChildPath $ModuleName)) -ChildPath 'Module.Config.json'
+    $ConfigPath = Join-Path -Path $(Join-Path -Path $($env:PSModulePath -split ';' | % {if ($_ -match $env:USERNAME) {$_}}) -ChildPath $ModuleName) -ChildPath 'Module.Config.json'
     $ConfigDefaults = Join-Path -Path $(Split-Path -Path $PSScriptRoot -Parent) -ChildPath "\Config\Module.Defaults.json"
     # Test to see if module config JSON exists and create it if it doesn't
     if (-not (Test-Path -Path $ConfigPath)) {
