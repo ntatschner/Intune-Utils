@@ -26,6 +26,9 @@ function Get-ModuleConfig {
         Get-ModuleConfig
     } else {
         $Config = Get-Content -Path $ModuleConfigPath | ConvertFrom-Json
+        if ($Config.ModulePath -ne $ModulePath) {
+            $Config.ModulePath = $ModulePath
+        }
         $HashTable = @{}
         $Config.PSObject.Properties | ForEach-Object { $HashTable[$_.Name] = $_.Value }
         $HashTable
