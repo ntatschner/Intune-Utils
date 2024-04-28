@@ -1,4 +1,3 @@
 # Intune Packaging Powershell Module
 
-*Module Description*
-
+A set of untilities geared around Packaging for Intune.
