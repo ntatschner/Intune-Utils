@@ -12,7 +12,7 @@ function Set-ModuleConfig {
         [string]$ModuleConfigPath,
 
         [Parameter(HelpMessage = "Path of the module.")]
-        [string]$ConfigPath
+        [string]$ModulePath
     )
 
     # Test to see if module config JSON exists and create it if it doesn't
