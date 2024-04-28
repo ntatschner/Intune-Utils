@@ -21,6 +21,7 @@ function Get-ModuleConfig {
         }
         $HashTable.Add('ModuleName', $ModuleName)
         $HashTable.Add('ModulePath', $ModulePath)
+        $HashTable.Add('ModuleConfigPath',$ModuleConfigPath)
         Set-ModuleConfig @HashTable
         Get-ModuleConfig
     } else {

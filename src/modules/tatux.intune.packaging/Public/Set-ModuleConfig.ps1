@@ -8,8 +8,11 @@ function Set-ModuleConfig {
         [Parameter(HelpMessage = "Name of the module the configurationis being set for.")]
         [string]$ModuleName,
 
+        [Parameter(HelpMessage = "Path of the module config.")]
+        [string]$ModuleConfigPath,
+
         [Parameter(HelpMessage = "Path of the module.")]
-        [string]$ModuleConfigPath
+        [string]$ConfigPath
     )
 
     # Test to see if module config JSON exists and create it if it doesn't
