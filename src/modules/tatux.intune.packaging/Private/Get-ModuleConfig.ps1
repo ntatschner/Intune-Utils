@@ -28,6 +28,8 @@ function Get-ModuleConfig {
         $Config = Get-Content -Path $ModuleConfigPathfile | ConvertFrom-Json
         if ($Config.ModulePath -ne $ModulePath) {
             $Config.ModulePath = $ModulePath
+            $Config | ConvertTo-Json | Set-Content -Path $ModuleConfigPathfile -Force -Confirm:$false
+            $Config = Get-Content -Path $ModuleConfigPathfile | ConvertFrom-Json
         }
         $HashTable = @{}
         $Config.PSObject.Properties | ForEach-Object { $HashTable[$_.Name] = $_.Value }
