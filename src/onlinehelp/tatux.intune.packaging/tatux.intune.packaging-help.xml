@@ -3277,6 +3277,18 @@ Creates a new Intune Application Deployment for 7-Zip, generates the .intunewin 
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="2" aliases="none">
+          <maml:name>ModuleConfigPathFile</maml:name>
+          <maml:description>
+            <maml:para>Path of the module config.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="3" aliases="none">
           <maml:name>ModulePath</maml:name>
           <maml:description>
             <maml:para>{{ Fill ModulePath Description }}</maml:para>
@@ -3303,6 +3315,18 @@ Creates a new Intune Application Deployment for 7-Zip, generates the .intunewin 
       </command:syntaxItem>
     </command:syntax>
     <command:parameters>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="2" aliases="none">
+        <maml:name>ModuleConfigPathFile</maml:name>
+        <maml:description>
+          <maml:para>Path of the module config.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
         <maml:name>ModuleName</maml:name>
         <maml:description>
@@ -3315,7 +3339,7 @@ Creates a new Intune Application Deployment for 7-Zip, generates the .intunewin 
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="2" aliases="none">
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="3" aliases="none">
         <maml:name>ModulePath</maml:name>
         <maml:description>
           <maml:para>{{ Fill ModulePath Description }}</maml:para>
