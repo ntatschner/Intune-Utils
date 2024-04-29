@@ -86,6 +86,7 @@ jobs:
             }
             try {
               Import-Module $ModuleFilesPath -Force -ErrorAction Stop
+              Get-Command -Module $Module | Select-Object -Property Name
               Update-MarkdownHelpModule -Path $OriginalMDPath -Force -AlphabeticParamsOrder -RefreshModulePage -UpdateInputOutput -ErrorAction Stop
             } catch {
               Write-Error "Failed to update markdown help for $Module. Error: $_"
