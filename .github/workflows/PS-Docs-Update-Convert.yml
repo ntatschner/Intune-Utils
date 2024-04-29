@@ -85,6 +85,7 @@ jobs:
               break
             }
             try {
+              Remove-Module $Module -ErrorAction SilentlyContinue 
               Import-Module $ModuleFilesPath -Force -ErrorAction Stop
               Get-Command -Module $Module | Select-Object -ExpandProperty Name
               Update-MarkdownHelpModule -Path $OriginalMDPath -Force -AlphabeticParamsOrder -RefreshModulePage -UpdateInputOutput -ErrorAction Stop
