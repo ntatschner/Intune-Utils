@@ -1,5 +1,5 @@
 function Set-ModuleConfig {
-        [CmdletBinding(HelpUri = 'https://pwsh.dev.tatux.co.uk/tatux.intune.packaging/docs/Set-ModuleConfig/')]
+        [CmdletBinding(HelpUri = 'https://pwsh.dev.tatux.co.uk/tatux.intune.packaging/docs/Set-ModuleConfig.html')]
     param(
         [Parameter(HelpMessage = "Determines if the update message is displayed when the module is loaded.")]
         [ValidateSet('True', 'False')]

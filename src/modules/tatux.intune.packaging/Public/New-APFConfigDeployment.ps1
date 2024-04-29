@@ -7,12 +7,12 @@
 
 function New-APFDeployment {
     param(
-        [CmdletBinding(SupportsShouldProcess, HelpUri = 'https://pwsh.dev.tatux.co.uk/tatux.intune.packaging/docs/New-APFDeployment/')]
+        [CmdletBinding(SupportsShouldProcess, HelpUri = 'https://pwsh.dev.tatux.co.uk/tatux.intune.packaging/docs/New-APFConfigDeployment.html')]
         [OutputType([string])]
 
         [Parameter(ParameterSetName = "config")]
         [Alias("ApplicationName", "AppName")]
-        [Parameter(HelpMessage = "The name of the application. `nThis is written in to the exported configuration files. `nIf you do not provide a name, the script will attempt to extract it from the installer file.")]
+        [Parameter(HelpMessage = "The name of the application. `nThis is written in to the exported configuration files. `nIf you do not provide a name, the script will attempt to generate it.")]
         [string]$Name,
 
         [Parameter(ParameterSetName = "config")]
