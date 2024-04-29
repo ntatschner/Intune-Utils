@@ -5,7 +5,7 @@
 # - Version: The version of the configuration. This is written in to the exported configuration files. 
 # - Target: The target for the deployment, User context or System context. Default is 'system'.
 
-function New-APFDeployment {
+function New-APFConfigDeployment {
     param(
         [CmdletBinding(SupportsShouldProcess, HelpUri = 'https://pwsh.dev.tatux.co.uk/tatux.intune.packaging/docs/New-APFConfigDeployment.html')]
         [OutputType([string])]
