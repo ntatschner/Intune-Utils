@@ -26,16 +26,13 @@ function New-APFDeployment {
         [string]$Target = "system",
 
         [Parameter(ParameterSetName = "config")]
-        [Parameter(HelpMessage = "The switches to use when installing the application. Default is empty. You'll have to manually edit the configuration file.")]
-        [string]$InstallSwitches,
+        [Parameter(HelpMessage = "The type of configuration this command is for.")]
+        [ValidateSet("Registry", "Files", "Script-OS", "Script-App", "Script-User", "Custom")]
+        [string]$ConfigurationType,
 
         [Parameter(ParameterSetName = "config")]
-        [Parameter(HelpMessage = "The switches to use when uninstalling the application. Default is empty. You'll have to manually edit the configuration file.")]
-        [string]$UninstallSwitches,
-
-        [Parameter(ParameterSetName = "config")]
-        [Parameter(HelpMessage = "The path to the uninstall file. Default is empty. You'll have to manually edit the configuration file.")]
-        [string]$UninstallPath,
+        [Parameter(HelpMessage = "Destination path for the files on the target system.")]
+        [string]$DestinationFolder,
 
         [Parameter(Mandatory = $true)]
         [Alias("InstallerFile", "SourceFile")]
