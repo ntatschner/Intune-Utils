@@ -1,6 +1,13 @@
+# As per the New-APFDeployment, the New-APFConfigDeployment deploys custom configuration for things like OS tweaks via the registry, files and script deployment.
+# The parameters are similar to New-APFDeployment, but with additional parameters for the configuration file.
+# The parameters are:
+# - Name: The name of the configuration. This is written in to the exported configuration files. If you do not provide a name, the script will attempt to create one from the other parameters.
+# - Version: The version of the configuration. This is written in to the exported configuration files. 
+# - Target: The target for the deployment, User context or System context. Default is 'system'.
+
 function New-APFDeployment {
     param(
-        [CmdletBinding(SupportsShouldProcess, HelpUri = 'https://pwsh.dev.tatux.co.uk/tatux.intune.packaging/docs/New-APFDeployment')]
+        [CmdletBinding(SupportsShouldProcess, HelpUri = 'https://pwsh.dev.tatux.co.uk/tatux.intune.packaging/docs/New-APFDeployment/')]
         [OutputType([string])]
 
         [Parameter(ParameterSetName = "config")]
