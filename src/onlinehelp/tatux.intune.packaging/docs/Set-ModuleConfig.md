@@ -13,8 +13,8 @@ schema: 2.0.0
 ## SYNTAX
 
 ```
-Set-ModuleConfig [[-UpdateWarning] <String>] [[-ModuleName] <String>] [[-ModulePath] <String>]
- [-ProgressAction <ActionPreference>] [<CommonParameters>]
+Set-ModuleConfig [[-UpdateWarning] <String>] [[-ModuleName] <String>] [[-ModuleConfigPathFile] <String>]
+ [[-ModulePath] <String>] [-ProgressAction <ActionPreference>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -30,6 +30,21 @@ PS C:\> {{ Add example code here }}
 {{ Add example description here }}
 
 ## PARAMETERS
+
+### -ModuleConfigPathFile
+Path of the module config.
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: 2
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
 
 ### -ModuleName
 {{ Fill ModuleName Description }}
@@ -55,7 +70,7 @@ Parameter Sets: (All)
 Aliases:
 
 Required: False
-Position: 2
+Position: 3
 Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
