@@ -32,7 +32,7 @@ function New-APFDeployment {
 
         [Parameter(ParameterSetName = "config")]
         [Parameter(HelpMessage = "Destination path for the files on the target system.")]
-        [string]$DestinationFolder,
+        [string]$DestinationPath,
 
         [Parameter(Mandatory = $true)]
         [Alias("InstallerFile", "SourceFile")]
