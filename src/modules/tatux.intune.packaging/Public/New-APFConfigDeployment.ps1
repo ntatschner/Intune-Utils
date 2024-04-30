@@ -25,42 +25,35 @@ function New-APFConfigDeployment {
         [ValidateSet("system", "user")]
         [string]$Target = "system",
 
-        [Parameter(ParameterSetName = "config")]
+        [Parameter(ParameterSetName = "config","registry","files","script-os","script-app","script-user","custom")]
         [Parameter(HelpMessage = "The type of configuration this command is for.")]
         [ValidateSet("Registry", "Files", "Script-OS", "Script-App", "Script-User", "Custom")]
         [string]$ConfigurationType,
+
+        [Parameter(ParameterSetName = "registry")]
+        [Parameter(HelpMessage = "The registry key details to create or modify. \
+        `nThis should be in the format of {fullPath: `"HKEY_LOCAL_MACHINE\Software\MyApp`", `"value`": `"Setting1`"}.\
+        `nThere will also be a .csv file created where you can add as many registy items as you like.\
+        `nBare in mind that any failure of any registry item will cause the whole configuration to fail.")]
+        [string]$RegistryValue,
 
         [Parameter(ParameterSetName = "config")]
         [Parameter(HelpMessage = "Destination path for the files on the target system.")]
         [string]$DestinationPath,
 
-        [Parameter(Mandatory = $true)]
-        [Alias("InstallerFile", "SourceFile")]
+        [Parameter(Mandatory = $false)]
+        [Alias("IncludedFile", "SourceFile")]
         [ValidateScript({
-                if ($_ -notmatch "\.(msi|exe)$") {
-                    throw "Please supply a valid installer file path. Only .msi and .exe files are supported."
+            foreach ($i in $_) {
+                if (-not (Test-Path $_)) {
+                    throw "Path $($i) is invalid, double check and try again."
                 }
-                else {
-                    if (-not (Test-Path $_)) {
-                        throw "The file $_ does not exist."
-                    }
-                    return $true
-                }
-            })]
-        $Path,
+            } 
+            return $true
+        })]
+        [string[]]$Path,
 
-        [Parameter(HelpMessage = "Paths to any additional files that need to be included in the installation.")]
-        [ValidateScript({
-                foreach ($file in $_) {
-                    if (-not (Test-Path $file)) {
-                        throw "The file $file does not exist."
-                    }
-                }
-                return $true
-            })]
-        [string[]]$IncludedFiles,
-
-        [Parameter(HelpMessage = "The folder where the files will be copied to. Default is the current directory.")]
+        [Parameter(HelpMessage = "The folder where the output will be created. Default is the current directory.")]
         [ValidateScript({
                 if (-not (Test-Path $_)) {
                     throw "The folder $_ does not exist."
@@ -73,25 +66,8 @@ function New-APFConfigDeployment {
         [switch]$CreateIntuneWinPackage
     )
 
-    if ($Path -match "\.msi$") {
-        # Attempt to extract the application name and version from the MSI file
-        $MSIProperties = Get-MSIProperties -Path $Path
-        if (-not $Name) {
-            $Name = $MSIProperties.ProductName
-        }
-        if (-not $Version) {
-            $Version = $MSIProperties.ProductVersion
-        }
-    }
-    else {
-        $EXEProperties = Get-ItemProperty -Path $Path
-        if (-not $Name) {
-            $Name = $EXEProperties.BaseName
-        }
-        if (-not $Version) {
-            $Version = [version]$EXEProperties.VersionInfo.FileVersion
-        }
-    }
+    # Create Switch on ConfigurationType
+
 
     # Create subfolder for the application
     $AppFolder = Join-Path -Path $DestinationFolder -ChildPath $Name
