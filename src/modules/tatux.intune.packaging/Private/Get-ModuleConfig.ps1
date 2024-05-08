@@ -3,9 +3,9 @@ function Get-ModuleConfig {
     
     $ModulePath = $(Split-Path -Path (Split-Path -Path $PSCommandPath -Parent) -Parent)
     $ModuleName = Get-ChildItem -Path $ModulePath -Filter "*.psd1" -File | Select-Object -First 1 | Select-Object -ExpandProperty BaseName
-    $UserPowerShellModuleConfigPath = Join-Path -Path $(Split-Path -Path $($env:PSModulePath -split ';' | ForEach-Object { if ($_ -match $env:USERNAME) {$_} }) -Parent) -ChildPath 'Config'
+    $UserPowerShellModuleConfigPath = Join-Path -Path $(Split-Path -Path $($env:PSModulePath -split ';' | ForEach-Object { if (($_ -match $([regex]::Escape($env:USERNAME))) -and ($_ -notmatch '\.')) {$_} }) -Parent) -ChildPath 'Config'
     $ModuleConfigPath = Join-Path -Path $UserPowerShellModuleConfigPath -ChildPath $ModuleName
-    $ModuleConfigPathFile = Join-Path -Path $ModuleConfigPath -ChildPath 'Module.Config.json'
+    $ModuleConfigPathfile = Join-Path -Path $ModuleConfigPath -ChildPath 'Module.Config.json'
     $ConfigDefaults = Join-Path -Path $(Split-Path -Path $PSScriptRoot -Parent) -ChildPath "\Config\Module.Defaults.json"
     # Test to see if module config JSON exists and create it if it doesn't
     if (-not (Test-Path -Path $ModuleConfigPath)) {
@@ -21,7 +21,7 @@ function Get-ModuleConfig {
         }
         $HashTable.Add('ModuleName', $ModuleName)
         $HashTable.Add('ModulePath', $ModulePath)
-        $HashTable.Add('ModuleConfigPathFile',$ModuleConfigPathFile)
+        $HashTable.Add('ModuleConfigPath',$ModuleConfigPath)
         Set-ModuleConfig @HashTable
         Get-ModuleConfig
     } else {
