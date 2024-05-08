@@ -10,6 +10,7 @@
 
 module.exports = [
     'docs/Get-MSIProperties',
+    'docs/New-APFConfigDeployment',
     'docs/New-APFDeployment',
     'docs/New-IntuneApplication',
     'docs/New-Win32ApplicationInfo',

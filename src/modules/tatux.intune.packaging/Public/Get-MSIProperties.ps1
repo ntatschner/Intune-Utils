@@ -1,4 +1,5 @@
 function Get-MSIProperties {
+        [CmdletBinding(HelpUri = 'https://pwsh.dev.tatux.co.uk/tatux.intune.packaging/docs/Get-MSIProperties.html')]
     param (
         [Parameter(Mandatory, ValueFromPipelineByPropertyName, HelpMessage = "MSI Database Filename", ValueFromPipeline)]
         [ValidateScript({

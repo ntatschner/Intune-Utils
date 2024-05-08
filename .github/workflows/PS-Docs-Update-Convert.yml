@@ -45,22 +45,22 @@ jobs:
 
     - name: Install required Modules 
       run: |
-            $ModuleParentPaths = Get-ChildItem -Path ${{ github.workspace }}\src\modules\ -Directory
-            $ModuleParentPaths | % {
-            $ModuleName = $_.Name
-            Write-Output "Installing any required modules for $ModuleName"
-            $RequiredModules = (Import-PowerShellDataFile -Path "$($_.FullName)\$($ModuleName).psd1").RequiredModules
-            if ($RequiredModules) {
-                foreach ($module in $RequiredModules) {
-                    Install-Module -Name $module.ModuleName -RequiredVersion $module.ModuleVersion -Force -ErrorAction Stop
-                }
-            } else {
-                Write-Output "No required modules found."
+        $ModuleParentPaths = Get-ChildItem -Path ${{ github.workspace }}\src\modules\ -Directory
+        $ModuleParentPaths | % {
+        $ModuleName = $_.Name
+        Write-Output "Installing any required modules for $ModuleName"
+        $RequiredModules = (Import-PowerShellDataFile -Path "$($_.FullName)\$($ModuleName).psd1").RequiredModules
+        if ($RequiredModules) {
+            foreach ($module in $RequiredModules) {
+                Install-Module -Name $module.ModuleName -RequiredVersion $module.ModuleVersion -Force -ErrorAction Stop
             }
-            }
+          } else {
+            Write-Output "No required modules found."
+          }
+        }
       
     - name: Create/Update Help Markdown and XML
-      if: steps.dependencies.outcome == 'success'
+      if: steps.dependencies.outcome == 'success' || steps.dependencies.outcome == 'skipped'
       id: update_existing_help
       run: |
         $WebSiteURL = "https:\\pwsh.dev.tatux.co.uk"
@@ -71,12 +71,11 @@ jobs:
             $Module = $_.Name
             $ModuleFilesPath = "${{ github.workspace }}\src\modules\$Module"
             $OriginalMDPath = "${{ github.workspace }}\src\onlinehelp\$Module\docs\"
-            $OriginalCabPath = "${{ github.workspace }}\src\onlinehelp\$Module\en-GB\"
+            $OriginalCabPath = "${{ github.workspace }}\src\onlinehelp\$Module\"
             $ModuleDocsPath = "${{ github.workspace }}\src\docs_site\powershell_docs\docs\$Module\docs\"
-            $ModuleCabPath = "${{ github.workspace }}\src\docs_site\powershell_docs\c\$Module\"
             Write-Output "Working on $Module"
             try {
-              foreach ($f in @($OriginalMDPath, $OriginalCabPath, $ModuleDocsPath, $ModuleCabPath)) {
+              foreach ($f in @($OriginalMDPath, $OriginalCabPath, $ModuleDocsPath)) {
                 if (-not (Test-Path -Path $f)) {
                   New-Item -Path $f -ItemType Directory -Force
                 }
@@ -86,7 +85,9 @@ jobs:
               break
             }
             try {
+              Remove-Module $Module -ErrorAction SilentlyContinue 
               Import-Module $ModuleFilesPath -Force -ErrorAction Stop
+              Get-Command -Module $Module | Select-Object -ExpandProperty Name
               Update-MarkdownHelpModule -Path $OriginalMDPath -Force -AlphabeticParamsOrder -RefreshModulePage -UpdateInputOutput -ErrorAction Stop
             } catch {
               Write-Error "Failed to update markdown help for $Module. Error: $_"
@@ -103,7 +104,7 @@ jobs:
         Write-Output "Updated help for all modules"
 
     - name: Create and Update Help Cab File
-      if: steps.dependencies.outcome == 'success'
+      if: steps.dependencies.outcome == 'success' || steps.dependencies.outcome == 'skipped'
       id: create_cab
       run: |
         $ModuleParentPaths = Get-ChildItem -Path ${{ github.workspace }}\src\onlinehelp -Directory
@@ -112,8 +113,7 @@ jobs:
             $ModulePath = $_.FullName
             $Module = $_.Name
             Write-Output "Working on $Module"
-            $ModuleCabPath = "${{ github.workspace }}\src\docs_site\powershell_docs\c\$Module\"
-            $OriginalCabPath = "${{ github.workspace }}\src\onlinehelp\$Module\en-GB\"
+            $OriginalCabPath = "${{ github.workspace }}\src\onlinehelp\$Module\"
             $OriginalMDPath = "${{ github.workspace }}\src\onlinehelp\$Module\docs\"
             try {
               New-ExternalHelpCab -CabFilesFolder $OriginalCabPath -LandingPagePath "$OriginalMDPath$Module.md" -OutputFolder $OriginalCabPath -IncrementHelpVersion -ErrorAction Stop
@@ -138,7 +138,7 @@ jobs:
         Write-Output "CabPaths=$CabArray" >> $env:GITHUB_OUTPUT
 
     - name: Convert Help Markdown to Docusaurus Format
-      if: steps.dependencies.outcome == 'success'
+      if: steps.dependencies.outcome == 'success'  || steps.dependencies.outcome == 'skipped'
       id: convert_to_docusaurus
       run: |
         $ModuleParentPaths = Get-ChildItem -Path ${{ github.workspace }}\src\modules\ -Directory
@@ -182,6 +182,11 @@ jobs:
         echo "echo $SSH_PASSPHRASE" > ~/.ssh_askpass && chmod +x ~/.ssh_askpass
         echo "$SSH_PRIVATE_KEY" | tr -d '\r' | DISPLAY=None SSH_ASKPASS=~/.ssh_askpass ssh-add - >/dev/null
 
-    - name: RSYNC to host
+    - name: SCP to Server
       run: |
-        rsync -rP -e "ssh -p 9284 -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null" --exclude \Docs\ src/onlinehelp/* ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:${{ secrets.SSH_REMOTE_PATH }}
+        ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} -p 9284 "
+        if [[ -n ${{ secrets.SSH_REMOTE_PATH }} ]]; then
+            rm -rf ${{ secrets.SSH_REMOTE_PATH }}/*
+        fi
+        "
+        scp -r -P 9284 -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null src/onlinehelp/* ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:${{ secrets.SSH_REMOTE_PATH }}

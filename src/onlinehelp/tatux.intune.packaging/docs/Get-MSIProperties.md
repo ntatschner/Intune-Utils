@@ -8,7 +8,7 @@ schema: 2.0.0
 # Get-MSIProperties
 
 ## SYNOPSIS
-{{ Fill in the Synopsis }}
+Outputs the properties and values of the MSI database as a PSCustomObject.
 
 ## SYNTAX
 

@@ -1,8 +1,8 @@
 ---
 Module Name: tatux.intune.packaging
 Module Guid: bfe12388-5f86-4da1-b08b-a439ff6f690c
-Download Help Link: {{ Update Download Link }}
-Help Version: 0.31
+Download Help Link: https://update.tatux.co.uk/tatux.intune.packaging/
+Help Version: 0.51
 Locale: en-GB
 ---
 
@@ -12,7 +12,7 @@ Locale: en-GB
 
 ## tatux.intune.packaging Cmdlets
 ### [Get-MSIProperties](Get-MSIProperties.md)
-{{ Fill in the Synopsis }}
+Outputs the properties and values of the MSI database as a PSCustomObject.
 
 ### [New-APFDeployment](New-APFDeployment.md)
 Creates a new APF deployment.
