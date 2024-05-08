@@ -4,7 +4,7 @@
     # RootModule = ''
 
     # Version number of this module.
-    ModuleVersion        = '0.9.0.45'
+    ModuleVersion        = '0.9.0.46'
 
     # Supported PSEditions
     CompatiblePSEditions = @('Desktop')
@@ -30,8 +30,8 @@
     # Modules that must be imported into the global environment prior to importing this module
     RequiredModules = @(
         @{ ModuleName = 'Microsoft.Graph.Intune'; ModuleVersion = '6.1907.1.0' },
-        @{ ModuleName = 'Microsoft.Graph.Authentication'; ModuleVersion = '2.17.0' }
-        @{ ModuleName = 'tatux.telemetry'; ModuleVersion = '0.0.10'}
+        @{ ModuleName = 'Microsoft.Graph.Authentication'; ModuleVersion = '2.17.0' },
+        'tatux.telemetry'
     )
 
     # Assemblies that must be loaded prior to importing this module
