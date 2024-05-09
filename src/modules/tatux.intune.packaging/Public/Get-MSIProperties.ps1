@@ -32,7 +32,7 @@ function Get-MSIProperties {
             Write-Verbose "Failed to load telemetry"
         }
         # Create an empty hashtable to store properties in
-        $Path = Resolve-Path $Path | Select-Object -ExpandProperty Path
+        $Path = Get-Item $Path | Select-Object -ExpandProperty FullPath
         # Creating WI object and load MSI database
         try {
             $WindowsInstaller = New-Object -ComObject WindowsInstaller.Installer
