@@ -8,7 +8,7 @@ function Get-ModuleConfig {
     $ModuleConfigFilePath = Join-Path -Path $ModuleConfigPath -ChildPath 'Module.Config.json'
     $ConfigDefaults = Join-Path -Path $(Split-Path -Path $PSScriptRoot -Parent) -ChildPath "\Config\Module.Defaults.json"
     # Test to see if module config JSON exists and create it if it doesn't
-    if (-not (Test-Path -Path $ModuleConfigPath)) {
+    if (-not (Test-Path -Path $ModuleConfigFilePath)) {
         $DefaultConfig = Get-Content -Path $ConfigDefaults | ConvertFrom-Json
         $HashTable = @{}
         $DefaultConfig.PSObject.Properties | ForEach-Object { $HashTable[$_.Name] = $_.Value }

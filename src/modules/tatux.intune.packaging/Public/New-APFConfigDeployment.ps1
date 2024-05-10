@@ -83,6 +83,27 @@ function New-APFConfigDeployment {
 
         # Create Switch on ConfigurationType
 
+        switch ($ConfigurationType) {
+            "Registry" {
+                
+                break
+            }
+            "Files" {
+                break
+            }
+            "Script-OS" {
+                break
+            }
+            "Script-App" {
+                break
+            }
+            "Script-User" {
+                break
+            }
+            "Custom" {
+                break
+            }
+        }
 
         # Create subfolder for the application
         $AppFolder = Join-Path -Path $DestinationFolder -ChildPath $Name
