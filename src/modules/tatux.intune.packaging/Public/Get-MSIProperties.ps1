@@ -26,7 +26,7 @@ function Get-MSIProperties {
             if ($CurrentConfig.BasicTelemetry -eq 'True') {
                 $TelmetryArgs.Add('Minimal', $true)
             }
-            Invoke-TelemetryCollection @TelmetryArgs -Stage start -ClearTimer
+            #Invoke-TelemetryCollection @TelmetryArgs -Stage start -ClearTimer
         }
         catch {
             Write-Verbose "Failed to load telemetry"
@@ -36,16 +36,16 @@ function Get-MSIProperties {
         # Creating WI object and load MSI database
         try {
             $WindowsInstaller = New-Object -ComObject WindowsInstaller.Installer
-            $WindowsInstallerDatabase = $WindowsInstaller.GetType().InvokeMember("OpenDatabase", "InvokeMethod", $null, $WindowsInstaller, @(($Path), 0))
+            $WindowsInstallerDatabase = $WindowsInstaller.OpenDatabase($Path, 0)
 
             # Open the Property-view
-            $WindowsInstallerDatabaseView = $WindowsInstallerDatabase.GetType().InvokeMember("OpenView", "InvokeMethod", $null, $WindowsInstallerDatabase, "SELECT * FROM Property")
-            $WindowsInstallerDatabaseView.GetType().InvokeMember("Execute", "InvokeMethod", $null, $WindowsInstallerDatabaseView, $null)
+            $WindowsInstallerDatabaseView = $WindowsInstallerDatabase.OpenView("SELECT * FROM Property")
+            $WindowsInstallerDatabaseView.Execute($null)
 
             $Results = @{}
 
             # Loop thru the table
-            $WindowsInstallerDatabaseRow = $WindowsInstallerDatabaseView.GetType().InvokeMember("Fetch", "InvokeMethod", $null, $WindowsInstallerDatabaseView, $null)
+            $WindowsInstallerDatabaseRow = $WindowsInstallerDatabaseView.Fetch($null)
             while ($null -ne $WindowsInstallerDatabaseRow) {
                 # Add property and value to hash table
                 $name = $WindowsInstallerDatabaseView.GetType().InvokeMember("StringData", "GetProperty", $null, $WindowsInstallerDatabaseRow, 1)
@@ -53,19 +53,20 @@ function Get-MSIProperties {
                 $Results."$name" = $value
 
                 # Fetch the next row
-                $WindowsInstallerDatabaseRow = $WindowsInstallerDatabaseView.GetType().InvokeMember("Fetch", "InvokeMethod", $null, $WindowsInstallerDatabaseView, $null)
+                $WindowsInstallerDatabaseRow = $WindowsInstallerDatabaseView.Fetch($null)
             }
 
-            $WindowsInstallerDatabaseView.GetType().InvokeMember("Close", "InvokeMethod", $null, $WindowsInstallerDatabaseView, $null)
+            $WindowsInstallerDatabaseView.Close($null)
 
             # Return the hash table
             [PSCustomObject]$Results
         }
         catch {
-            Invoke-TelemetryCollection @TelmetryArgs -Stage End -ClearTimer -Failed $true -Exception $_
+            #Invoke-TelemetryCollection @TelmetryArgs -Stage End -ClearTimer -Failed $true -Exception $_
             Write-Error "Failed to load MSI database"
+            $_
             break
         }
-        Invoke-TelemetryCollection @TelmetryArgs -Stage End -ClearTimer
+        #Invoke-TelemetryCollection @TelmetryArgs -Stage End -ClearTimer
     }
 }
