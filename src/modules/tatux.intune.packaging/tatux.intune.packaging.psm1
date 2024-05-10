@@ -43,6 +43,7 @@ $TelmetryArgs = @{
     URI = 'https://telemetry.tatux.in/api/telemetry'
     ClearTimer = $true
     Stage = 'Module-Load'
+    Complete = $true
 }
 
 if ($CurrentConfig.BasicTelemetry -eq 'True') {
