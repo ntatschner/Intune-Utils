@@ -31,7 +31,7 @@ function Get-MSIProperties {
             if ($CurrentConfig.BasicTelemetry -eq 'True') {
                 $TelmetryArgs.Add('Minimal', $true)
             }
-            #Invoke-TelemetryCollection @TelmetryArgs -Stage start -ClearTimer
+            Invoke-TelemetryCollection @TelmetryArgs -Stage start -ClearTimer
         }
         catch {
             Write-Verbose "Failed to load telemetry"
