@@ -35,10 +35,14 @@ Export-ModuleMember -Function $Public.Basename
 # Module Config setup and import
 $CurrentConfig = Get-ModuleConfig
 
+# Generate execution ID
+$ExecutionID = [System.Guid]::NewGuid().ToString()
+
 $TelmetryArgs = @{
     ModuleName = $CurrentConfig.ModuleName
     ModulePath = $CurrentConfig.ModulePath
     ModuleVersion = $MyInvocation.MyCommand.Module.Version
+    ExecutionID = $ExecutionID
     CommandName = $MyInvocation.MyCommand.Name
     URI = 'https://telemetry.tatux.in/api/telemetry'
     ClearTimer = $true
