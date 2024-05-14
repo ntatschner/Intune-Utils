@@ -67,11 +67,11 @@ function Get-MSIProperties {
             [PSCustomObject]$Results
         }
         catch {
-            #Invoke-TelemetryCollection @TelmetryArgs -Stage End -ClearTimer -Failed $true -Exception $_
+            Invoke-TelemetryCollection @TelmetryArgs -Stage End -ClearTimer -Failed $true -Exception $_
             Write-Error "Failed to load MSI database"
             $_
             break
         }
-        #Invoke-TelemetryCollection @TelmetryArgs -Stage End -ClearTimer
+        Invoke-TelemetryCollection @TelmetryArgs -Stage End -ClearTimer
     }
 }

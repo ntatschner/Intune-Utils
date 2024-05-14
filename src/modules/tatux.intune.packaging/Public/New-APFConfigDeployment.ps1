@@ -25,8 +25,8 @@ function New-APFConfigDeployment {
 
         [Parameter(ParameterSetName = "registry")]
         [Parameter(HelpMessage = "The registry key details to create or modify. \
-        `nThis should be in the format of fullPath: HKEY_LOCAL_MACHINE\Software\, KeyName: MyKey, KeyType: DWORD, KeyData: Setting1\
-        `nSo you would enter `"HKEY_LOCAL_MACHINE\Software\MyApp,MyName,DWORD,Setting1`" as the value.\
+        `nThis should be in the format of fullPath: HKEY_LOCAL_MACHINE\Software\, KeyName: MyKey, KeyType: DWORD, KeyData: Setting1, State: ADD|REMOVE|MODIFY\
+        `nSo you would enter `"HKEY_LOCAL_MACHINE\Software\MyApp,MyName,DWORD,Setting1,ADD`" as the value.\
         `nThere will also be a .csv file created where you can add as many registy items as you like.\
         `nBare in mind that any failure of any registry item will cause the whole configuration to fail.")]
         [string]$RegistryValue,
@@ -100,24 +100,47 @@ function New-APFConfigDeployment {
                         Copy-Item -Path "$PSScriptRoot\Templates\Registry\registry_entries.config.csv" -Destination $RegistryFile
                     }
                 }
-                # add registry keys to the csv file
-                
-                break
+                if ($RegistryValue) {
+                    
+                    # add registry keys to the csv file
+                    # Import current file, loop through and check if supplied key is already in the file
+                    try {
+                        $RegistryKeys = Import-Csv -Path $RegistryFile -ErrorAction Stop
+                        $RegistryKeys | ForEach-Object {
+                            $exists = $false
+                            if ($_ -eq $RegistryValue) {
+                                Write-Warning "The registry values supplied '$($RegistryValue)' already exists in the file."
+                                $exists = $true
+                                return
+                            }
+                            if ($exists -eq $false) {
+                                Export-Csv -Path $RegistryFile -InputObject $RegistryValue -Append -NoTypeInformation
+                            }
+                        }
+                    }
+                    catch {
+                        Write-Error "Failed to import the supplied entry to the registry file.`nError: $_"
+                        break
+                    }
+                }
+                else {
+                    Write-Verbose "No registry keys were supplied."
+                }
             }
             "Files" {
-                break
+                
             }
             "Script-OS" {
-                break
+                
             }
             "Script-App" {
-                break
+                
             }
             "Script-User" {
-                break
+                
             }
             "Custom" {
-                break
+                
             }
         }
 

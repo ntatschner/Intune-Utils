@@ -1,0 +1,7 @@
+{
+    "name": "##NAME_TEMPLATE",
+    "uninstallpath": "##UNINSTALLPATH_TEMPLATE",
+    "version": "##VERSION_TEMPLATE",
+    "precommandfile": "Intune-Pre-Install.ps1",
+    "postcommandfile": "Intune-Post-Install.ps1"
+}
