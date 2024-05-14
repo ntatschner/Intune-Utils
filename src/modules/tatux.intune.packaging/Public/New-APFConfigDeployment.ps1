@@ -25,7 +25,8 @@ function New-APFConfigDeployment {
 
         [Parameter(ParameterSetName = "registry")]
         [Parameter(HelpMessage = "The registry key details to create or modify. \
-        `nThis should be in the format of {fullPath: `"HKEY_LOCAL_MACHINE\Software\MyApp`", `"value`": `"Setting1`"}.\
+        `nThis should be in the format of fullPath: HKEY_LOCAL_MACHINE\Software\, KeyName: MyKey, KeyType: DWORD, KeyData: Setting1\
+        `nSo you would enter `"HKEY_LOCAL_MACHINE\Software\MyApp,MyName,DWORD,Setting1`" as the value.\
         `nThere will also be a .csv file created where you can add as many registy items as you like.\
         `nBare in mind that any failure of any registry item will cause the whole configuration to fail.")]
         [string]$RegistryValue,
@@ -59,12 +60,15 @@ function New-APFConfigDeployment {
         [switch]$CreateIntuneWinPackage
     )
     begin {
+        # Generate execution ID
+        $ExecutionID = [System.Guid]::NewGuid().ToString()
         try {
             $CurrentConfig = Get-ModuleConfig
             $TelmetryArgs = @{
                 ModuleName    = $CurrentConfig.ModuleName
                 ModulePath    = $CurrentConfig.ModulePath
                 ModuleVersion = $MyInvocation.MyCommand.Module.Version
+                ExecutionID   = $ExecutionID
                 CommandName   = $MyInvocation.MyCommand.Name
                 URI           = 'https://telemetry.tatux.in/api/telemetry'
             }
@@ -85,6 +89,18 @@ function New-APFConfigDeployment {
 
         switch ($ConfigurationType) {
             "Registry" {
+                # Create Registry CSV file and add any commandline provided registry keys
+                $RegistryFile = Join-Path -Path $DestinationFolder -ChildPath "$Name-Registry.csv"
+                if (-not (Test-Path $RegistryFile)) {
+                    Copy-Item -Path "$PSScriptRoot\Templates\Registry\registry_entries.config.csv" -Destination $RegistryFile
+                }
+                else {
+                    if ($PSCmdlet.ShouldContinue("Overwrite existing registry file? Warning: This will delete the existing file.", "Confirm Overwrite")) {
+                        Remove-Item -Path $RegistryFile -Force
+                        Copy-Item -Path "$PSScriptRoot\Templates\Registry\registry_entries.config.csv" -Destination $RegistryFile
+                    }
+                }
+                # add registry keys to the csv file
                 
                 break
             }
@@ -124,7 +140,7 @@ function New-APFConfigDeployment {
             }
         }
         # Copy the template files to the application folder
-        Copy-Item -Path "$PSScriptRoot\Templates\Application\*" -Destination $AppFolder -Recurse
+        # Copy-Item -Path "$PSScriptRoot\Templates\Application\*" -Destination $AppFolder -Recurse
 
         # Update the template files with the application name and version
         $InstallerFileName = (Get-ChildItem -Path $Path).BaseName

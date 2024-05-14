@@ -13,6 +13,10 @@ function Get-MSIProperties {
         [Alias("Filename", "MSIDbName", "Database", "Msi")]
         $Path
     )
+    begin {
+        # Generate execution ID
+        $ExecutionID = [System.Guid]::NewGuid().ToString()
+    }
     process {
         try {
             $CurrentConfig = Get-ModuleConfig
@@ -20,6 +24,7 @@ function Get-MSIProperties {
                 ModuleName    = $CurrentConfig.ModuleName
                 ModulePath    = $CurrentConfig.ModulePath
                 ModuleVersion = $MyInvocation.MyCommand.Module.Version
+                ExecutionID   = $ExecutionID
                 CommandName   = $MyInvocation.MyCommand.Name
                 URI           = 'https://telemetry.tatux.in/api/telemetry'
             }
