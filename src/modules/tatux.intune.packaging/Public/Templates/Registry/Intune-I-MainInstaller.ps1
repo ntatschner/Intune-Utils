@@ -14,7 +14,6 @@ $Extention = $InstallConfig.filename -split "\." | Select-Object -Last 1
 $LogName = $InstallConfig.filename.Replace($Extention, "log")
 $InvalidChars | % { $LogName = $LogName -replace [regex]::Escape($_), "" }
 $LoggingPath = Join-Path -Path (Join-Path -Path $ConfigBase -ChildPath "\$APFBase\UserLogs\") -ChildPath $LogName
-$ShortcutBasePath = if ($InstallConfig.target -eq "user") { "$((New-Object -ComObject Shell.Application).Namespace(0x10).Self.Path)" } else { "C:\Users\Public\Desktop" }
 $ExistingConfig = $false
 $StartTime = Get-Date
 #endregion Global Variables
@@ -34,31 +33,31 @@ Write-DeploymentLog -Message "APF Started." -MessageType "Info" -LogPath $Loggin
 # Create config directory if it dosent exist
 
 if (-not (Test-Path -Path "$ConfigBase\$APFBase\AppConfigs")) {
-    Write-DeploymentLog -Message "Creating the Rothesay App Configs folder" -MessageType "Info" -LogPath $LoggingPath
+    Write-DeploymentLog -Message "Creating the APF App Configs folder" -MessageType "Info" -LogPath $LoggingPath
     New-Item -Path "$ConfigBase\$APFBase\AppConfigs" -ItemType Directory -Force
 }
 
 if (-not (Test-Path -Path "$ConfigBase\$APFBase\AppConfigs\$($InstallConfig.name)_config.installer.json")) {
-    Write-DeploymentLog -Message "Installer config dosen't exist in the Rothesay App Configs folder" -MessageType "Info" -LogPath $LoggingPath
+    Write-DeploymentLog -Message "Installer config dosen't exist in the APF App Configs folder" -MessageType "Info" -LogPath $LoggingPath
 }
 else {
     $ExistingConfig = $true
     $LocalConfig = Get-Content -Path "$ConfigBase\$APFBase\AppConfigs\$($InstallConfig.name)_config.installer.json" | ConvertFrom-Json
     if ($LocalConfig -ne $InstallConfig) {
         if (([version]$InstallConfig.version -gt [version]$LocalConfig.version) -and (-not $Uninstall)) {
-            Write-DeploymentLog -Message "The installer config is newer than the one in the Rothesay App Configs folder, this installation will upgrade the existing installation" -MessageType "Info" -LogPath $LoggingPath
+            Write-DeploymentLog -Message "The installer config is newer than the one in the APF App Configs folder, this installation will upgrade the existing installation" -MessageType "Info" -LogPath $LoggingPath
         }
         elseif (([version]$InstallConfig.version -lt [version]$LocalConfig.version) -and (-not $Uninstall)) {
-            Write-DeploymentLog -Message "The installer config is older than the one in the Rothesay App Configs folder, this installation will not be performed" -MessageType "Info" -LogPath $LoggingPath
+            Write-DeploymentLog -Message "The installer config is older than the one in the APF App Configs folder, this installation will not be performed" -MessageType "Info" -LogPath $LoggingPath
             exit 0
         }
         elseif (([version]$InstallConfig.version -eq [version]$LocalConfig.version) -and (-not $Uninstall)) {
-            Write-DeploymentLog -Message "The version number in the installer config is the same as the one in the Rothesay App Configs folder, check if another value has changed, this installation will not be performed" -MessageType "Info" -LogPath $LoggingPath
+            Write-DeploymentLog -Message "The version number in the installer config is the same as the one in the APF App Configs folder, check if another value has changed, this installation will not be performed" -MessageType "Info" -LogPath $LoggingPath
             exit 0
         }
     }
     else {
-        Write-DeploymentLog -Message "The installer config is the same as the one in the Rothesay Scripts folder, Detection might have failed. Aborting" -MessageType "Info" -LogPath $LoggingPath
+        Write-DeploymentLog -Message "The installer config is the same as the one in the APF Scripts folder, Detection might have failed. Aborting" -MessageType "Info" -LogPath $LoggingPath
         exit 1
     }
 }
