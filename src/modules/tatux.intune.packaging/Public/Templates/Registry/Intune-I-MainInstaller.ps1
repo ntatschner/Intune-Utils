@@ -80,117 +80,18 @@ if (-not [string]::IsNullOrEmpty($InstallConfig.precommandfile)) {
 }
 
 if ($Uninstall) {
-    if ($InstallConfig.uninstallpath -eq "") {
-        Write-DeploymentLog -Message "Uninstall path not found in the config.installer.json file, trying Uninstall Switches on setup file" -MessageType "Warning" -LogPath $LoggingPath
-        $Script:UninstallPath = Join-Path -Path $PSScriptRoot -ChildPath $InstallConfig.filename
-        Write-DeploymentLog -Message "Uninstall Path: $UninstallPath" -MessageType "Info" -LogPath $LoggingPath
-    }
-    else {
-        if ($InstallConfig.target -eq "user") {
-            $Script:UninstallPath = $InstallConfig.uninstallpath -replace "c:\\Users\\[^\\]*\\", "C:\Users\$($Env:USERNAME)\"
-            Write-DeploymentLog -Message "Uninstall Path: $UninstallPath" -MessageType "Info" -LogPath $LoggingPath
-        }
-        else {
-            Write-DeploymentLog -Message "Uninstall Path: $UninstallPath" -MessageType "Info" -LogPath $LoggingPath
-            $Script:UninstallPath = $InstallConfig.uninstallpath
-        }
-    }
 
-    Write-DeploymentLog -Message "Uninstalling $($InstallConfig.name), Version $($InstallConfig.version) with Uninstall Path $($UninstallPath)" -MessageType "Info" -LogPath $LoggingPath
-    Write-DeploymentLog -Message "Imported the following configuration: `n$($InstallConfig | ConvertTo-Json -Depth 5)" -MessageType "Info" -LogPath $LoggingPath
-    if ($UninstallPath -match ".msi") {
-        try {
-            $UninstallSplat = @{
-                FilePath         = "msiexec.exe"
-                WorkingDirectory = $(if ($UninstallPath -contains " ") { Split-Path -Path $UninstallPath -Parent } else { $UninstallPath })
-                ArgumentList     = "/x `"$(Split-Path -Path $UninstallPath -Leaf)`" $($InstallConfig.uninstallswitches)"
-                NoNewWindow      = $true
-                Wait             = $true
-                ErrorAction      = "Stop"
-                PassThru         = $true
-            }
-            Write-DeploymentLog -Message "Splat contains: `n$($UninstallSplat | ConvertTo-Json -Depth 5)" -MessageType "Info" -LogPath $LoggingPath
-            Write-DeploymentLog -Message "MSI Found. Running msiexec.exe /x `"$UninstallPath`" $($InstallConfig.uninstallswitches)" -MessageType "Info" -LogPath $LoggingPath
-            Start-Process @UninstallSplat
-            Write-DeploymentLog -Message "Process ID: $($Process.Id)" -MessageType "Info" -LogPath $LoggingPath
-            Write-DeploymentLog -Message "Process Exit Code: $($Process.ExitCode)" -MessageType "Info" -LogPath $LoggingPath
-            if ($Process.ExitCode -ne 0) {
-                Write-Error -Message "ExitCode: $($Process.ExitCode)"
-                throw "ExitCode: $($Process.ExitCode)"
-            }
-            else {
-                Write-DeploymentLog -Message "Uninstall completed successfully" -MessageType "Info" -LogPath $LoggingPath
-                if ($InstallConfig.shortcut) {
-                    Write-DeploymentLog -Message "Removing shortcuts" -MessageType "Info" -LogPath $LoggingPath
-                    foreach ($Shortcut in $InstallConfig.CreatedShortcuts) {
-                        if (Test-Path -Path $Shortcut) {
-                            Remove-Item -Path $Shortcut -Force -Confirm:$false
-                        }
-                    }
-                }
-                if ($ExistingConfig -eq $true) {
-                    Remove-Item -Path "$ConfigBase\$APFBase\AppConfigs\$($InstallConfig.name)_config.installer.json" -Force -Confirm:$false
-                }
-            }
-        }
-        Catch {
-            Write-DeploymentLog -Message "Failed to uninstall $($InstallConfig.name), Version $($InstallConfig.version) with error: $($_.Exception.Message)" -MessageType "Error" -LogPath $LoggingPath
-            exit 1
-        }
-    }
-    else {
-        try {
-            $UninstallSplat = @{
-                FilePath         = "cmd.exe"
-                WorkingDirectory = $(if ($UninstallPath -match " ") { Split-Path -Path $UninstallPath -Parent } else { $UninstallPath })
-                ArgumentList     = "/c $(Split-Path -Path $UninstallPath -Leaf) $($InstallConfig.uninstallswitches)"
-                NoNewWindow      = $true
-                Wait             = $true
-                ErrorAction      = "Stop"
-                PassThru         = $true
-            }
-            Write-DeploymentLog -Message "Splat contains: `n$($UninstallSplat | ConvertTo-Json -Depth 5)" -MessageType "Info" -LogPath $LoggingPath
-            Write-DeploymentLog -Message "EXE Found. Running cmd.exe /c `"$UninstallPath`" $($InstallConfig.uninstallswitches)" -MessageType "Info" -LogPath $LoggingPath
-            $Process = Start-Process @UninstallSplat
-            Write-DeploymentLog -Message "Process ID: $($Process.Id)" -MessageType "Info" -LogPath $LoggingPath
-            Write-DeploymentLog -Message "Process Exit Code: $($Process.ExitCode)" -MessageType "Info" -LogPath $LoggingPath
-            if ($Process.ExitCode -ne 0) {
-                Write-Error -Message "ExitCode: $($Process.ExitCode)"
-                throw "ExitCode: $($Process.ExitCode)"
-            }
-            else {
-                Write-DeploymentLog -Message "Uninstall completed successfully" -MessageType "Info" -LogPath $LoggingPath
-                if ($InstallConfig.shortcut) {
-                    Write-DeploymentLog -Message "Removing shortcuts" -MessageType "Info" -LogPath $LoggingPath
-                    foreach ($Shortcut in $InstallConfig.CreatedShortcuts) {
-                        if (Test-Path -Path $Shortcut) {
-                            Remove-Item -Path $Shortcut -Force -Confirm:$false
-                        }
-                    }
-                }
-                if ($ExistingConfig -eq $true) {
-                    Remove-Item -Path "$ConfigBase\$APFBase\AppConfigs\$($InstallConfig.name)_config.installer.json" -Force -Confirm:$false
-                }
-            }
-        }
-        Catch {
-            Write-DeploymentLog -Message "Failed to uninstall $($InstallConfig.name), Version $($InstallConfig.version) with error: $($_.Exception.Message)" -MessageType "Error" -LogPath $LoggingPath
-            exit 1
-        }
-    }
     $Script:TimeTaken = $(Get-Date) - $StartTime
     Write-DeploymentLog -Message "Uninstallation of $($InstallConfig.name), Version $($InstallConfig.version) took $($TimeTaken.ToString('hh\:mm\:ss\.fff'))" -MessageType "Info" -LogPath $LoggingPath
     exit 0
 }
 else {
-    Write-DeploymentLog -Message "Starting installation of $($InstallConfig.name), Version $($InstallConfig.version)" -MessageType "Info" -LogPath $LoggingPath
+    Write-DeploymentLog -Message "Starting deployment of $($InstallConfig.name) registry entries, Version $($InstallConfig.version)" -MessageType "Info" -LogPath $LoggingPath
     # Log the config import
     Write-DeploymentLog -Message "Imported the following configuration: `n$($InstallConfig | ConvertTo-Json -Depth 5)" -MessageType "Info" -LogPath $LoggingPath
     # Set the execution policy to bypass
     Write-DeploymentLog -Message "Setting the execution policy to bypass" -MessageType "Info" -LogPath $LoggingPath
     Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process -Force
-    # Install the application
-    Write-DeploymentLog -Message "Managing Registry config $($InstallConfig.name), Version $($InstallConfig.version)." -MessageType "Info" -LogPath $LoggingPath
     
     # Create storage folder if it dosent exist
     
@@ -202,6 +103,7 @@ else {
     # Create a local copy of registry CSV File
     if (Test-Path -Path "$PSScriptRoot\$($InstallConfig.name)_Registry.csv") {
         Copy-Item -Path "$PSScriptRoot\$($InstallConfig.name)_Registry.csv" -Destination "$StorageFolderFullPath\$($InstallConfig.name)_Registry.csv" -Force
+        Write-DeploymentLog -Message "Registry CSV File copied to $StorageFolderFullPath\$($InstallConfig.name)_Registry.csv" -MessageType "Info" -LogPath $LoggingPath
     } else {
         Write-DeploymentLog -Message "Registry CSV File not found" -MessageType "Error" -LogPath $LoggingPath
         exit 1
@@ -212,46 +114,45 @@ else {
     $RegistryData | Add-Member -MemberType NoteProperty -Name "Result" -Value ""
     $RegistryData | Add-Member -MemberType NoteProperty -Name "Error" -Value ""
     $RegistryData | Add-Member -MemberType NoteProperty -Name "OldValue" -Value ""
+    Write-DeploymentLog -Message "Processing the Registry CSV File, found $($RegistryData.Count) entries" -MessageType "Info" -LogPath $LoggingPath
     # Loop through the CSV File and make the registry modifications
     foreach ($RegistryEntry in $RegistryData) {
+        $FullKeyPath = "$($RegistryEntry.RegistryPath)\$($RegistryEntry.KeyName)"
+        $FullKeyPathWithKey = "$($FullKayPath)\$($RegistryEntry.ValueName)"
+        Write-DeploymentLog -Message "Processing $($RegistryEntry.State) of $($RegistryEntry.ValueName) in $($FullKeyPath)" -MessageType "Info" -LogPath $LoggingPath
         try {
-            if ($RegistryEntry.State -eq "MODIFY") {
-                if (Test-Path -Path "$($RegistryEntry.RegistryPath)\$($RegistryEntry.KeyName)") {
-                    $RegistryEntry.OldValue = Get-ItemProperty -Path "$($RegistryEntry.RegistryPath)\$($RegistryEntry.KeyName)" -Name $RegistryEntry.ValueData
+            switch -Regex ($RegistryEntry.State) {
+                "MODIFY|ADD" {
+                    if (Test-Path -Path "$($RegistryEntry.RegistryPath)\$($RegistryEntry.KeyName)") {
+                        $RegistryEntry.OldValue = Get-ItemProperty -Path "$($FullKayPath)\$($RegistryEntry.ValueName)" -Name $RegistryEntry.ValueData
+                    }
+                    elseif ($RegistryEntry.State -eq "MODIFY") {
+                        $RegistryEntry.Result = "Failed"
+                        $RegistryEntry.Error = "Path not found"
+                        continue
+                    }
+                    switch ($RegistryEntry.Type) {
+                        "String" { Set-ItemProperty -Path $FullKeyPath -Name $RegistryEntry.ValueName -Value $RegistryEntry.ValueData -Force }
+                        "DWord" { Set-ItemProperty -Path $FullKeyPath -Name $RegistryEntry.ValueName -Value $RegistryEntry.ValueData -Type DWord -Force }
+                        "QWord" { Set-ItemProperty -Path $FullKeyPath -Name $RegistryEntry.ValueName -Value $RegistryEntry.ValueData -Type QWord -Force }
+                        "Binary" { Set-ItemProperty -Path $FullKeyPath -Name $RegistryEntry.ValueName -Value $RegistryEntry.ValueData -Type Binary -Force }
+                        "MultiString" { Set-ItemProperty -Path $FullKeyPath -Name $RegistryEntry.ValueName -Value $RegistryEntry.ValueData -Type MultiString -Force }
+                    }
+                    $RegistryEntry.Result = "Success"
+                    Write-DeploymentLog -Message "Successfully performed: $($RegistryEntry.State) on $($FullKeyPath) with value: $($RegistryEntry.ValueData) in $($FullKeyPath)" -MessageType "Info" -LogPath $LoggingPath
                 }
-                else {
+                "REMOVE" {
+                    Remove-ItemProperty -Path $FullKeyPath -Name $RegistryEntry.ValueName -Force
+                    $RegistryEntry.Result = "Success"
+                }
+                default {
                     $RegistryEntry.Result = "Failed"
-                    $RegistryEntry.Error = "Path not found"
-                    continue
+                    $RegistryEntry.Error = "Invalid Action"
                 }
-
-                if ($RegistryEntry.Type -eq "String") {
-                    Set-ItemProperty -Path $RegistryEntry.Path -Name $RegistryEntry.Name -Value $RegistryEntry.Value -Force
-                }
-                elseif ($RegistryEntry.Type -eq "DWord") {
-                    Set-ItemProperty -Path $RegistryEntry.Path -Name $RegistryEntry.Name -Value $RegistryEntry.Value -Type DWord -Force
-                }
-                elseif ($RegistryEntry.Type -eq "QWord") {
-                    Set-ItemProperty -Path $RegistryEntry.Path -Name $RegistryEntry.Name -Value $RegistryEntry.Value -Type QWord -Force
-                }
-                elseif ($RegistryEntry.Type -eq "Binary") {
-                    Set-ItemProperty -Path $RegistryEntry.Path -Name $RegistryEntry.Name -Value $RegistryEntry.Value -Type Binary -Force
-                }
-                elseif ($RegistryEntry.Type -eq "MultiString") {
-                    Set-ItemProperty -Path $RegistryEntry.Path -Name $RegistryEntry.Name -Value $RegistryEntry.Value -Type MultiString -Force
-                }
-                $RegistryEntry.Result = "Success"
-            }
-            elseif ($RegistryEntry.Action -eq "REMOVE") {
-                Remove-ItemProperty -Path $RegistryEntry.Path -Name $RegistryEntry.Name -Force
-                $RegistryEntry.Result = "Success"
-            }
-            else {
-                $RegistryEntry.Result = "Failed"
-                $RegistryEntry.Error = "Invalid Action"
             }
         }
         Catch {
+            Write-DeploymentLog -Message "Failed to $($RegistryEntry.State) of $($RegistryEntry.ValueData) in $($FullKeyPathWithKey) with error: $_" -MessageType "Error" -LogPath $LoggingPath
             $RegistryEntry.Result = "Failed"
             $RegistryEntry.Error = $_.Exception.Message
         }
