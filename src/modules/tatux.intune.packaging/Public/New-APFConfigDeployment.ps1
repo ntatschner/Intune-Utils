@@ -26,7 +26,7 @@ function New-APFConfigDeployment {
         [Parameter(ParameterSetName = "registry")]
         [Parameter(HelpMessage = "The registry key details to create or modify. \
         `nThis should be in the format of fullPath: HKEY_LOCAL_MACHINE\Software\, KeyName: MyKey, KeyType: DWORD, KeyData: Setting1, State: ADD|REMOVE|MODIFY\
-        `nSo you would enter `"HKEY_LOCAL_MACHINE\Software\MyApp,MyName,DWORD,Setting1,ADD`" as the value.\
+        `nSo you would enter `"HKEY_LOCAL_MACHINE\Software\,MySoftware,MyName,DWORD,Setting1,ADD`" as the value.\
         `nThere will also be a .csv file created where you can add as many registy items as you like.\
         `nBare in mind that any failure of any registry item will cause the whole configuration to fail.")]
         [string]$RegistryValue,
@@ -90,7 +90,7 @@ function New-APFConfigDeployment {
         switch ($ConfigurationType) {
             "Registry" {
                 # Create Registry CSV file and add any commandline provided registry keys
-                $RegistryFile = Join-Path -Path $DestinationFolder -ChildPath "$Name-Registry.csv"
+                $RegistryFile = Join-Path -Path $DestinationFolder -ChildPath "$Name" + "_Registry.csv"
                 if (-not (Test-Path $RegistryFile)) {
                     Copy-Item -Path "$PSScriptRoot\Templates\Registry\registry_entries.config.csv" -Destination $RegistryFile
                 }
@@ -100,8 +100,7 @@ function New-APFConfigDeployment {
                         Copy-Item -Path "$PSScriptRoot\Templates\Registry\registry_entries.config.csv" -Destination $RegistryFile
                     }
                 }
-                if ($RegistryValue) {
-                    
+                if ($RegistryValue) {         
                     # add registry keys to the csv file
                     # Import current file, loop through and check if supplied key is already in the file
                     try {

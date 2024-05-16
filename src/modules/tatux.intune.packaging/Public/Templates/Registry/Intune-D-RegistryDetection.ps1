@@ -14,6 +14,8 @@ foreach ($Path in $PathsToCheck) {
         $VersionInfo = Get-Content -Path $Path | ConvertFrom-Json
         if ($VersionInfo.version -eq $Version) {
             Write-Output "The version file exists and the version is correct"
+            
+            
             exit 0
         }
         else {

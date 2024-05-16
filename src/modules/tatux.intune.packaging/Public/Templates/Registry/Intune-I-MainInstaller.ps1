@@ -9,6 +9,10 @@ $InstallConfig = Get-Content -Path "$PSScriptRoot\config.installer.json" | Conve
 #region Global Variables
 $ConfigBase = if ($InstallConfig.target -eq "user") { $env:APPDATA } else { ${env:ProgramFiles(x86)} }
 $APFBase = "APF"
+$APFFullBase = Join-Path -Path $ConfigBase -ChildPath $APFBase
+$StorageFolderBase = "PersistentStorage"
+$StorageFolderName = $(if ([string]::IsNullOrEmpty($ConfigBase.name)) {"registry"} {"$($ConfigBase.name)"})
+$StorageFolderFullPath = Join-Path -Path $APFFullBase -ChildPath "$StorageFolderBase\$StorageFolderName"
 $InvalidChars = [System.IO.Path]::GetInvalidFileNameChars()
 $Extention = $InstallConfig.filename -split "\." | Select-Object -Last 1
 $LogName = $InstallConfig.filename.Replace($Extention, "log")
@@ -186,119 +190,75 @@ else {
     Write-DeploymentLog -Message "Setting the execution policy to bypass" -MessageType "Info" -LogPath $LoggingPath
     Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process -Force
     # Install the application
-    Write-DeploymentLog -Message "Installing $($InstallConfig.name), Version $($InstallConfig.version) with Installation Switches $($InstallConfig.installswitches)" -MessageType "Info" -LogPath $LoggingPath
-    # Check if the application is an MSI or an executable
-    if ($InstallConfig.filename -match ".msi") {
-        # The application is an MSI, install it using msiexec
+    Write-DeploymentLog -Message "Managing Registry config $($InstallConfig.name), Version $($InstallConfig.version)." -MessageType "Info" -LogPath $LoggingPath
+    
+    # Create storage folder if it dosent exist
+    
+    if (-not (Test-Path -Path $StorageFolderFullPath)) {
+        Write-DeploymentLog -Message "Creating the APF storage folder" -MessageType "Info" -LogPath $LoggingPath
+        New-Item -Path $StorageFolderFullPath -ItemType Directory -Force
+    }
+
+    # Create a local copy of registry CSV File
+    if (Test-Path -Path "$PSScriptRoot\$($InstallConfig.name)_Registry.csv") {
+        Copy-Item -Path "$PSScriptRoot\$($InstallConfig.name)_Registry.csv" -Destination "$StorageFolderFullPath\$($InstallConfig.name)_Registry.csv" -Force
+    } else {
+        Write-DeploymentLog -Message "Registry CSV File not found" -MessageType "Error" -LogPath $LoggingPath
+        exit 1
+    }
+    # Process the CSV File to make the registry modifications
+    $RegistryData = Import-Csv -Path "$StorageFolderFullPath\$($InstallConfig.name)_Registry.csv"
+    # Add new columns to the CSV File
+    $RegistryData | Add-Member -MemberType NoteProperty -Name "Result" -Value ""
+    $RegistryData | Add-Member -MemberType NoteProperty -Name "Error" -Value ""
+    $RegistryData | Add-Member -MemberType NoteProperty -Name "OldValue" -Value ""
+    # Loop through the CSV File and make the registry modifications
+    foreach ($RegistryEntry in $RegistryData) {
         try {
-            $InstallSplat = @{
-                FilePath         = "msiexec.exe"
-                WorkingDirectory = $PSScriptRoot
-                ArgumentList     = "/i `"$($InstallConfig.filename)`" $($InstallConfig.installswitches)"
-                NoNewWindow      = $true
-                Wait             = $true
-                ErrorAction      = "Stop"
-                PassThru         = $true
-            }
-            Write-DeploymentLog -Message "Splat contains: `n$($InstallSplat | ConvertTo-Json -Depth 5)" -MessageType "Info" -LogPath $LoggingPath
-            Write-DeploymentLog -Message "MSI Found. Running Command: $($InstallSplat.FilePath) $($InstallSplat.ArgumentList)" -MessageType "Info" -LogPath $LoggingPath
-            $Process = Start-Process @InstallSplat
-            Write-DeploymentLog -Message "Process ID: $($Process.Id)" -MessageType "Info" -LogPath $LoggingPath
-            Write-DeploymentLog -Message "Process Exit Code: $($Process.ExitCode)" -MessageType "Info" -LogPath $LoggingPath
-            if ($Process.ExitCode -ne 0) {
-                Write-Error -Message "ExitCode: $($Process.ExitCode)"
-                throw "ExitCode: $($Process.ExitCode)"
-            }
-            else {
-                Write-DeploymentLog -Message "Installation completed successfully" -MessageType "Info" -LogPath $LoggingPath
-                # Create a config file for the installed application
-                if ($ExistingConfig -eq $false) {
-                    Write-DeploymentLog -Message "Creating the config file for the installed application" -MessageType "Info" -LogPath $LoggingPath
-                    $InstallConfig | ConvertTo-Json | Set-Content -Path "$ConfigBase\$APFBase\AppConfigs\$($InstallConfig.name)_config.installer.json"
+            if ($RegistryEntry.State -eq "MODIFY") {
+                if (Test-Path -Path "$($RegistryEntry.RegistryPath)\$($RegistryEntry.KeyName)") {
+                    $RegistryEntry.OldValue = Get-ItemProperty -Path "$($RegistryEntry.RegistryPath)\$($RegistryEntry.KeyName)" -Name $RegistryEntry.ValueData
                 }
                 else {
-                    # Backup previous config file
-                    Write-DeploymentLog -Message "Backing up the previous config file for the installed application" -MessageType "Info" -LogPath $LoggingPath
-                    Copy-Item -Path "$ConfigBase\$APFBase\AppConfigs\$($InstallConfig.name)_config.installer.json" -Destination "$ConfigBase\$APFBase\AppConfigs\$($InstallConfig.name)_config.installer.json.bak" -Force
-                    Write-DeploymentLog -Message "Updating the config file for the installed application" -MessageType "Info" -LogPath $LoggingPath
-                    $InstallConfig | ConvertTo-Json | Set-Content -Path "$ConfigBase\$APFBase\AppConfigs\$($InstallConfig.name)_config.installer.json"
+                    $RegistryEntry.Result = "Failed"
+                    $RegistryEntry.Error = "Path not found"
+                    continue
                 }
+
+                if ($RegistryEntry.Type -eq "String") {
+                    Set-ItemProperty -Path $RegistryEntry.Path -Name $RegistryEntry.Name -Value $RegistryEntry.Value -Force
+                }
+                elseif ($RegistryEntry.Type -eq "DWord") {
+                    Set-ItemProperty -Path $RegistryEntry.Path -Name $RegistryEntry.Name -Value $RegistryEntry.Value -Type DWord -Force
+                }
+                elseif ($RegistryEntry.Type -eq "QWord") {
+                    Set-ItemProperty -Path $RegistryEntry.Path -Name $RegistryEntry.Name -Value $RegistryEntry.Value -Type QWord -Force
+                }
+                elseif ($RegistryEntry.Type -eq "Binary") {
+                    Set-ItemProperty -Path $RegistryEntry.Path -Name $RegistryEntry.Name -Value $RegistryEntry.Value -Type Binary -Force
+                }
+                elseif ($RegistryEntry.Type -eq "MultiString") {
+                    Set-ItemProperty -Path $RegistryEntry.Path -Name $RegistryEntry.Name -Value $RegistryEntry.Value -Type MultiString -Force
+                }
+                $RegistryEntry.Result = "Success"
+            }
+            elseif ($RegistryEntry.Action -eq "REMOVE") {
+                Remove-ItemProperty -Path $RegistryEntry.Path -Name $RegistryEntry.Name -Force
+                $RegistryEntry.Result = "Success"
+            }
+            else {
+                $RegistryEntry.Result = "Failed"
+                $RegistryEntry.Error = "Invalid Action"
             }
         }
         Catch {
-            $Script:TimeTaken = $(Get-Date) - $StartTime
-            Write-DeploymentLog -Message "Failed to install $($InstallConfig.name), Version $($InstallConfig.version) with error: $_" -MessageType "Error" -LogPath $LoggingPath
-            exit 1
+            $RegistryEntry.Result = "Failed"
+            $RegistryEntry.Error = $_.Exception.Message
         }
     }
-    else {
-        # The application is not an MSI, install it using the executable
-        try {
-            $InstallSplat = @{
-                FilePath         = "cmd.exe"
-                WorkingDirectory = $PSScriptRoot
-                ArgumentList     = "/c $($InstallConfig.filename) $($InstallConfig.installswitches)"
-                NoNewWindow      = $true
-                Wait             = $true
-                ErrorAction      = "Stop"
-                PassThru         = $true
-            }
-            Write-DeploymentLog -Message "Splat contains: `n$($InstallSplat | ConvertTo-Json -Depth 5)" -MessageType "Info" -LogPath $LoggingPath
-            Write-DeploymentLog -Message "EXE Found. Running Command: $($InstallSplat.FilePath) $($InstallSplat.ArgumentList)" -MessageType "Info" -LogPath $LoggingPath
-            $Process = Start-Process @InstallSplat
-            Write-DeploymentLog -Message "Process ID: $($Process.Id)" -MessageType "Info" -LogPath $LoggingPath
-            Write-DeploymentLog -Message "Process Exit Code: $($Process.ExitCode)" -MessageType "Info" -LogPath $LoggingPath
-            if ($Process.ExitCode -ne 0) {
-                Write-Error -Message "ExitCode: $($Process.ExitCode)"
-                throw "ExitCode: $($Process.ExitCode)"
-            }
-            else {
-                Write-DeploymentLog -Message "Installation completed successfully" -MessageType "Info" -LogPath $LoggingPath
-                if ( -not [string]::IsNullOrEmpty($InstallConfig.shortcut)) {
-                    # Get all the Start Menu Shotcuts just created so we can create the defined shortcut in the config file
-                    $TimeLimit = (Get-Date).AddSeconds(-5)
-                    $StartMenuShortcuts = Get-ChildItem -Path "$env:APPDATA\Microsoft\Windows\Start Menu\Programs" -Recurse -Include "*.lnk" | Where-Object { $_.CreationTime -gt $TimeLimit } | Where-Object { $_.Name -notmatch "Uninstall|remove|readme|guide" }
-                    if ($StartMenuShortcuts -eq $null) {
-                        Write-DeploymentLog -Message "No Start Menu Shortcuts found" -MessageType "Info" -LogPath $LoggingPath
-                    }
-                    else {
-                        foreach ($Shortcut in $StartMenuShortcuts) {
-                            $WshShell = New-Object -ComObject WScript.Shell
-                            $ShortcutObject = $WshShell.CreateShortcut($Shortcut)
-                            try {                            
-                                Write-DeploymentLog -Message "Creating shortcut $($Shortcut.BaseName)" -MessageType "Info" -LogPath $LoggingPath
-                                $ShortcutFullPath = Join-Path -Path $ShortcutBasePath -ChildPath "$($Shortcut.BaseName).lnk"
-                                $WshShell = New-Object -ComObject WScript.Shell
-                                $Shortcut = $WshShell.CreateShortcut($ShortcutFullPath)
-                                $Shortcut.TargetPath = $ShortcutObject.TargetPath
-                                $Shortcut.Save()
-                                $InstallConfig.CreatedShortcuts += $ShortcutFullPath
-                            }
-                            Catch {
-                                Write-DeploymentLog -Message "Failed to create shortcut with error: $_" -MessageType "Error" -LogPath $LoggingPath
-                            }
-                        }
-                    }
-                }
-                # Create a config file for the installed application
-                if ($ExistingConfig -eq $false) {
-                    Write-DeploymentLog -Message "Creating the config file for the installed application" -MessageType "Info" -LogPath $LoggingPath
-                    $InstallConfig | ConvertTo-Json | Set-Content -Path "$ConfigBase\$APFBase\AppConfigs\$($InstallConfig.name)_config.installer.json"
-                }
-                else {
-                    # Backup previous config file
-                    Write-DeploymentLog -Message "Backing up the previous config file for the installed application" -MessageType "Info" -LogPath $LoggingPath
-                    Copy-Item -Path "$ConfigBase\$APFBase\AppConfigs\$($InstallConfig.name)_config.installer.json" -Destination "$ConfigBase\$APFBase\AppConfigs\$($InstallConfig.name)_config.installer.json.bak" -Force
-                    Write-DeploymentLog -Message "Updating the config file for the installed application" -MessageType "Info" -LogPath $LoggingPath
-                    $InstallConfig | ConvertTo-Json | Set-Content -Path "$ConfigBase\$APFBase\AppConfigs\$($InstallConfig.name)_config.installer.json"
-                }
-            }          
-        }
-        Catch {
-            Write-DeploymentLog -Message "Failed to install $($InstallConfig.name), Version $($InstallConfig.version) with error: $_" -MessageType "Error" -LogPath $LoggingPath
-            exit 1
-        }
-    }
+
+
+
     Write-DeploymentLog -Message "Installation of $($InstallConfig.name), Version $($InstallConfig.version) completed successfully" -MessageType "Info" -LogPath $LoggingPath
     $Script:TimeTaken = $(Get-Date) - $StartTime
     Write-DeploymentLog -Message "Installation of $($InstallConfig.name), Version $($InstallConfig.version) took $($TimeTaken.ToString('hh\:mm\:ss\.fff'))" -MessageType "Info" -LogPath $LoggingPath
