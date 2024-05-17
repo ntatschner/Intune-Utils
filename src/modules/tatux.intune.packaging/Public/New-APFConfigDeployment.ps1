@@ -18,7 +18,13 @@ function New-APFConfigDeployment {
         [ValidateSet("system", "user")]
         [string]$Target = "system",
 
-        [Parameter(ParameterSetName = "config", "registry", "files", "script-os", "script-app", "script-user", "custom")]
+        [Parameter(ParameterSetName = "config")]
+        [Parameter(ParameterSetName = "registry")]
+        [Parameter(ParameterSetName = "files")]
+        [Parameter(ParameterSetName = "script-os")]
+        [Parameter(ParameterSetName = "script-app")]
+        [Parameter(ParameterSetName = "script-user")]
+        [Parameter(ParameterSetName = "custom")]
         [Parameter(HelpMessage = "The type of configuration this command is for.")]
         [ValidateSet("Registry", "Files", "Script-OS", "Script-App", "Script-User", "Custom")]
         [string]$ConfigurationType,
