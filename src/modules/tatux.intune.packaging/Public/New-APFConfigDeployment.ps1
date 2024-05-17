@@ -160,8 +160,10 @@ function New-APFConfigDeployment {
                 New-Item -Path $AppFolder -ItemType Directory | Out-Null
             }
         }
-        # Copy the installer file and any additional files to the application folder
-        Copy-Item -Path $Path -Destination $AppFolder
+        if ($Path) {
+            # Copy the installer file and any additional files to the application folder
+            Copy-Item -Path $Path -Destination $AppFolder
+        }
         if ($IncludedFiles) {
             foreach ($file in $IncludedFiles) {
                 Copy-Item -Path $file -Destination $AppFolder
