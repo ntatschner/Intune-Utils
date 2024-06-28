@@ -38,7 +38,7 @@ try {
     $CurrentConfig = Get-ModuleConfig -CommandPath $PSScriptRoot -ErrorAction Stop
 }
 catch {
-    Write-Error $_.Exception.Message
+    Write-Error "Module Import error: `n $($_.Exception.Message)"
 }
 
 # Generate execution ID
