@@ -33,7 +33,7 @@ Export-ModuleMember -Function $Public.Basename
 #endregion
 
 # Module Config setup and import
-$CurrentConfig = Get-ModuleConfig -CommandPath $PSCommandPath
+$CurrentConfig = Get-ModuleConfig -CommandPath $MyInvocation.InvocationName
 
 # Generate execution ID
 $ExecutionID = [System.Guid]::NewGuid().ToString()
