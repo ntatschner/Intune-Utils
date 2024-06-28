@@ -19,7 +19,7 @@ function Get-MSIProperties {
     }
     process {
         try {
-            $CurrentConfig = Get-ModuleConfig -CommandPath $PSScriptRoot
+            $CurrentConfig = Get-ModuleConfig -CommandPath $PSCommandPath
             $TelmetryArgs = @{
                 ModuleName    = $CurrentConfig.ModuleName
                 ModulePath    = $CurrentConfig.ModulePath
