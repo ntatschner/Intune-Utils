@@ -35,7 +35,7 @@ Export-ModuleMember -Function $Public.Basename
 
 # Module Config setup and import
 try {
-    $CurrentConfig = Get-ModuleConfig -CommandPath $PSScriptRoot -ErrorAction Stop
+    $CurrentConfig = Get-ModuleConfig -CommandPath $PSCommandPath -ErrorAction Stop
 }
 catch {
     Write-Error "Module Import error: `n $($_.Exception.Message)"
