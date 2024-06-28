@@ -34,9 +34,8 @@ Export-ModuleMember -Function $Public.Basename
 #endregion
 
 # Module Config setup and import
-Write-Output "PSScriptRoot: $($PSScriptRoot)"
 try {
-    $CurrentConfig = Get-ModuleConfig -CommandPath $PSCommandPath -ErrorAction Stop
+    $CurrentConfig = Get-ModuleConfig -CommandPath $PSScriptRoot -ErrorAction Stop
 }
 catch {
     Write-Error $_.Exception.Message

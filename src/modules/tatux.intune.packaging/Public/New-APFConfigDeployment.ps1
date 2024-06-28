@@ -69,7 +69,7 @@ function New-APFConfigDeployment {
         # Generate execution ID
         $ExecutionID = [System.Guid]::NewGuid().ToString()
         try {
-            $CurrentConfig = Get-ModuleConfig -CommandPath $PSCommandPath
+            $CurrentConfig = Get-ModuleConfig -CommandPath $PSScriptRoot
             $TelmetryArgs = @{
                 ModuleName    = $CurrentConfig.ModuleName
                 ModulePath    = $CurrentConfig.ModulePath
