@@ -1,5 +1,5 @@
 #region get public and private function definition files.
-$Public  = @(
+$Public = @(
     Get-ChildItem -Path $PSScriptRoot\Public\*.ps1 -Exclude "*.Tests.ps1" -ErrorAction SilentlyContinue
 )
 $Private = @(
@@ -11,9 +11,10 @@ $Private = @(
 foreach ($Function in @($Public + $Private)) {
     $FunctionPath = $Function.fullname
     try {
-	. $FunctionPath # dot source function
-    } catch {
-	Write-Error -Message "Failed to import function at $($FunctionPath): $_"
+        . $FunctionPath # dot source function
+    }
+    catch {
+        Write-Error -Message "Failed to import function at $($FunctionPath): $_"
     }
 }
 #endregion
@@ -33,25 +34,32 @@ Export-ModuleMember -Function $Public.Basename
 #endregion
 
 # Module Config setup and import
-$CurrentConfig = Get-ModuleConfig -CommandPath $PSCommandPath
+Write-Output "PSScriptRoot: $($PSScriptRoot)"
+try {
+    $CurrentConfig = Get-ModuleConfig -CommandPath $PSCommandPath -ErrorAction Stop
+}
+catch {
+    Write-Error $_.Exception.Message
+}
 
 # Generate execution ID
 $ExecutionID = [System.Guid]::NewGuid().ToString()
 
 $TelmetryArgs = @{
-    ModuleName = $CurrentConfig.ModuleName
-    ModulePath = $CurrentConfig.ModulePath
+    ModuleName    = $CurrentConfig.ModuleName
+    ModulePath    = $CurrentConfig.ModulePath
     ModuleVersion = $MyInvocation.MyCommand.Module.Version
-    ExecutionID = $ExecutionID
-    CommandName = $MyInvocation.MyCommand.Name
-    URI = 'https://telemetry.tatux.in/api/telemetry'
-    ClearTimer = $true
-    Stage = 'Module-Load'
+    ExecutionID   = $ExecutionID
+    CommandName   = $MyInvocation.MyCommand.Name
+    URI           = 'https://telemetry.tatux.in/api/telemetry'
+    ClearTimer    = $true
+    Stage         = 'Module-Load'
 }
 
 if ($CurrentConfig.BasicTelemetry -eq 'True') {
     Invoke-TelemetryCollection -Minimal @TelmetryArgs
-} else {
+}
+else {
     Invoke-TelemetryCollection @TelmetryArgs
 }
 
