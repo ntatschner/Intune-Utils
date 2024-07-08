@@ -74,7 +74,7 @@ function New-APFDeployment {
     }
     process {
         try {
-            $CurrentConfig = Get-ModuleConfig -CommandPath $PSCommandPath
+            $CurrentConfig = Get-ModuleConfig -CommandPath $PSCommandPath -Verbose
             $TelmetryArgs = @{
                 ModuleName    = $CurrentConfig.ModuleName
                 ModulePath    = $CurrentConfig.ModulePath
