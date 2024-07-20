@@ -138,7 +138,7 @@ function New-APFConfigDeployment {
                     New-Item -Path $IncludeFolder -ItemType Directory | Out-Null
                 }
                 else {
-                    if ($PSCmdlet.ShouldContinue("Overwrite existing subfolder for the application? Warning: This will recursively delete all files in the folder.", "Confirm Overwrite")) {
+                    if ($PSCmdlet.ShouldContinue("Overwrite existing subfolder for the deployment? Warning: This will recursively delete all files in the folder.", "Confirm Overwrite")) {
                         Remove-Item -Path $IncludeFolder -Recurse -Force | Out-Null
                         New-Item -Path $IncludeFolder -ItemType Directory | Out-Null
                     }
