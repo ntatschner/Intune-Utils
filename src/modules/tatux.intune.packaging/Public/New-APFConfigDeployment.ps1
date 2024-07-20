@@ -96,6 +96,7 @@ function New-APFConfigDeployment {
         switch ($ConfigurationType) {
             "Registry" {
                 # Create Registry CSV file and add any commandline provided registry keys
+                $DestinationFolder = Join-Path -Path $DestinationFolder -ChildPath $Name
                 $RegistryFile = Join-Path -Path $DestinationFolder -ChildPath $("$Name" + "_Registry.csv")
                 Write-Verbose "Creating registry file at $RegistryFile"
                 if (-not (Test-Path $RegistryFile)) {
@@ -150,7 +151,7 @@ function New-APFConfigDeployment {
                 }
                 # Copy the template files to the main folder
                 try {
-                    Copy-Item -Path "$PSScriptRoot\Templates\Registry\*" -Destination $DestinationPath -Recurse
+                    Copy-Item -Path "$PSScriptRoot\Templates\Registry\*" -Destination $DestinationFolder -Recurse
                 }
                 catch {
                     Write-Error "Failed to copy the template files to the main folder.`nError: $_"
@@ -158,17 +159,17 @@ function New-APFConfigDeployment {
                 }
 
                 # Update the template files with the deployment name and version
-                $MainConfig = Get-Content -Path "$DestinationPath\config.installer.json" | ConvertFrom-Json
+                $MainConfig = Get-Content -Path "$DestinationFolder\config.installer.json" | ConvertFrom-Json
                 $MainConfig.name = $Name
                 $MainConfig.version = $Version.ToString()
                 $MainConfig.target = $Target
-                $MainConfig | ConvertTo-Json -Depth 10 | Set-Content -Path "$DestinationPath\config.installer.json"
+                $MainConfig | ConvertTo-Json -Depth 10 | Set-Content -Path "$DestinationFolder\config.installer.json"
 
-                $DetectionScript = Get-Content -Path "$DestinationPath\Intune-D-RegDetection.ps1"
+                $DetectionScript = Get-Content -Path "$DestinationFolder\Intune-D-RegDetection.ps1"
                 $DetectionScript = $DetectionScript -replace "##NAME_TEMPLATE", $Name
                 $DetectionScript = $DetectionScript -replace "##VERSION_TEMPLATE", $Version.ToString()
-                $DetectionScript = $DetectionScript -replace "##FILENAME_TEMPLATE", (Get-Item -Path $DestinationPath).Name
-                $DetectionScript | Set-Content -Path "$DestinationPath\Intune-D-AppDetection.ps1"
+                $DetectionScript = $DetectionScript -replace "##FILENAME_TEMPLATE", (Get-Item -Path $DestinationFolder).Name
+                $DetectionScript | Set-Content -Path "$DestinationFolder\Intune-D-AppDetection.ps1"
             }
             "Files" {
                 
