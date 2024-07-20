@@ -91,6 +91,15 @@ function New-APFConfigDeployment {
             "Registry" {
                 # Create Registry CSV file and add any commandline provided registry keys
                 $DestinationFolder = Join-Path -Path $DestinationFolder -ChildPath $Name
+                if (-not (Test-Path $DestinationFolder)) {
+                    New-Item -Path $DestinationFolder -ItemType Directory | Out-Null
+                }
+                else {
+                    if ($PSCmdlet.ShouldContinue("Overwrite existing folder for the deployment? Warning: This will recursively delete all files in the folder.", "Confirm Overwrite")) {
+                        Remove-Item -Path $DestinationFolder -Recurse -Force | Out-Null
+                        New-Item -Path $DestinationFolder -ItemType Directory | Out-Null
+                    }
+                }
                 $RegistryFile = Join-Path -Path $DestinationFolder -ChildPath $("$Name" + "_Registry.csv")
                 Write-Verbose "Creating registry file at $RegistryFile"
                 if (-not (Test-Path $RegistryFile)) {
