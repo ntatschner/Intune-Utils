@@ -1,8 +1,9 @@
 {
     "name": "##NAME_TEMPLATE",
-    "uninstallpath": "##UNINSTALLPATH_TEMPLATE",
     "version": "##VERSION_TEMPLATE",
     "target": "##TARGET_TEMPLATE",
+    "registryfile": "##REGISTRY_TEMPLATE",
     "precommandfile": "Intune-Pre-Install.ps1",
-    "postcommandfile": "Intune-Post-Install.ps1"
+    "postcommandfile": "Intune-Post-Install.ps1",
+    "packagedby": "##PACKAGEDBY_TEMPLATE"
 }

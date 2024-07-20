@@ -155,7 +155,7 @@ function New-APFConfigDeployment {
                 }
                 # Copy the template files to the main folder
                 try {
-                    Copy-Item -Path "$PSScriptRoot\Templates\Registry\*" -Destination $DestinationFolder -Recurse -Exclude .md, .config.csv
+                    Copy-Item -Path "$PSScriptRoot\Templates\Registry\*" -Destination $DestinationFolder -Recurse -Exclude *.md, *.config.csv
                 }
                 catch {
                     Write-Error "Failed to copy the template files to the main folder.`nError: $_"
@@ -167,7 +167,9 @@ function New-APFConfigDeployment {
                 $MainConfig.name = $Name
                 $MainConfig.version = $Version.ToString()
                 $MainConfig.target = $Target
-                $MainConfig | ConvertTo-Json -Depth 10 | Set-Content -Path "$DestinationFolder\config.installer.json"
+                $MainConfig.registryfile = "$($Name)_Registry.csv"
+                $MainConfig.packagedby = $env:USERNAME
+                $MainConfig | ConvertTo-Json -Depth 10 | Set-Content -Path "$DestinationFolder\$($Name)_config.installer.json"
 
                 $DetectionScript = Get-Content -Path "$DestinationFolder\Intune-D-RegistryDetection.ps1"
                 $DetectionScript = $DetectionScript -replace "##NAME_TEMPLATE", $Name
@@ -274,7 +276,7 @@ function New-APFConfigDeployment {
             }
         }
         else {
-            Write-Output "The application '$Name' has been successfully packaged.`nThis can be found in the folder '$AppFolder'."
+            Write-Output "The application '$Name' has been successfully packaged.`nThis can be found in the folder '$DestinationFolder'."
         }
         Write-Output "When publishing the application to Intune, use`n'powershell.exe -ExecutionPolicy Bypass -File Intune-I-MainInstaller.ps1' for the install Command and`n'powershell.exe -ExecutionPolicy Bypass -File Intune-I-MainInstaller.ps1 -Uninstall' for the Uninstall Command."
     }
