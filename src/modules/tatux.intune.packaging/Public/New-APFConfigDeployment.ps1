@@ -155,7 +155,7 @@ function New-APFConfigDeployment {
                 }
                 # Copy the template files to the main folder
                 try {
-                    Copy-Item -Path "$PSScriptRoot\Templates\Registry\*" -Destination $DestinationFolder -Recurse
+                    Copy-Item -Path "$PSScriptRoot\Templates\Registry\*" -Destination $DestinationFolder -Recurse -Exclude .md, .config.csv
                 }
                 catch {
                     Write-Error "Failed to copy the template files to the main folder.`nError: $_"
@@ -173,7 +173,7 @@ function New-APFConfigDeployment {
                 $DetectionScript = $DetectionScript -replace "##NAME_TEMPLATE", $Name
                 $DetectionScript = $DetectionScript -replace "##VERSION_TEMPLATE", $Version.ToString()
                 $DetectionScript = $DetectionScript -replace "##FILENAME_TEMPLATE", (Get-Item -Path $DestinationFolder).Name
-                $DetectionScript | Set-Content -Path "$DestinationFolder\Intune-D-AppDetection.ps1"
+                $DetectionScript | Set-Content -Path "$DestinationFolder\Intune-D-RegistryDetection.ps1"
             }
             "Files" {
                 
