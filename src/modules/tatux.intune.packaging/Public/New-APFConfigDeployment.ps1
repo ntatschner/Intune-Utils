@@ -160,7 +160,7 @@ function New-APFConfigDeployment {
                 $MainConfig.target = $Target
                 $MainConfig | ConvertTo-Json -Depth 10 | Set-Content -Path "$DestinationFolder\config.installer.json"
 
-                $DetectionScript = Get-Content -Path "$DestinationFolder\Intune-D-RegDetection.ps1"
+                $DetectionScript = Get-Content -Path "$DestinationFolder\Intune-D-RegistryDetection.ps1"
                 $DetectionScript = $DetectionScript -replace "##NAME_TEMPLATE", $Name
                 $DetectionScript = $DetectionScript -replace "##VERSION_TEMPLATE", $Version.ToString()
                 $DetectionScript = $DetectionScript -replace "##FILENAME_TEMPLATE", (Get-Item -Path $DestinationFolder).Name
