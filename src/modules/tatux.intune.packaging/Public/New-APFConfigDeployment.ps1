@@ -155,7 +155,7 @@ function New-APFConfigDeployment {
                 }
                 # Copy the template files to the main folder
                 try {
-                    Copy-Item -Path "$PSScriptRoot\Templates\Registry\*" -Destination $DestinationFolder -Recurse -Exclude *.md, *.config.*
+                    Copy-Item -Path "$PSScriptRoot\Templates\Registry\*" -Destination $DestinationFolder -Recurse -Exclude *.md, *config.*
                 }
                 catch {
                     Write-Error "Failed to copy the template files to the main folder.`nError: $_"
@@ -163,7 +163,7 @@ function New-APFConfigDeployment {
                 }
 
                 # Update the template files with the deployment name and version
-                $MainConfig = Get-Content -Path "$DestinationFolder\config.installer.json" | ConvertFrom-Json
+                $MainConfig = Get-Content -Path "$PSScriptRoot\Templates\Registry\config.installer.json" | ConvertFrom-Json
                 $MainConfig.name = $Name
                 $MainConfig.version = $Version.ToString()
                 $MainConfig.target = $Target
