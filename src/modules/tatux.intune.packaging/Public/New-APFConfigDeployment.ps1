@@ -94,6 +94,7 @@ function New-APFConfigDeployment {
                 $RegistryFile = Join-Path -Path $DestinationFolder -ChildPath $("$Name" + "_Registry.csv")
                 Write-Verbose "Creating registry file at $RegistryFile"
                 if (-not (Test-Path $RegistryFile)) {
+                    New-Item -Path $RegistryFile -ItemType File | Out-Null
                     Copy-Item -Path "$PSScriptRoot\Templates\Registry\registry_entries.config.csv" -Destination $RegistryFile -Force
                 }
                 else {
