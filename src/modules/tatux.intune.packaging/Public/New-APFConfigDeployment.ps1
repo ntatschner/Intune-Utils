@@ -96,7 +96,8 @@ function New-APFConfigDeployment {
         switch ($ConfigurationType) {
             "Registry" {
                 # Create Registry CSV file and add any commandline provided registry keys
-                $RegistryFile = Join-Path -Path $DestinationFolder -ChildPath "$Name" + "_Registry.csv"
+                $RegistryFile = Join-Path -Path $DestinationFolder -ChildPath $("$Name" + "_Registry.csv")
+                Write-Verbose "Creating registry file at $RegistryFile"
                 if (-not (Test-Path $RegistryFile)) {
                     Copy-Item -Path "$PSScriptRoot\Templates\Registry\registry_entries.config.csv" -Destination $RegistryFile
                 }
@@ -131,6 +132,43 @@ function New-APFConfigDeployment {
                 else {
                     Write-Verbose "No registry keys were supplied."
                 }
+
+                $IncludeFolder = Join-Path -Path $DestinationFolder -ChildPath $Name
+                if (-not (Test-Path $IncludeFolder)) {
+                    New-Item -Path $IncludeFolder -ItemType Directory | Out-Null
+                }
+                else {
+                    if ($PSCmdlet.ShouldContinue("Overwrite existing subfolder for the application? Warning: This will recursively delete all files in the folder.", "Confirm Overwrite")) {
+                        Remove-Item -Path $IncludeFolder -Recurse -Force | Out-Null
+                        New-Item -Path $IncludeFolder -ItemType Directory | Out-Null
+                    }
+                }
+                if ($IncludedFiles) {
+                    foreach ($file in $IncludedFiles) {
+                        Copy-Item -Path $file -Destination $IncludeFolder
+                    }
+                }
+                # Copy the template files to the main folder
+                try {
+                    Copy-Item -Path "$PSScriptRoot\Templates\Registry\*" -Destination $DestinationPath -Recurse
+                }
+                catch {
+                    Write-Error "Failed to copy the template files to the main folder.`nError: $_"
+                    break
+                }
+
+                # Update the template files with the deployment name and version
+                $MainConfig = Get-Content -Path "$DestinationPath\config.installer.json" | ConvertFrom-Json
+                $MainConfig.name = $Name
+                $MainConfig.version = $Version.ToString()
+                $MainConfig.target = $Target
+                $MainConfig | ConvertTo-Json -Depth 10 | Set-Content -Path "$DestinationPath\config.installer.json"
+
+                $DetectionScript = Get-Content -Path "$DestinationPath\Intune-D-RegDetection.ps1"
+                $DetectionScript = $DetectionScript -replace "##NAME_TEMPLATE", $Name
+                $DetectionScript = $DetectionScript -replace "##VERSION_TEMPLATE", $Version.ToString()
+                $DetectionScript = $DetectionScript -replace "##FILENAME_TEMPLATE", (Get-Item -Path $DestinationPath).Name
+                $DetectionScript | Set-Content -Path "$DestinationPath\Intune-D-AppDetection.ps1"
             }
             "Files" {
                 
@@ -139,7 +177,46 @@ function New-APFConfigDeployment {
                 
             }
             "Script-App" {
-                
+                # Create subfolder for the application
+                $AppFolder = Join-Path -Path $DestinationFolder -ChildPath $Name
+                if (-not (Test-Path $AppFolder)) {
+                    New-Item -Path $AppFolder -ItemType Directory | Out-Null
+                }
+                else {
+                    if ($PSCmdlet.ShouldContinue("Overwrite existing subfolder for the application? Warning: This will recursively delete all files in the folder.", "Confirm Overwrite")) {
+                        Remove-Item -Path $AppFolder -Recurse -Force | Out-Null
+                        New-Item -Path $AppFolder -ItemType Directory | Out-Null
+                    }
+                }
+                if ($Path) {
+                    # Copy the installer file and any additional files to the application folder
+                    Copy-Item -Path $Path -Destination $AppFolder
+                }
+                if ($IncludedFiles) {
+                    foreach ($file in $IncludedFiles) {
+                        Copy-Item -Path $file -Destination $AppFolder
+                    }
+                }
+                # Copy the template files to the application folder
+                # Copy-Item -Path "$PSScriptRoot\Templates\Application\*" -Destination $AppFolder -Recurse
+
+                # Update the template files with the application name and version
+                $InstallerFileName = (Get-ChildItem -Path $Path).BaseName
+                $MainConfig = Get-Content -Path "$AppFolder\config.installer.json" | ConvertFrom-Json
+                $MainConfig.name = $Name
+                $MainConfig.version = $Version.ToString()
+                $MainConfig.filename = (Get-ChildItem -Path $Path).Name
+                $MainConfig.target = $Target
+                $MainConfig.installSwitches = $InstallSwitches
+                $MainConfig.uninstallSwitches = $UninstallSwitches
+                $MainConfig.uninstallPath = $UninstallPath
+                $MainConfig | ConvertTo-Json -Depth 10 | Set-Content -Path "$AppFolder\config.installer.json"
+
+                $DetectionScript = Get-Content -Path "$AppFolder\Intune-D-AppDetection.ps1"
+                $DetectionScript = $DetectionScript -replace "##NAME_TEMPLATE", $Name
+                $DetectionScript = $DetectionScript -replace "##VERSION_TEMPLATE", $Version.ToString()
+                $DetectionScript = $DetectionScript -replace "##FILENAME_TEMPLATE", (Get-ChildItem -Path $Path).Name
+                $DetectionScript | Set-Content -Path "$AppFolder\Intune-D-AppDetection.ps1"
             }
             "Script-User" {
                 
@@ -149,46 +226,7 @@ function New-APFConfigDeployment {
             }
         }
 
-        # Create subfolder for the application
-        $AppFolder = Join-Path -Path $DestinationFolder -ChildPath $Name
-        if (-not (Test-Path $AppFolder)) {
-            New-Item -Path $AppFolder -ItemType Directory | Out-Null
-        }
-        else {
-            if ($PSCmdlet.ShouldContinue("Overwrite existing subfolder for the application? Warning: This will recursively delete all files in the folder.", "Confirm Overwrite")) {
-                Remove-Item -Path $AppFolder -Recurse -Force | Out-Null
-                New-Item -Path $AppFolder -ItemType Directory | Out-Null
-            }
-        }
-        if ($Path) {
-            # Copy the installer file and any additional files to the application folder
-            Copy-Item -Path $Path -Destination $AppFolder
-        }
-        if ($IncludedFiles) {
-            foreach ($file in $IncludedFiles) {
-                Copy-Item -Path $file -Destination $AppFolder
-            }
-        }
-        # Copy the template files to the application folder
-        # Copy-Item -Path "$PSScriptRoot\Templates\Application\*" -Destination $AppFolder -Recurse
 
-        # Update the template files with the application name and version
-        $InstallerFileName = (Get-ChildItem -Path $Path).BaseName
-        $MainConfig = Get-Content -Path "$AppFolder\config.installer.json" | ConvertFrom-Json
-        $MainConfig.name = $Name
-        $MainConfig.version = $Version.ToString()
-        $MainConfig.filename = (Get-ChildItem -Path $Path).Name
-        $MainConfig.target = $Target
-        $MainConfig.installSwitches = $InstallSwitches
-        $MainConfig.uninstallSwitches = $UninstallSwitches
-        $MainConfig.uninstallPath = $UninstallPath
-        $MainConfig | ConvertTo-Json -Depth 10 | Set-Content -Path "$AppFolder\config.installer.json"
-
-        $DetectionScript = Get-Content -Path "$AppFolder\Intune-D-AppDetection.ps1"
-        $DetectionScript = $DetectionScript -replace "##NAME_TEMPLATE", $Name
-        $DetectionScript = $DetectionScript -replace "##VERSION_TEMPLATE", $Version.ToString()
-        $DetectionScript = $DetectionScript -replace "##FILENAME_TEMPLATE", (Get-ChildItem -Path $Path).Name
-        $DetectionScript | Set-Content -Path "$AppFolder\Intune-D-AppDetection.ps1"
 
         # Create IntuneWin Package
         if ($CreateIntuneWinPackage) {
