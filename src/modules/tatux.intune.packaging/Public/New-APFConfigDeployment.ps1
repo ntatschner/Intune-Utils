@@ -54,13 +54,7 @@ function New-APFConfigDeployment {
         [string[]]$Path,
 
         [Parameter(HelpMessage = "The folder where the output will be created. Default is the current directory.")]
-        [ValidateScript({
-                if (-not (Test-Path $_)) {
-                    throw "The folder $_ does not exist."
-                }
-                return $true
-            })]
-        [string]$DestinationFolder = $PWD.Path,
+        [string]$DestinationFolder = $($PWD.Path),
 
         [Parameter(HelpMessage = "Create a Intune package for the application. Default is false.")]
         [switch]$CreateIntuneWinPackage
@@ -100,7 +94,7 @@ function New-APFConfigDeployment {
                 $RegistryFile = Join-Path -Path $DestinationFolder -ChildPath $("$Name" + "_Registry.csv")
                 Write-Verbose "Creating registry file at $RegistryFile"
                 if (-not (Test-Path $RegistryFile)) {
-                    Copy-Item -Path "$PSScriptRoot\Templates\Registry\registry_entries.config.csv" -Destination $RegistryFile
+                    Copy-Item -Path "$PSScriptRoot\Templates\Registry\registry_entries.config.csv" -Destination $RegistryFile -Force
                 }
                 else {
                     if ($PSCmdlet.ShouldContinue("Overwrite existing registry file? Warning: This will delete the existing file.", "Confirm Overwrite")) {
