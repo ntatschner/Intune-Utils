@@ -138,7 +138,7 @@ function New-APFConfigDeployment {
                     Write-Verbose "No registry keys were supplied."
                 }
 
-                $IncludeFolder = Join-Path -Path $DestinationFolder -ChildPath $Name
+                $IncludeFolder = Join-Path -Path $DestinationFolder -ChildPath "src"
                 if (-not (Test-Path $IncludeFolder)) {
                     New-Item -Path $IncludeFolder -ItemType Directory | Out-Null
                 }
@@ -155,7 +155,7 @@ function New-APFConfigDeployment {
                 }
                 # Copy the template files to the main folder
                 try {
-                    Copy-Item -Path "$PSScriptRoot\Templates\Registry\*" -Destination $DestinationFolder -Recurse -Exclude *.md, *.config.csv
+                    Copy-Item -Path "$PSScriptRoot\Templates\Registry\*" -Destination $DestinationFolder -Recurse -Exclude *.md, *.config.*
                 }
                 catch {
                     Write-Error "Failed to copy the template files to the main folder.`nError: $_"
