@@ -39,7 +39,7 @@ function New-APFConfigDeployment {
 
         [Parameter(ParameterSetName = "config")]
         [Parameter(HelpMessage = "Destination path for the files on the target system.")]
-        [string]$DestinationPath = "$PWD.Path",
+        [string]$DestinationPath = $($PWD.Path),
 
         [Parameter(Mandatory = $false)]
         [Alias("IncludedFile", "SourceFile")]
