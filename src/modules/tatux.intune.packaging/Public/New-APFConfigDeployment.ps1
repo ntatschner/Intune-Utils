@@ -82,6 +82,9 @@ function New-APFConfigDeployment {
         }
         # Invoke-TelemetryCollection @TelmetryArgs -Stage End -ClearTimer -Failed $true -Exception $_
         # Invoke-TelemetryCollection @TelmetryArgs -Stage End -ClearTimer
+        if ($CurrentConfig.BetaFeatureWarning -eq $true) {
+            Write-Warning "This module is currently in beta and may contain bugs or issues."
+        }
     } 
     Process {
 
